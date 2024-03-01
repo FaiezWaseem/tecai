@@ -1,0 +1,272 @@
+DROP TABLE IF EXISTS `teacher_courses`;
+DROP TABLE IF EXISTS `tasks`;
+DROP TABLE IF EXISTS `activity`;
+DROP TABLE IF EXISTS `course`;
+DROP TABLE IF EXISTS `students`;
+DROP TABLE IF EXISTS `teachers`;
+DROP TABLE IF EXISTS `school`;
+DROP TABLE IF EXISTS `outline`;
+
+CREATE TABLE `outline` (
+  `id` BIGINT PRIMARY KEY AUTO_INCREMENT NOT NULL,
+  `school_id` BIGINT NOT NULL,
+  `class_id` BIGINT NOT NULL,
+  `course_id` BIGINT NOT NULL,
+  `teacher_id` BIGINT NOT NULL,
+  `chapter` VARCHAR(255) NOT NULL,
+  `title` VARCHAR(255) NOT NULL,
+  `is_covered` TINYINT(1) NOT NULL,
+  `deliver_date` TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+ALTER TABLE `outline` ADD CONSTRAINT `_school_id_school_id` FOREIGN KEY (`school_id`) REFERENCES `school`(`id`);
+ALTER TABLE `outline` ADD CONSTRAINT `outline_class_id_sclass_id` FOREIGN KEY (`class_id`) REFERENCES `classes`(`id`);
+ALTER TABLE `outline` ADD CONSTRAINT `outline_course_id_course_id` FOREIGN KEY (`course_id`) REFERENCES `course`(`id`);
+ALTER TABLE `outline` ADD CONSTRAINT `outline_teacher_id_teacher_id` FOREIGN KEY (`teacher_id`) REFERENCES `teachers`(`id`);
+
+CREATE TABLE `students` (
+  `id` BIGINT PRIMARY KEY AUTO_INCREMENT NOT NULL,
+  `photo` VARCHAR(255),
+  `name` VARCHAR(255) NOT NULL,
+  `father_name` VARCHAR(255),
+  `admission_no` INT,
+  `type` VARCHAR(255),
+  `group` VARCHAR(255),
+  `class` VARCHAR(255),
+  `section` VARCHAR(5) NOT NULL,
+  `dob` VARCHAR(255) NOT NULL,
+  `contact` VARCHAR(255) NOT NULL,
+  `gender` VARCHAR(255) NOT NULL,
+  `email` VARCHAR(255) NOT NULL,
+  `school` BIGINT NOT NULL,
+  `password` VARCHAR(255) NOT NULL,
+  `token` VARCHAR(255) DEFAULT ''
+);
+
+CREATE TABLE `teachers` (
+  `id` BIGINT PRIMARY KEY AUTO_INCREMENT NOT NULL,
+  `name` VARCHAR(255) NOT NULL UNIQUE,
+  `password` VARCHAR(255) NOT NULL,
+  `school_id` BIGINT NOT NULL
+);
+
+CREATE TABLE `activity` (
+  `id` BIGINT PRIMARY KEY AUTO_INCREMENT NOT NULL,
+  `tid` BIGINT NOT NULL,
+  `class_id` VARCHAR(255) NOT NULL,
+  `section_id` VARCHAR(5) NOT NULL,
+  `school_id` VARCHAR(5) NOT NULL,
+  `data` longtext NOT NULL,
+  `title` VARCHAR(255) NOT NULL,
+  `type` VARCHAR(255) NOT NULL,
+  `course_id` VARCHAR(255) NOT NULL
+  `topic_id`  bigint REFERENCES outline(id),
+ `deadline` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+ `total_marks` int, 
+  `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+
+CREATE TABLE `tasks` (
+  `id` BIGINT PRIMARY KEY AUTO_INCREMENT NOT NULL,
+  `activity_id` BIGINT NOT NULL,
+  `std_id` BIGINT NOT NULL,
+  `points_obtained` INT NOT NULL,
+  `points_total` INT NOT NULL,
+  `added_on` TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE `school` (
+  `id` BIGINT PRIMARY KEY AUTO_INCREMENT NOT NULL,
+  `school_name` VARCHAR(255) NOT NULL
+);
+
+CREATE TABLE `course` (
+  `id` BIGINT PRIMARY KEY AUTO_INCREMENT NOT NULL,
+  `course_name` VARCHAR(255) NOT NULL,
+  `school_id` BIGINT NOT NULL,
+  `added_on` TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE `teacher_courses` (
+  `id` BIGINT PRIMARY KEY AUTO_INCREMENT NOT NULL,
+  `teacher_id` BIGINT NOT NULL,
+  `course_id` BIGINT NOT NULL,
+  `added_on` TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE `admin` (
+  `id` BIGINT PRIMARY KEY AUTO_INCREMENT NOT NULL,
+  `name` VARCHAR(255) NOT NULL UNIQUE,
+  `password` VARCHAR(255) NOT NULL,
+  `school_id` BIGINT DEFAULT null,
+  `super_admin` Boolean DEFAULT false
+);
+
+ALTER TABLE `students` ADD CONSTRAINT `students_school_school_id` FOREIGN KEY (`school`) REFERENCES `school`(`id`);
+ALTER TABLE `teachers` ADD CONSTRAINT `teachers_school_id_school_id` FOREIGN KEY (`school_id`) REFERENCES `school`(`id`);
+ALTER TABLE `activity` ADD CONSTRAINT `activity_tid_teachers_id` FOREIGN KEY (`tid`) REFERENCES `teachers`(`id`);
+ALTER TABLE `activity` ADD CONSTRAINT `activity_class_students_class` FOREIGN KEY (`class`) REFERENCES `students`(`class`);
+ALTER TABLE `activity` ADD CONSTRAINT `activity_section_students_section` FOREIGN KEY (`section`) REFERENCES `students`(`section`);
+ALTER TABLE `tasks` ADD CONSTRAINT `tasks_activity_id_activity_id` FOREIGN KEY (`activity_id`) REFERENCES `activity`(`id`);
+ALTER TABLE `tasks` ADD CONSTRAINT `tasks_std_id_students_id` FOREIGN KEY (`std_id`) REFERENCES `students`(`id`);
+ALTER TABLE `course` ADD CONSTRAINT `course_school_id_school_id` FOREIGN KEY (`school_id`) REFERENCES `school`(`id`);
+ALTER TABLE `teacher_courses` ADD CONSTRAINT `teacher_courses_teacher_id_teachers_id` FOREIGN KEY (`teacher_id`) REFERENCES `teachers`(`id`);
+ALTER TABLE `teacher_courses` ADD CONSTRAINT `teacher_courses_course_id_course_id` FOREIGN KEY (`course_id`) REFERENCES `course`(`id`);
+ALTER TABLE `admin` ADD CONSTRAINT `admin_school_id_school_id` FOREIGN KEY (`school_id`) REFERENCES `school`(`id`);
+
+
+
+
+ALTER TABLE activity
+ADD COLUMN school_id bigint REFERENCES school(id);
+
+
+
+// for all tables
+ALTER TABLE teachers
+ADD COLUMN updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+ADD COLUMN created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP;
+
+
+
+
+
+
+
+ALTER TABLE activity
+ADD COLUMN topic_id  bigint REFERENCES outline(id),
+ADD COLUMN deadline TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+ADD COLUMN total_marks int ;
+
+
+
+
+CREATE TABLE `tclasses` (
+`id` INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
+`class_name` VARCHAR(255) NOT NULL UNIQUE,
+  `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE `tboards` (
+`id` INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
+`board_name` VARCHAR(255) NOT NULL,
+  `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE `tcourse` (
+`id` INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
+`course_name` VARCHAR(255) NOT NULL,
+  `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE `ttime_table` (
+`id` INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
+`course_name` VARCHAR(255) NOT NULL,
+`date` DATE NOT NULL,
+`time` TIME NOT NULL,
+  `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE `tlive_sessions` (
+`id` INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
+`live_title` VARCHAR(255) NOT NULL,
+`live_link` VARCHAR(255) NOT NULL,
+`live_thumbnail` VARCHAR(255) NOT NULL,
+`live_subtitle` VARCHAR(255) NOT NULL,
+  `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE `trecorded_lectures` (
+`id` INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
+`rec_title` VARCHAR(255) NOT NULL,
+`rec_link` VARCHAR(500) NOT NULL,
+`rec_thumbnail` VARCHAR(255) NOT NULL,
+`rec_subtitle` VARCHAR(255) NOT NULL,
+  `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+
+CREATE TABLE `tchapters` (
+`id` INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
+`chapter_title` VARCHAR(255) NOT NULL,
+`tcourse_id`  int REFERENCES tcourse(id),
+`tclass_id` int REFERENCES tclasses(id),
+  `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+ALTER TABLE `tchapters` ADD CONSTRAINT `tclass_id_classid` FOREIGN KEY (`tclass_id`) REFERENCES `tclasses`(`id`);
+ALTER TABLE `tchapters` ADD CONSTRAINT `tcourse_id_tcourseid` FOREIGN KEY (`tcourse_id`) REFERENCES `tcourse`(`id`);
+
+
+CREATE TABLE `tcontent` (
+`id` INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
+`topic_title` VARCHAR(255) NOT NULL,
+`topic_description` VARCHAR(255)  NULL,
+`content_type` VARCHAR(255)  NULL,
+`content_link` VARCHAR(500)  NULL,
+`tcourse_id`  int REFERENCES tcourse(id),
+`tclass_id` int REFERENCES tclasses(id),
+`tboard_id` int REFERENCES tboards(id),
+`tchapter_id` int REFERENCES tchapters(id),
+  `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+ALTER TABLE `tcontent` ADD CONSTRAINT `tcontent_tclass_id_classid` FOREIGN KEY (`tclass_id`) REFERENCES `tclasses`(`id`);
+ALTER TABLE `tcontent` ADD CONSTRAINT `tcontent_tcourse_id_tcourseid` FOREIGN KEY (`tcourse_id`) REFERENCES `tcourse`(`id`);
+ALTER TABLE `tcontent` ADD CONSTRAINT `tcontent_tboard_id_boardid` FOREIGN KEY (`tboard_id`) REFERENCES `tboards`(`id`);
+ALTER TABLE `tcontent` ADD CONSTRAINT `tcontent_chapter_id_chapterid` FOREIGN KEY (`tchapter_id`) REFERENCES `tchapters`(`id`);
+
+
+ALTER TABLE ttime_table
+ADD COLUMN tcourse_id int REFERENCES tcourse(id),
+ADD COLUMN tclass_id int REFERENCES tclasses(id),
+ADD COLUMN tboard_id int REFERENCES tboards(id);
+
+
+
+ALTER TABLE `tclasses`
+ADD COLUMN thumbnail varchar(500) default null;
+
+ALTER TABLE `tcourse`
+ADD COLUMN thumbnail varchar(500) default null;
+
+
+
+
+
+
+CREATE TABLE `ttopics` (
+`id` INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
+`topic_title` VARCHAR(255) NOT NULL,
+`tcourse_id`  int REFERENCES tcourse(id),
+`tclass_id` int REFERENCES tclasses(id),
+`tchapter_id` int REFERENCES tclasses(id),
+  `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+ALTER TABLE `ttopics` ADD CONSTRAINT `ttopics_tclass_id_classid` FOREIGN KEY (`tclass_id`) REFERENCES `tclasses`(`id`);
+ALTER TABLE `ttopics` ADD CONSTRAINT `ttopics_tcourse_id_tcourseid` FOREIGN KEY (`tcourse_id`) REFERENCES `tcourse`(`id`);
+ALTER TABLE `ttopics` ADD CONSTRAINT `ttopics_tchapter_id_tchapterid` FOREIGN KEY (`tcourse_id`) REFERENCES `tchapters`(`id`);
+
+
+
+
+ALTER TABLE tcontent
+ADD COLUMN tslo_id int REFERENCES ttopics(id)
+
+ALTER TABLE tcontent
+DROP COLUMN topic_title,
+DROP COLUMN topic_description
+;
+
+
+ALTER TABLE tcontent
+ADD COLUMN thumbnail varchar(255)

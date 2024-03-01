@@ -1,0 +1,493 @@
+<!doctype html>
+<html>
+
+
+<body>
+    <div id="page_content" class="main_container">
+        <audio id="player" src="https://mycmsappstorage.blob.core.windows.net/content/63b63976-5042-4539-a68a-f108d018e9bb/flour.mp3"  style="display: none;"></audio>
+        <div id="game_page" class="ui_bg page page-hide-left d-flex f-col topic_bg">
+            <div id="contentContainer">
+                <!-- class="content_container"  //-->
+
+
+                <div id="game" class="game">
+
+                   
+                    <!-- Generic PopupBG - Start-->
+                    <div id="popupBackground" class="popupBG">
+                    </div>
+                    <!-- Generic PopupBG - End -->
+					
+                    <!-- Clue Confirmation Popup - Start//-->
+
+                    <div id="clueConsumptionPopup" class="popupFrame">
+                        <div class="popupContent pausePopup">
+                            <div class="hintConsumeWarningText "><b>Do you want to consume Clue #<u id="clueNoToGetDisplay"></u>?</b></div>
+                            <div class="pauseButtonsDivInPausePopup tailoredForConfirmationPopup">
+                                <div class="eachButtonInPausePopup">
+                                    <button id="yesClueButton" class="bubblyButton  buttonMinFixesForPopup">
+                                        <span class="clueConfirmationButtonsSpan">
+                                            <div class="bubble"></div>
+                                            <b class="paddingForYesNoConfirmation">Yes</b>
+                                            <div class="clueComfirmationPopupOverlay">
+                                                <div class="eachMeterIcon confirmationPopupKeyForConfirmationPopup"></div>
+                                                <B id="clueDeductionView"> </B>
+                                            </div>
+                                        </span>
+                                    </button>
+                                </div>
+                                <div class="eachButtonInPausePopup">
+                                    <button id="noClueButton" class="bubblyButton  buttonMinFixesForPopup ">
+                                        <span class="clueConfirmationButtonsSpan">
+                                            <div class="bubble"></div>
+                                            <b>No</b>
+                                        </span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Clue Confirmation Popup - End //-->
+                    <!-- Clue Confirmation Popup - Start//-->
+
+                    <div id="answerConsumptionPopup" class="popupFrame">
+                        <div class="popupContent pausePopup">
+                            <div class="hintConsumeWarningText "><b>Do you want to reveal the answer?</b></div>
+                            <div class="pauseButtonsDivInPausePopup tailoredForConfirmationPopup">
+                                <div class="eachButtonInPausePopup">
+                                    <button id="yesRevealAnsButton" class="bubblyButton  buttonMinFixesForPopup">
+                                        <span class="clueConfirmationButtonsSpan">
+                                            <div class="bubble"></div>
+                                            <b class="paddingForYesNoConfirmation">Yes</b>
+                                            <div class="clueComfirmationPopupOverlay">
+                                                <div class="eachMeterIcon confirmationPopupKeyForConfirmationPopup"></div>
+                                                <B id="revealAnsDeductionView"> </B>
+                                            </div>
+                                        
+                                        </span>
+                                    </button>
+                                </div>
+                                <div class="eachButtonInPausePopup">
+                                    <button id="noRevealAnsButton" class="bubblyButton  buttonMinFixesForPopup ">
+                                        <span class="clueConfirmationButtonsSpan">
+                                            <div class="bubble"></div>
+                                            <b>No</b>
+                                        </span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Clue Confirmation Popup - End //-->
+
+
+                    <!-- No Clue Left - Start //-->
+
+                    <div id="noClueLeftPopup" class="popupFrame">
+                        <div class="popupContent pausePopup">
+                            <div class="hintConsumeWarningText "><b id="popupErrorMessage">Sorry, no clues are left.</b></div>
+                            <div class="pauseButtonsDivInPausePopup tailoredForConfirmationPopup">
+
+                                <div class="eachButtonInPausePopup">
+                                    <button id="returnNoClueButton" class="bubblyButton  buttonMinFixesForPopup ">
+                                        <span class="clueConfirmationButtonsSpan">
+                                            <div class="bubble"></div>
+                                            <b>OK</b>
+                                        </span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- No Clue Left Popup - End //-->
+
+
+                    <!-- Victory Popup - Start //-->
+                    <div id="victoryPopup" class="popupFrame">
+                        <div class="popupContent vicPopup">
+                            <div class="victoryPopupImage"> </div>
+                            <div class="victoryCongratsText "><b id="popupWinningMessage"><h2>Congratulations!</h2> <h4>You are able to solve all the topics we could throw at you. You're a genius.</h4></b></div>
+                            <div class="pauseButtonsDivInPausePopup tailoredForWinningPopup">
+
+                                <div class="eachButtonInPausePopup">
+                                    <button id="yayVictoryButton" class="bubblyButton  buttonMinFixesForVicPopup ">
+                                        <span class="clueConfirmationButtonsSpan">
+                                            <div class="bubble"></div>
+                                            <b>Yay!</b>
+                                        </span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Victory Popup Popup - End //-->
+
+                    <!-- Pause Popup - Start //-->
+                    <div id="pausePopup" class="popupFrame">
+                        <div class="popupContent pausePopup">
+                            <div class="wordStripInPopup titleStripforPausePopup"><b>PAUSED</b></div>
+                            <div class="pauseButtonsDivInPausePopup">
+                                <div class="eachButtonInPausePopup">
+                                    <button id="goButton" class="bubblyButton  buttonMinFixesForPopup">
+                                        <span>
+                                            <div class="bubble"></div>
+                                            <div class="homeIconPopup"></div>
+                                        </span>
+                                    </button>
+                                </div>
+                                <div class="eachButtonInPausePopup">
+                                    <button id="goButton" class="bubblyButton  buttonMinFixesForPopup">
+                                        <span>
+                                            <div class="bubble"></div>
+                                            <div class="homeIconPopup resumeIconPopup"></div>
+                                        </span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Pause Popup - End //-->
+
+
+
+
+                    <!-- Correct/Incorrect Single Result Popup - Start //-->
+                    <div id="singleResultPopup" class="popupFrame">
+                        <div class="popupContent">
+                            <div id="correctText" class="ribbonInPopup"><b id="wordResultTitleTextDisp">INCORRECT!</b></div>
+                            <!-- incorrectRibbon - for incorrect labelbg//--->
+                            <div class="blackStripInPopup"><b id="wordIntroTextPopup">The word is</b></div>
+                            <div id="correctWordText" class="wordStripInPopup"><b id="wordCorrectDisp">Brandy Godzilla</b></div>
+                            <div class="statsStripInPopup">
+                                <div class="eachColofStatsStripInPopup breakDownOverallInStatsPopup">
+                                    <div class="scorebreakdownTitleinStatsPopup">Consumption</div>
+                                    <div class="eachRowInBreakdownStatsPopup">
+                                        <div class="eachMeterInStatsPopup">
+                                            <div class="eachMeterWhole">
+                                                <div class="eachMeterIcon heartIcon"></div>
+                                                <span class="textLabel">LIVES</span>
+                                                <span id="lifeDisplayWordResult" class="textValue shadowedFont">3</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="eachRowInBreakdownStatsPopup">
+                                        <div class="eachMeterInStatsPopup">
+                                            <div class="eachMeterWhole">
+                                                <div class="eachMeterIcon bulbIcon"></div>
+                                                <span class="textLabel">CLUES</span>
+                                                <span id="clueDisplayWordResult" class="textValue shadowedFont">5</span>
+                                            </div>
+                                        </div>
+                                        <div id="clueScoreDeductionDisplay" class="eachKeyIncrementInStatsPopup">
+                                            <div class="eachMeterIcon keyIcon smallIconPopup"></div>
+                                            <div id="scoreMinusCluesDisplay">60</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="dividerInBetweenStatsofPopup"></div>
+                                <div class="eachColofStatsStripInPopup">
+                                    <div>You Got</div>
+                                    <div class="scoreChangeInStatsPopup">
+                                        <div class="colIcon espMarginHeartPopup">
+                                            <div class="eachMeterIcon keyIcon keyIconMainForPopup"></div>
+                                        </div>
+                                        <div id="scoreDisplayWordResult" class="colNumChange">+180</div>
+                                    </div>
+                                    <!-- heartIconMainForPopup - For Heart in IncorrectPopup -->
+                                </div>
+                            </div>
+                            <div class="returnButtonContainerInPopup">
+                                <button id="wordResultOKBtn" class="bubblyButton  buttonFixesForPopup">
+                                    <span>
+                                        <div class="bubble"></div>
+                                        <b>OK</b>
+                                    </span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Correct/Incorrect Single Result Popup - End //-->
+
+
+                    <!-- Complete Result Popup - Start //-->
+                    <div id="completeResultPopup" class="popupFrame">
+                        <div class="popupContent">
+                            <div id="overallResultPopupRibbon" class="ribbonInPopup"><b id="overallResultTitleTextDisplay">Oops!</b></div>
+                            <!-- incorrectRibbon - for incorrect labelbg//--->
+                            <div id="overallResultSubTextDisplay" class="blackStripInPopup forResultScreen"><b>You are only able to guess <strong>12/32</strong>
+                                    words!</b></div>
+                            <div class="statsStripInPopup statsBoxForResultScreen">
+                                <div class="eachColofStatsStripInPopup breakDownOverallInStatsPopup">
+                                    <div class="scorebreakdownTitleinStatsPopup">Consumption</div>
+                                    <div class="eachRowInBreakdownStatsPopup">
+                                        <div class="eachMeterInStatsPopup">
+                                            <div class="eachMeterWhole">
+                                                <div class="eachMeterIcon heartIcon"></div>
+                                                <span class="textLabel">LIVES</span>
+                                                <span id="overallResulLivesDisplayText" class="textValue shadowedFont">3</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="eachRowInBreakdownStatsPopup">
+                                        <div class="eachMeterInStatsPopup">
+                                            <div class="eachMeterWhole">
+                                                <div class="eachMeterIcon bulbIcon"></div>
+                                                <span class="textLabel">CLUES</span>
+                                                <span id="overallResultCluesDisplayText" class="textValue shadowedFont">5</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="dividerInBetweenStatsofPopup"></div>
+                                <div class="eachColofStatsStripInPopup">
+                                    <div>Total Points Scored</div>
+                                    <div class="scoreChangeInStatsPopup">
+                                        <div class="colIcon">
+                                            <div class="eachMeterIcon keyIcon"></div>
+                                        </div>
+                                        <div id="overallscoreIncludedDisplayText" class="colNumChange">380</div>
+                                    </div>
+                                    <!-- heartIconMainForPopup - For Heart in IncorrectPopup -->
+                                </div>
+                            </div>
+                            <div class="returnButtonContainerInPopup buttonsListForResultScreen">
+                                <div class="leftSideButtons">
+                                    <button id="reviewOverallButton" class="bubblyButton  buttonMinFixesForPopup exceptionReviewButtonWidth">
+                                        <span style="width: 143px!important;">
+                                            <div class="bubble"></div>
+                                            <b>Review</b>
+                                        </span>
+                                    </button>
+                                </div>
+                                <div class="rightSideButtons">
+                                    <div class="pauseButtonsDivInPausePopup forcedNoTop">
+                                        <div class="eachButtonInPausePopup spacerForTwoButtonsResultScreen">
+                                            <button id="completeResultRetryButton" class="bubblyButton  buttonMinFixesForPopup">
+                                                <span>
+                                                    <div class="bubble"></div>
+                                                    <div class="homeIconPopup retryIconPopup"></div>
+                                                </span>
+                                            </button>
+                                        </div>
+                                        <div class="eachButtonInPausePopup spacerForTwoButtonsResultScreen">
+                                            <button id="completeResultHomeBtn" class="bubblyButton  buttonMinFixesForPopup">
+                                                <span>
+                                                    <div class="bubble"></div>
+                                                    <div class="homeIconPopup"></div>
+                                                </span>
+                                            </button>
+                                        </div>
+                                        <div id="nextbtnOverallDiv" class="eachButtonInPausePopup pl20">
+                                            <button id="completeResultNextBtn" class="bubblyButton  buttonMinFixesForPopup">
+                                                <span>
+                                                    <div class="bubble"></div>
+                                                    <div class="homeIconPopup resumeIconPopup"></div>
+                                                </span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Complete Result Popup - End //-->
+
+
+
+
+
+                    <!-- Level Selection Screen //-->
+                    <div class="gamePlay gameUIScreen">
+                        <div class="gameTopBar topBarMenu">
+                            <div class="colHome">
+
+                                <button id="gotoHomeButton" class="bubblyButton buttonTopBarStyle homeButtonTopStyle smallBubblyButton lessBordered sizeForTopMenu"><span
+                                        class="lessBordered">
+                                        <div class="bubble"></div>
+                                        <div class="homeIconMain"></div>
+                                    </span>
+                                </button>
+                            </div>
+                            <div class="colLevelBar LevelBarTop">
+                                <div class="locksLevels">
+                                    <div class="locksData">
+                                        <div id="Qlock0" data-id="0" class="eachLockInTopBar"></div>
+                                        <div id="Qlock1" data-id="1" class="eachLockInTopBar"></div>
+                                        <div id="Qlock2" data-id="2" class="eachLockInTopBar"></div>
+                                        <div id="Qlock3" data-id="3" class="eachLockInTopBar"></div>
+                                        <div id="Qlock4" data-id="4" class="eachLockInTopBar"></div>
+                                        <!-- unlockedIcon lockSelected//-->
+                                        <div id="Qlock5" data-id="5" class="eachLockInTopBar"></div><!-- redLockedIcon//-->
+                                        <div id="Qlock6" data-id="6" class="eachLockInTopBar"></div><!-- greyLockedIcon//-->
+                                        <div id="Qlock7" data-id="7" class="eachLockInTopBar"></div>
+                                        <div id="Qlock8" data-id="8" class="eachLockInTopBar"></div>
+                                        <div id="Qlock9" data-id="9" class="eachLockInTopBar"></div>
+                                    </div>
+                                    <div id="qSelectedDisplay" class="textQuestionMeterInTopBar">4/10</div>
+                                </div>
+                            </div>
+                            <div class="metersTopBar mminus15">
+                                <div class="colLife">
+                                    <div class="eachMeterWhole">
+                                        <div class="eachMeterIcon heartIcon"></div>
+                                        <span class="textLabel">LIVES</span>
+                                        <span id="livesDisplay" class="textValue shadowedFont">3</span>
+                                    </div>
+                                </div>
+
+                                <div class="colClues">
+                                    <div class="eachMeterWhole">
+                                        <div class="eachMeterIcon bulbIcon"></div>
+                                        <span class="textLabel">CLUES</span>
+                                        <span id="cluesDisplay" class="textValue shadowedFont">5</span>
+                                    </div>
+                                </div>
+                                <div class="colScore">
+                                    <div id="tempScoreRow" class="belowCurrentScore">
+                                            <div id="tempScoreTotal" class="currentScoreText">100</div>
+                                            <div id="tempScoreChange" class="currentScoreTextSub">+100</div>
+                                    </div>
+                                    <div class="eachMeterWhole">
+                                        <div class="eachMeterIcon keyIcon"></div>
+                                        <span class="textLabel">SCORE</span>
+                                        <span id="scoreDisplay" class="textValue shadowedFont">0</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="colSoundBtn">
+                                <div class="colSoundToggle">
+                                    <button id="toggleSoundButton" class="bubblyButton buttonTopBarStyle soundButtonTopStyle smallBubblyButton lessBordered sizeForTopMenu"><span
+                                            class="lessBordered">
+                                            <div class="bubble"></div>
+                                            <div id="soundIcon3" class="soundIcon soundIconMain"></div>
+                                        </span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+
+
+
+                        <div id="lifeNotifierDisplay" class="livesNotifier veryLessBordered">
+                            <div class="eachMeterIcon heartIcon"></div>
+                            <div class="notificationLabel">Lives</div>
+                            <div id="lifeCountTextDisplay" class="notificationText">-1</div>
+                        </div>
+
+
+                        <!-- TMP //-->
+
+
+
+                        <!-- Slider Start //-->
+
+
+                        <div class="clueCardsList">
+                            <div id="slidePrev" class="eachArrowArea">
+                                <div class="clueSlideArrow leftArrow"></div>
+                            </div>
+                            <div class="swiper-container">
+                                <div class="swiper-wrapper">
+                                    <div id="eachCardSlide" class="swiper-slide">
+                                        <div class="eachClueCard">
+                                            <div class="titleClueCard">
+                                                <div class="clueNumImage"></div>
+                                                <div class="clueNumText"><b class="clueNoTxt shadowedFont">1x</b></div>
+                                            </div>
+                                            <div class="bodyClueCard">
+                                                <div class="flippedCard">
+                                                    <div class="cardHintImage"></div>
+                                                </div>
+                                                <!-- flippedCard - FOR COVERED CARD -->
+                                                <div class="bodyText">
+                                                    <div class="parag">&nbsp;</div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Add Pagination -->
+                                <div class="swiper-pagination"></div>
+                            </div>
+                            <div id="slideNext" class="eachArrowArea rightArrowOfGameScreen">
+                                <div class="clueSlideArrow "></div>
+                            </div>
+                        </div>
+                        <!-- Slider End   //-->
+
+
+
+
+
+                        <div id="correctAnsLabelBubble" class="correctAnswerAlert">
+                            <B>&nbsp;</B>
+                       </div>
+
+
+<div id="answerContainer" class="answerHolder">
+
+                        <div id="answerSection" class="clueInputDiv showNoClue">
+                            <!-- showNoClue showNoClue - TO HIDE CLUE BUTTON AND EXPAND TEXTBOX -->
+                            <div class="clueButtonContent">
+                              <!--  <div id="noClueLeftBtnOverlay" class="clueButtonOverlayWhenDone"></div> //-->
+                                <button id="getHintButton" class="bubblyButton clueSubmitButton clueHintButton labelForHintButton colorForHintButton">
+                                    <span>
+                                        <div class="bubble"></div>
+                                        <div class="clueNumImage imageForHintButton"></div>
+                                        <div class="eachMeterIcon keyIcon keyForHintButton"></div>
+                                        <b id="clueScoreToDeduceText" class="">-56</b>
+                                    </span>
+                                </button>
+                                <button id="noClueLeftBtnOverlay" class="noHintButton clueSubmitButton labelForHintButton colorForNoHintButton">
+                                    <span>
+                                        <div class="bubble"></div>
+                                        <div class="noClueLeftButtonIcon"></div>
+                                        <div class="eachMeterIcon keyIcon KeyNoClue"></div>
+                                        <b id="answerScoreToDeduceText" class="NoClueLeftShowAnsCostText" style="margin-top:44px!important;">-30</b>
+                                    </span>
+                                </button>
+                            </div>
+                            <div class="midBox">
+                                <div class="textSubmitCombo">
+                                    <div id="answerTypeSection" class="tBox">
+                                        <!-- wrongedtBox - FOR RED TEXT BOX -->
+                                        <!-- correctTBox - FOR RED TEXT BOX -->
+                                      <input type="text" id="userEnteredAnswer" autocomplete="off" class="typeBoxCore" maxlength="25"
+                                            placeholder="Type Answer Here." />
+                                    </div>
+                                    <div class="sButton">
+                                        <button id="submitGuessButton" class="bubblyButton clueSubmitButton bubblyButtonBigPress">
+                                            <span>
+                                                <div class="bubble"></div>
+                                                <b>SUBMIT</b>
+
+                                            </span>
+                                        </button>
+                                        <button id="wrongGuessSButton" class="bubblyButton clueSubmitButton bubblyButtonBigPress">
+                                            <span>
+                                                <div class="bubble"></div>
+                                                <b id="showAnswerToggleTextDisplay" class="ShowAnswerButton">Show Answer!</b>
+
+                                            </span>
+                                        </button>
+                                        <div id="correctGuessMark" class="bubblyButtonCorrect">
+                                            
+                                                <div>&nbsp;</div>
+                                     
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                </div>
+            </div>
+        </div>
+</body>
+
+</html>

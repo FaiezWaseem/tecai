@@ -1,0 +1,62 @@
+## Migrations
+
+# Generate a Migration file
+php artisan make:migration create_users_table
+
+# Execute all migration file
+php artisan migrate 
+
+# Execute Single Migration file
+php artisan migrate --path=/database/migrations/2022_08_08_092026_create_ride_table.php
+
+php artisan migrate:rollback --path=/database/migrations/2022_08_08_092026_create_ride_table.php
+
+# Foreign key Contraint 
+Schema::table('posts', function (Blueprint $table) {
+    $table->unsignedBigInteger('user_id');
+ 
+    $table->foreign('user_id')->references('id')->on('users');
+});
+
+
+# Avaliable column types
+
+$table->id();
+$table->bigIncrements('id');
+$table->boolean('confirmed');
+$table->ipAddress('visitor');
+$table->longText('description');
+$table->rememberToken();
+$table->string('name', 100);
+$table->text('description');
+$table->timestamp('added_on', 0);
+
+
+
+# Colum Modifiers
+->after('column')	Place the column "after" another column (MySQL)
+->autoIncrement()	Set INTEGER columns as auto-increment (primary key)
+->charset('utf8mb4')	Specify a character set for the column (MySQL)
+->collation('utf8mb4_unicode_ci')	Specify a collation for the column (MySQL/PostgreSQL/SQL Server)
+->comment('my comment')	Add a comment to a column (MySQL/PostgreSQL)
+->default($value)	Specify a "default" value for the column
+->first()	Place the column "first" in the table (MySQL)
+->nullable($value = true)	Allows (by default) NULL values to be inserted into the column
+->storedAs($expression)	Create a stored generated column (MySQL)
+->unsigned()	Set INTEGER columns as UNSIGNED (MySQL)
+->useCurrent()	Set TIMESTAMP columns to use CURRENT_TIMESTAMP as default value
+->virtualAs($expression)	Create a virtual generated column (MySQL)
+->generatedAs($expression)	Create an identity column with specified sequence options (PostgreSQL)
+->always()	Defines the precedence of sequence values over input for an identity column (PostgreSQL)
+
+
+
+php artisan make:model Todo -mcr
+-m, --migration Create a new migration file for the model.
+-c, --controller Create a new controller for the model.
+-r, --resource Indicates if the generated controller should be a resource controller
+
+
+
+php artisan make:model Todo -a
+-a, --all Generate a migration, factory, and resource controller for the model

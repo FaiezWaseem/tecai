@@ -1,0 +1,23 @@
+
+
+-- Super Admin
+
+  -- Teacher Edit Page
+
+  -- LMS Content
+  -- E-Coaching App 
+
+
+-- Admin
+
+   --add Reset Super Password for anyone (ability)
+
+   --add courses /grade and their content [pdfs,animations,videos,gifs,flash]
+
+
+-- Tec Tution
+ 
+   -- Class Schedule (done)
+   -- Course Content (Video)
+   -- Recorded Lectures (done)
+   -- Live Session (done)

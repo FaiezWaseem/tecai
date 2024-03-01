@@ -1,0 +1,239 @@
+<!doctype html>
+<html>
+
+<body>
+    <div id="page_content" class="main_container">
+        <div id="topic_page" class="ui_bg page page-hide-left d-flex f-col topic_bg">
+            <div id="contentContainer">
+
+
+
+
+
+<div class="game">
+                    <!-- Generic PopupBG - Start-->
+                    <div id="popupBackground" class="popupBG">
+                    </div>
+                    <!-- Generic PopupBG - End -->
+
+
+                <!-- Topic Reset Confirmation Popup - Start//-->
+
+                <div id="topicResetConfirmationPopup" class="popupFrame">
+                    <div class="popupContent pausePopup">
+                        <div class="hintConsumeWarningText forTopicResetPopup forResetConfirmation"><b>Are you sure about resetting this topic's progress?</b></div>
+                        <div class="pauseButtonsDivInPausePopup tailoredForConfirmationPopup">
+                            <div class="eachButtonInPausePopup">
+                                <button id="yesResetTopicButton" class="bubblyButton  buttonMinFixesForPopup">
+                                    <span class="clueConfirmationButtonsSpan">
+                                        <div class="bubble"></div>
+                                        <b class="paddingForYesNoConfirmation">Yes</b>
+                                     
+                                    </span>
+                                </button>
+                            </div>
+                            <div class="eachButtonInPausePopup">
+                                <button id="noResetTopicButton" class="bubblyButton  buttonMinFixesForPopup ">
+                                    <span class="clueConfirmationButtonsSpan">
+                                        <div class="bubble"></div>
+                                        <b>No</b>
+                                    </span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--  Topic Reset Confirmation Popup - End //-->
+
+            </div>
+
+
+
+
+
+
+                <!-- Level Selection Screen //-->
+                <div id="levelSelection" class="gamePlay levelSelectionScreen">
+                    <div class="gameTopBar topBarMenu">
+                        <div class="colHome">
+
+                            <button id="gotoHomeButton" class="bubblyButton buttonTopBarStyle homeButtonTopStyle smallBubblyButton lessBordered sizeForTopMenu"><span
+                                    class="lessBordered">
+                                    <div class="bubble"></div>
+                                    <div class="homeIconMain"></div>
+                                </span>
+                            </button>
+                        </div>
+                        <div class="metersTopBar">
+
+                            <div class="colClues" style="display: none;">
+                                <div class="eachMeterWhole">
+                                    <div class="eachMeterIcon gradeIcon"></div>
+                                    <span class="textLabel">GRADE</span>
+                                    <span id="selectedGradeValue" class="textValueTopic shadowedFont">5</span>
+                                </div>
+                            </div>
+                            <div class="emptyTopicTopMenuGap">
+                                &nbsp;
+                            </div>
+                            <div class="colScore">
+                                <div class="eachMeterWhole">
+                                    <div class="eachMeterIcon keyIcon"></div>
+                                    <span class="textLabel">SCORE</span>
+                                    <span id="scoreDisplay" class="textValueTopic shadowedFont">23,049</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="colSoundToggle">
+                                <button id="toggleSoundButton" class="bubblyButton buttonTopBarStyle soundButtonTopStyle smallBubblyButton lessBordered sizeForTopMenu"><span
+                                        class="lessBordered">
+                                        <div class="bubble"></div>
+                                        <div id="soundIcon2" class="soundIcon soundIconMain"></div>
+                                    </span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="titleLevelSelection">
+                        <b>SELECT TOPIC</b>
+                    </div>
+                    <div id="topicsButtonsList" class="levelButtonsList">
+                        <div id="singleUnlockedButton">
+                            <button id="eachLevButton" class="largeLevelButtons">
+                                <span>
+                                    <div class="bubble"></div>
+                                    <div class="levelDetailsTable">
+                                        <div class="levelNum">75</div>
+                                        <div class="levelName">
+                                            <div class="levelNameText">
+                                                Error loading Topic, please try reloading the game.
+                                            </div>
+                                        </div>
+                                        <div class="levelCompletionStats">
+                                            <div class="inlineMeter">
+                                                <div class="meterIcon">
+                                                    <div class="cupIcon"></div>
+                                                    <!-- <img src="assets\images\cup_tilted.svg"> -->
+                                                </div>
+                                                <div class="progressInfo">
+                                                    <div class="meterTextLabel">Last Attempt</div>
+                                                    <div class="meterBGGreen"></div>
+                                                    <div class="meterValueBold shadowedFontBold">100%</div>
+                                                </div>
+                                            </div>
+                                            <div class="currentScorePerTopic"><div class="keyIcon smallKey"></div> <b class="tScoreTxt">0</b></div>
+                                        </div>
+                                    </div>
+                                </span>
+                            </button>
+                        </div>
+
+                        <div id="singleLockedButton">
+                            <button id="eachLevButton" class="largeLevelButtons lockedLevelButton">
+                                <span>
+                                    <div class="bubble"></div>
+                                    <div class="levelDetailsTable">
+                                        <div class="levelNum">32</div>
+                                        <div class="levelName">
+                                            <div class="levelNameText">
+                                                Error loading Topic, please try reloading the game.
+                                            </div>
+                                        </div>
+                                        <div class="levelCompletionStats">
+                                            <div class="inlineMeter">
+                                                <div class="meterIcon">
+                                                    <div class="lockLevelIcon"></div>
+                                                    <!-- <img src="assets\images\cup_tilted.svg"> -->
+                                                </div>
+                                                <div class="progressInfo">
+                                                    <div class="meterTextLabel">Last Attempt</div>
+                                                    <div class="meterBGGreen"></div>
+                                                    <div class="meterValueBold shadowedFontBold ">0%</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </span>
+                            </button>
+                        </div>
+                        <div id="singleCompleteButton">
+                            <button id="eachLevButton" class="largeLevelButtons completeLevelButton">
+                                <span>
+                                    <div class="bubble"></div>
+                                    <div class="levelDetailsTable">
+                                        <div class="levelNum">32</div>
+                                        <div class="levelName">
+                                            <div class="levelNameText">
+                                                Error loading Topic, please try reloading the game.
+                                            </div>
+                                        </div>
+                                        <div class="levelCompletionStats">
+                                            <div class="inlineMeter">
+                                                <div class="meterIcon">
+                                                    <div class="lockLevelIcon"></div>
+                                                    <!-- <img src="assets\images\cup_tilted.svg"> -->
+                                                </div>
+                                                <div class="progressInfo">
+                                                    <div class="meterTextLabel">Last Attempt</div>
+                                                    <div class="meterBGGreen"></div>
+                                                    <div class="meterValueBold shadowedFontBold ">0%</div>
+                                                </div>
+                                            </div>
+                                            <div class="currentScorePerTopic"><div class="keyIcon smallKey"></div> <b class="tScoreTxt">0</b></div>
+                                        </div>
+                                    </div>
+                                </span>
+                            </button>
+                        </div>
+                        <div id="singleFailedButton">
+                            <button id="eachLevButton" class="largeLevelButtons failedLevelButton">
+                                <span>
+                                    <div class="bubble"></div>
+                                    <div class="levelDetailsTable">
+                                        <div class="levelNum">32</div>
+                                        <div class="levelName">
+                                            <div class="levelNameText">
+                                                Error loading Topic, please try reloading the game.
+                                            </div>
+                                        </div>
+                                        <div class="levelCompletionStats">
+                                            <div class="inlineMeter">
+                                                <div class="meterIcon">
+                                                    <div class="failedLevelIcon"></div>
+                                                    <!-- <img src="assets\images\cup_tilted.svg"> -->
+                                                </div>
+                                                <div class="progressInfo">
+                                                    <div class="meterTextLabel">Last Attempt</div>
+                                                    <div class="meterBGGreen"></div>
+                                                    <div class="meterValueBold shadowedFontBold ">0%</div>
+                                                </div>
+                                            </div>
+                                            <div class="currentScorePerTopic"><div class="keyIcon smallKey"></div> <b class="tScoreTxt">0</b></div>
+                                        </div>
+                                    </div>
+                                </span>
+                            </button>
+                        </div>
+
+
+
+                    </div>
+
+
+
+
+
+
+
+
+
+
+
+                </div>
+            </div>
+        </div>
+</body>
+
+</html>
