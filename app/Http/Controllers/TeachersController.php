@@ -398,10 +398,6 @@ class TeachersController extends Controller
         }
     }
 
-    public function show(teachers $teachers)
-    {
-
-    }
 
 
     public function edit($id)
@@ -540,34 +536,8 @@ class TeachersController extends Controller
     return view('dashboard.teachers.classes.view')
         ->with('classes', $classes);
     }
-    public function showClasses(Request $request)
-    {
 
-        // $classes = teacher_classes::where('teacher_id', session('user')['id'])
-        // ->join('classes', 'teacher_classes.class_id', '=', 'classes.id')
-        // ->select('classes.class_name')
-        // ->distinct()
-        // ->get();
-
-        // $classes = teacher_classes::where('teacher_id', session('user')['id'])
-        //     ->join('classes', 'teacher_classes.class_id', '=', 'classes.id')
-        //     ->get();
-        // $courses = teacher_classes::where('teacher_id', '=', session('user')['id'])
-        //     ->join('classes', 'teacher_classes.class_id', '=', 'classes.id')
-        //     ->join('course', 'teacher_classes.course_id', '=', 'course.id')
-        //     ->select('course.course_name', 'classes.class_name', 'teacher_classes.id', 'course.id')
-        //     ->get();
-
-        $classes = teacher_classes::where('teacher_id', '=', session('user')['id'])
-            ->join('classes', 'teacher_classes.class_id', '=', 'classes.id')
-            ->join('course', 'teacher_classes.course_id', '=', 'course.id')
-            ->select('course.course_name', 'classes.class_name', 'teacher_classes.class_id', 'teacher_classes.course_id')
-            ->get();
-
-        return view('teacher.classes')
-            ->with('classes', $classes);
-    }
-    public function showClassOutline(Request $request)
+    public function TeacherViewOutline(Request $request)
     {
 
         $outline = outline::where('teacher_id', '=', session('user')['id'])
@@ -580,12 +550,12 @@ class TeachersController extends Controller
         $class = $request->route('class_id');
         $className = classes::where('id', '=', $class)->first();
 
-        return view('teacher.outline')
+        return view('dashboard.teachers.outline.view')
             ->with('outline', $outline)
             ->with('courseName', $courseName['course_name'])
             ->with('className', $className['class_name']);
     }
-    public function createClassOutline(Request $request)
+    public function TeacherCreateOutline(Request $request)
     {
 
         $classId = $request->route('class_id');
@@ -616,7 +586,7 @@ class TeachersController extends Controller
             'course_id' => $courseId
         ]);
     }
-    public function removeClassOutline(Request $request)
+    public function TeacherDeleteOutline(Request $request)
     {
         outline::destroy($request->input('id'));
         return response()->json([

@@ -152,12 +152,6 @@ Route::middleware('auth')->prefix('/dashboard')->group(function () {
 
 
 
-    // Teacher Routes
-
-
-
-
-
 });
 
 

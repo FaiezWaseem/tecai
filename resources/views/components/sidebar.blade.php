@@ -54,9 +54,7 @@
                        <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo"
                            data-parent="#accordionSidebar">
                            <div class="bg-white py-2 collapse-inner rounded">
-                               <a class="collapse-item" href="{{ route('teacher.assignment.show') }}">My Assignment</a>
-                               <a class="collapse-item" href="{{ route('teacher.assignment.create') }}">Create
-                                   Assignment</a>
+                         
                            </div>
                        </div>
                    </li>
@@ -130,29 +128,10 @@
                                <i class="fas fa-fw fa-book"></i>
                                <span>Courses</span></a>
                        </li>
-                       <li class="nav-item">
-                           <a class="nav-link" href="{{ route('classes.show') }}">
-                               <i class="fas fa-fw fa-chalkboard-teacher"></i>
-                               <span>Classes</span></a>
-                       </li>
-                       <li class="nav-item">
-                           <a class="nav-link" href="{{ route('courses.show') }}">
-                               <i class="fas fa-fw fa-layer-group"></i>
-                               <span>Section</span></a>
-                       </li>
+                     
                    @endif
                @else
-                   <li class="nav-item">
-                       <a class="nav-link" href="{{ route('teacher.classes.show') }}">
-                           <i class="fas fa-fw fa-chart-area"></i>
-                           <span>Classes</span></a>
-                   </li>
-
-                   <li class="nav-item">
-                       <a class="nav-link" href="#">
-                           <i class="fas fa-fw fa-eye"></i>
-                           <span>Grade Assignments</span></a>
-                   </li>
+                   
                @endif
 
 

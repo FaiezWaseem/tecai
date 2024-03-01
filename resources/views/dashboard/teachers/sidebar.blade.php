@@ -206,7 +206,7 @@
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="pages/layout/top-nav.html" class="nav-link {{ request()->is('dashboard/teacher/classes/view') ? 'active' : '' }}">
+                <a href="{{ route('teacher.classes.view') }}" class="nav-link {{ request()->is('dashboard/teacher/classes/view') ? 'active' : '' }}">
                   <i class="far fa fa-eye nav-icon"></i>
                   <p>View My Classes</p>
                 </a>
