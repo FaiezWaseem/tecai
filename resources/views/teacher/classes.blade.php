@@ -7,7 +7,7 @@
 
 
 
-        @include('components.sidebar')
+        {{-- @include('components.sidebar') --}}
 
 
         <!-- Content Wrapper -->
@@ -65,7 +65,7 @@
                                                         >
                                                         <i class="fa fa-eye"></i> outline
                                                     </a>
-                                                    <a href="{{ route('admin.show') }}" target="_blank"
+                                                    <a  target="_blank"
                                                         rel="noopener noreferrer">
                                                         <i class="fa fa-eye"></i> Students
                                                     </a>

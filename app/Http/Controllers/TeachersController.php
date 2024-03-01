@@ -482,22 +482,22 @@ class TeachersController extends Controller
     public function TeacherViewAssignmentType($type)
     {
         if ($type == 'blanks') {
-            return view('teacher.excercise.blanks');
+            return view('dashboard.teachers.assignment.excercise.blanks');
         }
         if ($type == 'match') {
-            return view('teacher.excercise.match');
+            return view('dashboard.teachers.assignment.excercise.match');
         }
         if ($type == 'crossword') {
-            return view('teacher.excercise.crossword');
+            return view('dashboard.teachers.assignment.excercise.crossword');
         }
         if ($type == 'parts') {
-            return view('teacher.excercise.parts');
+            return view('dashboard.teachers.assignment.excercise.parts');
         }
         if ($type == 'truefalse') {
-            return view('teacher.excercise.truefalse');
+            return view('dashboard.teachers.assignment.excercise.truefalse');
         }
         if ($type == 'cluegame') {
-            return view('teacher.excercise.clue');
+            return view('dashboard.teachers.assignment.excercise.clue');
         }
 
     }
@@ -530,7 +530,16 @@ class TeachersController extends Controller
                 return response()->json(['success' => false, 'message' => 'Invalid Type']);
         }
     }
+    public function TeacherViewClasses(Request $request){
+        $classes = teacher_classes::where('teacher_id', '=', session('user')['id'])
+        ->join('classes', 'teacher_classes.class_id', '=', 'classes.id')
+        ->join('course', 'teacher_classes.course_id', '=', 'course.id')
+        ->select('course.course_name', 'classes.class_name', 'teacher_classes.class_id', 'teacher_classes.course_id')
+        ->get();
 
+    return view('dashboard.teachers.classes.view')
+        ->with('classes', $classes);
+    }
     public function showClasses(Request $request)
     {
 

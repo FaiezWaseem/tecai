@@ -196,32 +196,8 @@
             </ul>
           </li>
    
-          <li class="nav-item">
-            <a href="#" class="nav-link">
-              <i class="nav-icon fas fa-user-graduate"></i>
-              <p>
-                Students
-                <i class="fas fa-angle-left right"></i>
-              </p>
-            </a>
-            <ul class="nav nav-treeview">
-              <li class="nav-item">
-                <a href="pages/layout/top-nav.html" class="nav-link">
-                  <i class="far fa fa-eye nav-icon"></i>
-                  <p>View Students</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="pages/layout/top-nav-sidebar.html" class="nav-link">
-                  <i class="far fa fa-plus-square nav-icon"></i>
-                  <p>Add New Student</p>
-                </a>
-              </li>
-            </ul>
-          </li>
-   
-          <li class="nav-item">
-            <a href="#" class="nav-link">
+          <li class="nav-item {{ request()->is('dashboard/teacher/classes*') ? 'menu-open' : '' }}">
+            <a href="#" class="nav-link {{ request()->is('dashboard/teacher/classes/view') ? 'active' : '' }}">
               <i class="nav-icon fas fa-chalkboard"></i>
               <p>
                 Classes
@@ -230,21 +206,9 @@
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="pages/layout/top-nav.html" class="nav-link">
+                <a href="pages/layout/top-nav.html" class="nav-link {{ request()->is('dashboard/teacher/classes/view') ? 'active' : '' }}">
                   <i class="far fa fa-eye nav-icon"></i>
                   <p>View My Classes</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="pages/layout/top-nav-sidebar.html" class="nav-link">
-                  <i class="far fa fa-eye nav-icon"></i>
-                  <p>View My Courses</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="pages/layout/top-nav-sidebar.html" class="nav-link">
-                  <i class="far fa fa-plus-square nav-icon"></i>
-                  <p>Add Course Outline</p>
                 </a>
               </li>
             </ul>

@@ -55,17 +55,17 @@ Route::middleware('CheckTeacher')->prefix('/teacher')->group(function () {
 
 
 
-    Route::get('/teacher/classes', [App\Http\Controllers\TeachersController::class, 'showClasses'])
-        ->name('teacher.classes.show');
+    Route::get('/classes/view', [App\Http\Controllers\TeachersController::class, 'TeacherViewClasses'])
+        ->name('teacher.classes.view');
 
-    Route::get('/teacher/{class_id}/{course_id}/outline', [App\Http\Controllers\TeachersController::class, 'showClassOutline'])
+    Route::get('/{class_id}/{course_id}/outline', [App\Http\Controllers\TeachersController::class, 'showClassOutline'])
         ->name('teacher.classe.outline.show');
 
-    Route::put('/teacher/{class_id}/{course_id}/outline', [App\Http\Controllers\TeachersController::class, 'createClassOutline'])
+    Route::put('/{class_id}/{course_id}/outline', [App\Http\Controllers\TeachersController::class, 'createClassOutline'])
         ->name('teacher.classe.outline.put');
 
 
-    Route::delete('/teacher/{class_id}/{course_id}/outline', [App\Http\Controllers\TeachersController::class, 'removeClassOutline'])
+    Route::delete('/{class_id}/{course_id}/outline', [App\Http\Controllers\TeachersController::class, 'removeClassOutline'])
         ->name('teacher.classe.outline.remove');
 
 });
