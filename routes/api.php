@@ -2,6 +2,9 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use ExpoSDK\Expo;
+use ExpoSDK\ExpoMessage;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -16,7 +19,19 @@ use Illuminate\Support\Facades\Route;
 
 
 Route::get('/hello', function (Request $request) {
-    return 'hello';
+
+    $response =  (new Expo)->send([
+        [
+            'title' => 'KFC KFC FREE FREE KFC',
+            'body' => 'Kfc choro tailwindcsss per focus karo',
+            'to' => 'ExponentPushToken[If6jGaG5bKaIYvfHsiByou]',
+        ]
+    ])->push();
+
+    $data = $response->getData();
+
+
+    return $data;
 });
 
 Route::post('/login', [App\Http\Controllers\StudentsController::class, 'login']);
@@ -31,10 +46,10 @@ Route::get('/course/content/{id}', [App\Http\Controllers\ContentController::clas
 
 
 Route::middleware('verify.token')->group(function () {
-   Route::get('/user',[App\Http\Controllers\StudentsController::class, 'getStudent']);
-   Route::get('/assignments',[App\Http\Controllers\StudentsController::class, 'getAssignments']);
+    Route::get('/user', [App\Http\Controllers\StudentsController::class, 'getStudent']);
+    Route::get('/assignments', [App\Http\Controllers\StudentsController::class, 'getAssignments']);
 
-   Route::post('/grade/assignment/{id}',[App\Http\Controllers\StudentsController::class, 'studentGradeAssignment']);
+    Route::post('/grade/assignment/{id}', [App\Http\Controllers\StudentsController::class, 'studentGradeAssignment']);
 
 });
-Route::get('/assignments/{id}',[App\Http\Controllers\StudentsController::class, 'getAssignment']);
+Route::get('/assignments/{id}', [App\Http\Controllers\StudentsController::class, 'getAssignment']);

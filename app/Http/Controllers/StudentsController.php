@@ -83,39 +83,39 @@ class StudentsController extends Controller
             $student->father_name = $request->father_name;
             $student->admission_no = $request->admission_no;
             $student->group = $request->group;
-            if($request->email){
+            if ($request->email) {
                 $student->email = $request->email;
             }
-            if($student->password){
+            if ($student->password) {
                 $student->password = bcrypt($request->password);
             }
-            if($request->dob){
+            if ($request->dob) {
                 $student->dob = $request->dob;
             }
             $student->school = $request->school;
-            if($request->class){
+            if ($request->class) {
                 $student->class = $request->class;
             }
-            if($request->section){
+            if ($request->section) {
                 $student->section = $request->section;
             }
-            if($request->gender){
+            if ($request->gender) {
                 $student->gender = $request->gender;
             }
-            if($request->contact){
+            if ($request->contact) {
                 $student->contact = $request->contact;
             }
 
             $student->save();
             return redirect()->route('superadmin.students.view');
-        } else if($requestMethod === 'GET') {
+        } else if ($requestMethod === 'GET') {
             $schools = school::all();
             $student = students::find($request->id);
             return view('dashboard.superadmin.students.edit')
                 ->with('schools', $schools)
                 ->with('student', $student)
             ;
-        }else{
+        } else {
             return null;
         }
     }
@@ -168,6 +168,121 @@ class StudentsController extends Controller
             ->with('students', $students)
             ->with('classes', $classes);
     }
+
+
+
+    // ==================== SCHOOL ADMIN
+
+    public function SchoolAdminViewStudents()
+    {
+        $schoolId = session('user')['school_id'];
+
+        $students = students::where('school', $schoolId)
+            ->join('school', 'school.id', 'students.school')
+            ->select('students.*', 'school.school_name')
+            ->paginate(50);
+        return view('dashboard.admin.students.view')
+            ->with('students', $students)
+        ;
+    }
+    public function SchoolAdminDeleteStudent(Request $request)
+    {
+        if ($request->id) {
+            $deletedRows = students::destroy($request->id);
+            if ($deletedRows > 0) {
+                return response()->json([
+                    'status' => 200,
+                    'deleted' => true
+                ]);
+            } else {
+                return response()->json([
+                    'status' => 200,
+                    'deleted' => false,
+                    'message' => 'Failed To Delete Record'
+                ]);
+            }
+        } else {
+            return response()->json([
+                'status' => 200,
+                'deleted' => false,
+                'message' => 'Record Id is not Provided',
+                'form' => $request->id
+            ]);
+        }
+    }
+    public function SchoolAdminCreateStudent(Request $request){
+        if ($request->father_name && $request->name && $request->dob && $request->email && $request->password) {
+
+            $student = new students();
+            $student->name = $request->name;
+            $student->father_name = $request->father_name;
+            $student->admission_no = $request->admission_no;
+            $student->group = $request->group;
+            $student->email = $request->email;
+            $student->password = bcrypt($request->password);
+            $student->dob = $request->dob;
+            $student->school = session('user')['school_id'];
+            $student->class = $request->class;
+            $student->section = $request->section;
+            $student->gender = $request->gender;
+            $student->contact = $request->contact;
+
+            $student->save();
+
+            return redirect()->route('schooladmin.students.view');
+        } else {
+            $schools = school::all();
+            return view('dashboard.admin.students.create')
+                ->with('schools', $schools)
+            ;
+        }
+    }
+    public function SchoolAdminEditStudent(Request $request){
+        $requestMethod = $request->method();
+
+        if ($requestMethod === 'PUT') {
+            $student = students::find($request->id);
+            $student->name = $request->name;
+            $student->father_name = $request->father_name;
+            $student->admission_no = $request->admission_no;
+            $student->group = $request->group;
+            if ($request->email) {
+                $student->email = $request->email;
+            }
+            if ($student->password) {
+                $student->password = bcrypt($request->password);
+            }
+            if ($request->dob) {
+                $student->dob = $request->dob;
+            }
+            if ($request->class) {
+                $student->class = $request->class;
+            }
+            if ($request->section) {
+                $student->section = $request->section;
+            }
+            if ($request->gender) {
+                $student->gender = $request->gender;
+            }
+            if ($request->contact) {
+                $student->contact = $request->contact;
+            }
+
+            $student->save();
+            return redirect()->route('schooladmin.students.view');
+        } else if ($requestMethod === 'GET') {
+            $schools = school::all();
+            $student = students::find($request->id);
+            return view('dashboard.admin.students.edit')
+                ->with('schools', $schools)
+                ->with('student', $student)
+            ;
+        } else {
+            return null;
+        }
+    }
+    // ==================== SCHOOL ADMIN
+
 
 
     public function login(Request $request)

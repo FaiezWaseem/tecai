@@ -1,8 +1,3 @@
-
-{{-- {{ request() }} --}}
-{{-- {{ request()->is('dashboard') }} --}}
-<!-- Sidebar -->
-
 <style>
     .nav-item.active {
         background: red;
@@ -41,98 +36,6 @@
                </li>
 
 
-
-
-               @if (!session('admin'))
-                   <!-- Nav Item - Pages Collapse Menu -->
-                   <li class="nav-item">
-                       <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
-                           aria-expanded="true" aria-controls="collapseTwo">
-                           <i class="fas fa-fw fa-cog"></i>
-                           <span>Assignments</span>
-                       </a>
-                       <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo"
-                           data-parent="#accordionSidebar">
-                           <div class="bg-white py-2 collapse-inner rounded">
-                         
-                           </div>
-                       </div>
-                   </li>
-               @endif
-
-
-
-
-               @if (App\Http\Controllers\UserPermission::isAdmin())
-
-                   @if (App\Http\Controllers\UserPermission::isSuperAdmin())
-                       <li class="nav-item {{ request()->is('dashboard/admins') ? 'active' : '' }}">
-                           <a class="nav-link" href="{{ route('admin.show') }}">
-                               <i class="fas fa-fw fa-users"></i>
-                               <span>School Admins</span></a>
-                       </li>
-
-                       <li class="nav-item {{ request()->is('dashboard/schools') ? 'active' : '' }}">
-                           <a class="nav-link" href="{{ route('school.show') }}">
-                               <i class="fas fa-fw fa-school"></i>
-                               <span>Schools</span></a>
-                       </li>
-
-                       <li class="nav-item">
-                           <a class="nav-link collapsed" href="#" data-toggle="collapse"
-                               data-target="#tecContent" aria-expanded="true" aria-controls="collapseUtilities">
-                               <i class="fas fa-fw fa-wrench"></i>
-                               <span>Tec Content</span>
-                           </a>
-                           <div id="tecContent" class="collapse" aria-labelledby="headingUtilities"
-                               data-parent="#accordionSidebar">
-                               <div class="bg-white py-2 collapse-inner rounded">
-                                   <a class="collapse-item" href="{{ route('admin.content.view') }}">Content</a>
-                                   <a class="collapse-item" href="{{ route('admin.content.classes.view') }}">Classes</a>
-                                   <a class="collapse-item" href="{{ route('admin.content.board.view') }}">Boards</a>
-                                   <a class="collapse-item" href="{{ route('admin.content.subject.view') }}">Subject</a>
-                                   <a class="collapse-item" href="{{ route('admin.content.chapters.view') }}">Chapters</a>
-                               </div>
-                           </div>
-                       </li>
-                       <li class="nav-item">
-                           <a class="nav-link collapsed" href="#" data-toggle="collapse"
-                               data-target="#collapseUtilities" aria-expanded="true" aria-controls="collapseUtilities">
-                               <i class="fas fa-fw fa-wrench"></i>
-                               <span>Tec ECoaching</span>
-                           </a>
-                           <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities"
-                               data-parent="#accordionSidebar">
-                               <div class="bg-white py-2 collapse-inner rounded">
-                                   <a class="collapse-item" href="{{ route('admin.content.schedule.view') }}">Time Table</a>
-                                   <a class="collapse-item" href="{{ route('admin.content.livesessions.view') }}">Live Sessions</a>
-                                   <a class="collapse-item" href="{{ route('admin.content.recordlectures.view') }}">Recorded Lectures</a>
-                               </div>
-                           </div>
-                       </li>
-                   @endif
-
-                   <li class="nav-item {{ request()->is('dashboard/students') ? 'active' : '' }}" >
-                       <a class="nav-link" href="{{ route('students.show') }}">
-                           <i class="fas fa-fw fa-user"></i>
-                           <span>students</span></a>
-                   </li>
-                   <li class="nav-item {{ request()->is('dashboard/teachers') ? 'active' : '' }}">
-                       <a class="nav-link" href="{{ route('teachers.show') }}">
-                           <i class="fas fa-fw fa-user-graduate"></i>
-                           <span>Teachers</span></a>
-                   </li>
-                   @if (!session('user')['super_admin'])
-                       <li class="nav-item">
-                           <a class="nav-link" href="{{ route('courses.show') }}">
-                               <i class="fas fa-fw fa-book"></i>
-                               <span>Courses</span></a>
-                       </li>
-                     
-                   @endif
-               @else
-                   
-               @endif
 
 
 

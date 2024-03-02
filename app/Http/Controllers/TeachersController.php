@@ -109,7 +109,79 @@ class TeachersController extends Controller
             ;
         }
     }
-    public function TeacherViewAssignment(Request $request , $id){
+    public function SchoolAdminViewTeachers()
+    {
+        $teachers = DB::table('teachers')
+            ->join('school', 'teachers.school_id', '=', 'school.id')
+            ->select('teachers.*', 'school.school_name')
+            ->where('teachers.school_id', '=', session('user')['school_id'])
+            ->paginate(10);
+        $coursesByTeacher = [];
+        foreach ($teachers as $teacher) {
+            $teacherId = $teacher->id;
+            $teacherName = $teacher->name;
+            $schoolName = $teacher->school_name;
+            $classes = teacher_classes::where('teacher_id', '=', $teacherId)
+                ->join('classes', 'teacher_classes.class_id', '=', 'classes.id')
+                ->join('course', 'teacher_classes.course_id', '=', 'course.id')
+                ->select('course.course_name', 'classes.class_name', 'teacher_classes.id')
+                ->get();
+
+            $coursesByTeacher[] = [
+                'teacher_name' => $teacherName,
+                'school_name' => $schoolName,
+                'classes' => $classes,
+                'id' => $teacherId
+
+            ];
+        }
+
+        return view("dashboard.admin.teachers.view")
+        ->with("teachers", $teachers)
+        ->with("coursesByTeacher", $coursesByTeacher);
+    }
+    public function SchoolAdminCreateTeachers(Request $request){
+        $requestMethod = $request->method();
+        if ($requestMethod === 'POST') {
+            $teacher = new teachers;
+            $teacher->name = $request->input("teacher_name");
+            $teacher->school_id = session('user')['school_id'];
+            $teacher->password = bcrypt($request->input("password"));
+            $teacher->save();
+            return redirect()->route('schooladmin.teachers.view');
+        } else {
+            $schools = school::all();
+            return view('dashboard.admin.teachers.create')
+                ->with('schools', $schools)
+            ;
+        }
+    }
+    public function SchoolAdminDeleteTeachers(Request $request){
+        if ($request->id) {
+            $deletedRows = teachers::destroy($request->id);
+            if ($deletedRows > 0) {
+                return response()->json([
+                    'status' => 200,
+                    'deleted' => true
+                ]);
+            } else {
+                return response()->json([
+                    'status' => 200,
+                    'deleted' => false,
+                    'message' => 'Failed To Delete Record'
+                ]);
+            }
+        } else {
+            return response()->json([
+                'status' => 200,
+                'deleted' => false,
+                'message' => 'Record Id is not Provided',
+                'form' => $request->id
+            ]);
+        }
+    }
+    public function TeacherViewAssignment(Request $request, $id)
+    {
         $currentUrl = url('/') . '/excercise/assets/php/create.php?id=' . $id;
 
         if ($request->has('teacher')) {
@@ -152,12 +224,13 @@ class TeachersController extends Controller
             ->join('outline', 'activity.topic_id', '=', 'outline.id')
             ->select('classes.*', 'course.*', 'outline.*', 'outline.title as topic', 'activity.id', 'activity.title', 'activity.deadline', 'activity.created_at')
             ->paginate(5);
-            return view('dashboard.teachers.assignment.view')
+        return view('dashboard.teachers.assignment.view')
             ->with("activities", $activities)
             ->with("classes", $classes)
             ->with("courses", $courses);
     }
-    public function TeacherCreateAssignments(Request $request){
+    public function TeacherCreateAssignments(Request $request)
+    {
         $topics = [];
         if ($request->input('class_id')) {
 
@@ -272,7 +345,8 @@ class TeachersController extends Controller
             ->with("classes", $classes)
             ->with("courses", $courses);
     }
-    public function TeacherDeleteAssignments(Request $request){
+    public function TeacherDeleteAssignments(Request $request)
+    {
         if ($request->id) {
             $deletedRows = activity::destroy($request->id);
             if ($deletedRows > 0) {
@@ -400,6 +474,35 @@ class TeachersController extends Controller
 
 
 
+    public function SchoolAdminEditTeachers($id)
+    {
+        $teacher = teachers::find($id);
+        $courses = course::where('school_id', '=', $teacher->school_id)->get();
+        $classes = classes::where('school_id', '=', $teacher->school_id)->get();
+        $courses_id = teacher_course::where('teacher_id', $id)->pluck('course_id')->toArray();
+        $classes_taken = teacher_classes::where('teacher_id', $id)->pluck('id')->toArray();
+
+        $courses_all = teacher_classes::where('teacher_id', '=', $id)
+            ->join('classes', 'teacher_classes.class_id', '=', 'classes.id')
+            ->join('course', 'teacher_classes.course_id', '=', 'course.id')
+            ->select('course.course_name', 'classes.class_name', 'teacher_classes.id')
+            ->get();
+
+
+        return view('dashboard.admin.teachers.edit')
+            ->with("teacher", $teacher)
+            ->with("courses", $courses)
+            ->with("courses_id", $courses_id)
+            ->with("classes", $classes)
+            ->with("courses_all", $courses_all)
+            ->with("classes_taken", $classes_taken);
+    }
+    public function SchoolAdminEditDeleteTeachers(Request $request, $id){
+        teacher_classes::destroy($request->input('id'));
+        return response()->json([
+            'deleted' => true
+        ]);
+    }
     public function edit($id)
     {
         $teacher = teachers::find($id);
@@ -463,7 +566,7 @@ class TeachersController extends Controller
             'courses' => $courses
         ]);
     }
-
+    
     public function deleteTeacherClass(Request $request, $id)
     {
         teacher_classes::destroy($request->input('id'));
@@ -526,15 +629,16 @@ class TeachersController extends Controller
                 return response()->json(['success' => false, 'message' => 'Invalid Type']);
         }
     }
-    public function TeacherViewClasses(Request $request){
+    public function TeacherViewClasses(Request $request)
+    {
         $classes = teacher_classes::where('teacher_id', '=', session('user')['id'])
-        ->join('classes', 'teacher_classes.class_id', '=', 'classes.id')
-        ->join('course', 'teacher_classes.course_id', '=', 'course.id')
-        ->select('course.course_name', 'classes.class_name', 'teacher_classes.class_id', 'teacher_classes.course_id')
-        ->get();
+            ->join('classes', 'teacher_classes.class_id', '=', 'classes.id')
+            ->join('course', 'teacher_classes.course_id', '=', 'course.id')
+            ->select('course.course_name', 'classes.class_name', 'teacher_classes.class_id', 'teacher_classes.course_id')
+            ->get();
 
-    return view('dashboard.teachers.classes.view')
-        ->with('classes', $classes);
+        return view('dashboard.teachers.classes.view')
+            ->with('classes', $classes);
     }
 
     public function TeacherViewOutline(Request $request)

@@ -7,34 +7,52 @@ use Illuminate\Http\Request;
 
 class ClassesController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
+
+    public function SchoolAdminViewClasses(){
         $classes = classes::where('school_id', session('user')['school_id'])->get();
-        return view('admin.classes')
+        return view('dashboard.admin.classes.view')
         ->with('classes', $classes);
     }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+    public function SchoolAdminDeleteClass(Request $request){
+        if($request->id){
+            $deletedRows =  classes::destroy($request->id);
+            if ($deletedRows > 0) {
+                return response()->json([
+                    'status' => 200,
+                    'deleted' => true
+                ]);
+            }else{
+                return response()->json([
+                    'status' => 200,
+                    'deleted' => false,
+                    'message' => 'Failed To Delete Record'
+                ]);
+            }
+        }else{
+            return response()->json([
+                'status' => 200,
+                'deleted' => false,
+                'message' => 'Record Id is not Provided',
+                'form' => $request->id
+            ]);
+        }
+    }
+    public function SchoolAdminCreateClasses(Request $request){
+        $requestMethod = $request->method();
+        if($requestMethod === 'POST'){
+            $request->validate([
+                'class_name' =>'required|string|max:255',
+            ]);
+            $class = new classes;
+            $class->class_name = $request->class_name;
+            $class->school_id = session('user')['school_id'];
+            $class->save();
+            return redirect()->route('schooladmin.classes.view');
+        }else{
+            return view('dashboard.admin.classes.create');
+        }
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
         $request->validate([
@@ -47,39 +65,6 @@ class ClassesController extends Controller
         return redirect()->route('classes.show');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\classes  $classes
-     * @return \Illuminate\Http\Response
-     */
-    public function show(classes $classes)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\classes  $classes
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(classes $classes)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\classes  $classes
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, classes $classes)
-    {
-        //
-    }
 
     /**
      * Remove the specified resource from storage.

@@ -102,37 +102,8 @@ Route::middleware('auth')->prefix('/dashboard')->group(function () {
     Route::post('/admin/teacher/graph/filter', [App\Http\Controllers\AdminController::class, 'teacher_graph_filter'])
         ->name('admin.teacher.graph.filter');
 
-
-
-    Route::get('/teacher/edit/{id}', [App\Http\Controllers\TeachersController::class, 'edit'])
-        ->name('teachers.edit');
-
-
-    Route::put('/teacher/edit/{id}', [App\Http\Controllers\TeachersController::class, 'put']);
-
-    Route::delete('/teacher/edit/{id}', [App\Http\Controllers\TeachersController::class, 'deleteTeacherClass']);
-
-
-    Route::get('/teachers', [App\Http\Controllers\TeachersController::class, 'index'])
-        ->name('teachers.show');
-
     Route::post('/teachers/filter', [App\Http\Controllers\TeachersController::class, 'filter'])
         ->name('teachers.filter');
-
-    Route::post('/teachers', [App\Http\Controllers\TeachersController::class, 'store'])
-        ->name('teachers.show.post');
-
-    Route::get('/courses', [App\Http\Controllers\CourseController::class, 'index'])
-        ->name('courses.show');
-
-    Route::post('/courses', [App\Http\Controllers\CourseController::class, 'store'])
-        ->name('courses.store');
-
-    Route::delete('/courses', [App\Http\Controllers\CourseController::class, 'destroy'])
-        ->name('courses.remove');
-
-    Route::get('/students', [App\Http\Controllers\StudentsController::class, 'index'])
-        ->name('students.show');
 
     Route::get('/students/filter', [App\Http\Controllers\StudentsController::class, 'filter'])
         ->name('students.filter');
@@ -140,21 +111,5 @@ Route::middleware('auth')->prefix('/dashboard')->group(function () {
     Route::post('/students/filter', [App\Http\Controllers\StudentsController::class, 'filter'])
         ->name('students.filter.post');
 
-    Route::get('/classes', [App\Http\Controllers\ClassesController::class, 'index'])
-        ->name('classes.show');
-
-    Route::post('/classes', [App\Http\Controllers\ClassesController::class, 'store'])
-        ->name('classes.store');
-
-    Route::delete('/classes', [App\Http\Controllers\ClassesController::class, 'destroy'])
-        ->name('classes.remove');
-
-
-
-
+    
 });
-
-
-
-
-

@@ -6,7 +6,7 @@
         <a class="nav-link text-white" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
       </li>
       <li class="nav-item d-none d-sm-inline-block">
-        <a href="index3.html" class="nav-link text-white">Home</a>
+        <a href="{{ route('schooladmin.home.view') }}" class="nav-link text-white">Home</a>
       </li>
       <li class="nav-item d-none d-sm-inline-block">
         <a href="#" class="nav-link text-white">Contact</a>
@@ -152,7 +152,7 @@
           <img src="{{  asset('dist/img/user2-160x160.jpg')}}" class="img-circle elevation-2" alt="User Image">
         </div>
         <div class="info">
-          <a href="#" class="d-block">Alexander Pierce</a>
+          <a href="#" class="d-block">{{ session('user')['name'] }} </a>
         </div>
       </div>
 
@@ -170,36 +170,9 @@
 
       <!-- Sidebar Menu -->
       <nav class="mt-2">
-        <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-          <!-- Add icons to the links using the .nav-icon class
-               with font-awesome or any other icon font library -->
-   
-          <li class="nav-item">
-            <a href="#" class="nav-link ">
-              <i class="nav-icon fa fa-school"></i>
-              <p>
-                School
-                <i class="right fas fa-angle-left"></i>
-              </p>
-            </a>
-            <ul class="nav nav-treeview">
-              <li class="nav-item">
-                <a href="./index.html" class="nav-link">
-                  <i class="far fa fa-eye nav-icon"></i>
-                  <p>View School</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="./index2.html" class="nav-link">
-                  <i class="far fa fa-plus-square nav-icon"></i>
-                  <p>Add School</p>
-                </a>
-              </li>
-            </ul>
-          </li>
-   
-          <li class="nav-item">
-            <a href="#" class="nav-link">
+        <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">   
+          <li class="nav-item {{ request()->is('dashboard/school_admin/students*') ? 'menu-open' : '' }}">
+            <a href="#" class="nav-link {{ request()->is('dashboard/school_admin/students*') ? 'active' : '' }}" >
               <i class="nav-icon fas fa-user-graduate"></i>
               <p>
                 Students
@@ -208,21 +181,21 @@
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="pages/layout/top-nav.html" class="nav-link">
+                <a href="{{ route('schooladmin.students.view') }}" class="nav-link {{ request()->is('dashboard/school_admin/students/view') ? 'active' : '' }}">
                   <i class="far fa fa-eye nav-icon"></i>
                   <p>View Students</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="pages/layout/top-nav-sidebar.html" class="nav-link">
+                <a href="{{ route('schooladmin.students.create') }}" class="nav-link {{ request()->is('dashboard/school_admin/students/create') ? 'active' : '' }}">
                   <i class="far fa fa-plus-square nav-icon"></i>
                   <p>Add New Student</p>
                 </a>
               </li>
             </ul>
           </li>
-          <li class="nav-item">
-            <a href="#" class="nav-link">
+          <li class="nav-item {{ request()->is('dashboard/school_admin/teachers*') ? 'menu-open' : '' }}">
+            <a href="#" class="nav-link {{ request()->is('dashboard/school_admin/teachers*') ? 'active' : '' }}">
               <i class="nav-icon fas fa-chalkboard-teacher"></i>
               <p>
                 Teachers
@@ -231,21 +204,21 @@
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="pages/layout/top-nav.html" class="nav-link">
+                <a href="{{ route('schooladmin.teachers.view') }}" class="nav-link {{ request()->is('dashboard/school_admin/teachers/view') ? 'active' : '' }}">
                   <i class="far fa fa-eye nav-icon"></i>
                   <p>View Teachers</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="pages/layout/top-nav-sidebar.html" class="nav-link">
+                <a href="{{ route('schooladmin.teachers.create') }}" class="nav-link {{ request()->is('dashboard/school_admin/teachers/create') ? 'active' : '' }}">
                   <i class="far fa fa-plus-square nav-icon"></i>
                   <p>Add New Teacher</p>
                 </a>
               </li>
             </ul>
           </li>
-          <li class="nav-item">
-            <a href="#" class="nav-link">
+          <li class="nav-item {{ request()->is('dashboard/school_admin/courses*') ? 'menu-open' : '' }}">
+            <a href="#" class="nav-link {{ request()->is('dashboard/school_admin/courses*') ? 'active' : '' }}">
               <i class="nav-icon fas fa-book-reader"></i>
               <p>
                 Courses
@@ -254,13 +227,13 @@
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="./index.html" class="nav-link">
+                <a href="{{ route('schooladmin.courses.view') }}" class="nav-link {{ request()->is('dashboard/school_admin/courses/view') ? 'active' : '' }}">
                   <i class="far fa fa-eye nav-icon"></i>
                   <p>View Courses</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="./index.html" class="nav-link">
+                <a href=" {{ route('schooladmin.courses.create') }}" class="nav-link {{ request()->is('dashboard/school_admin/courses/create') ? 'active' : '' }}">
                   <i class="far fa fa-plus-square nav-icon"></i>
                   <p>Add New Course</p>
                 </a>
@@ -268,8 +241,8 @@
 
             </ul>
           </li>
-          <li class="nav-item">
-            <a href="#" class="nav-link">
+          <li class="nav-item {{ request()->is('dashboard/school_admin/classes*') ? 'menu-open' : '' }}">
+            <a href="#" class="nav-link {{ request()->is('dashboard/school_admin/classes*') ? 'active' : '' }}">
               <i class="fas fa-fw fa-chalkboard-teacher"></i>
               <p>
                 Classes
@@ -278,13 +251,13 @@
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="./index.html" class="nav-link">
+                <a href="{{route('schooladmin.classes.view')}}" class="nav-link {{ request()->is('dashboard/school_admin/classes/view') ? 'active' : '' }}">
                   <i class="far fa fa-eye nav-icon"></i>
                   <p>View Classes</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="./index.html" class="nav-link">
+                <a href="{{route('schooladmin.classes.create')}}" class="nav-link {{ request()->is('dashboard/school_admin/classes/create') ? 'active' : '' }}">
                   <i class="far fa fa-plus-square nav-icon"></i>
                   <p>Add New Class</p>
                 </a>

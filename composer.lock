@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "1c373a37d6955129e6de1bb39efc53b5",
+    "content-hash": "0d05f610b3369b4a98ebd36503d04979",
     "packages": [
         {
             "name": "abrardev/laravel-local-temporary-url",
@@ -201,6 +201,59 @@
                 }
             ],
             "time": "2023-12-11T17:09:12+00:00"
+        },
+        {
+            "name": "ctwillie/expo-server-sdk-php",
+            "version": "v2.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/ctwillie/expo-server-sdk-php.git",
+                "reference": "79fa28da3886e6dba8a51e4c5a6a44df66469f92"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/ctwillie/expo-server-sdk-php/zipball/79fa28da3886e6dba8a51e4c5a6a44df66469f92",
+                "reference": "79fa28da3886e6dba8a51e4c5a6a44df66469f92",
+                "shasum": ""
+            },
+            "require": {
+                "ext-json": "*",
+                "ext-zlib": "*",
+                "guzzlehttp/guzzle": "^6|^7",
+                "php": ">=7.3"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^9.3"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "ExpoSDK\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Cedric Twillie",
+                    "email": "ctwillie77@gmail.com",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Server-side library for working with Expo using PHP",
+            "homepage": "https://github.com/ctwillie/expo-server-sdk-php",
+            "keywords": [
+                "expo",
+                "expo-server-sdk-php",
+                "php"
+            ],
+            "support": {
+                "issues": "https://github.com/ctwillie/expo-server-sdk-php/issues",
+                "source": "https://github.com/ctwillie/expo-server-sdk-php"
+            },
+            "time": "2023-12-02T00:34:02+00:00"
         },
         {
             "name": "dflydev/dot-access-data",
@@ -5906,6 +5959,81 @@
                 "source": "https://github.com/webmozarts/assert/tree/1.11.0"
             },
             "time": "2022-06-03T18:03:27+00:00"
+        },
+        {
+            "name": "yieldstudio/laravel-expo-notifier",
+            "version": "0.0.11",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/YieldStudio/laravel-expo-notifier.git",
+                "reference": "b642b60c14bfa27d8e827e1068162d6f035ddf2e"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/YieldStudio/laravel-expo-notifier/zipball/b642b60c14bfa27d8e827e1068162d6f035ddf2e",
+                "reference": "b642b60c14bfa27d8e827e1068162d6f035ddf2e",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/database": "^9|^10",
+                "illuminate/support": "^9|^10",
+                "nesbot/carbon": ">=2.62.1",
+                "php": "^8.1"
+            },
+            "require-dev": {
+                "ciareis/bypass": "^1.0",
+                "dg/bypass-finals": "^1.4",
+                "guzzlehttp/guzzle": "^7.8",
+                "laravel/pint": "^1.3",
+                "orchestra/testbench": "7.*|8.*",
+                "pestphp/pest": "^1.21",
+                "phpunit/phpunit": "^9.1"
+            },
+            "type": "plugin",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "YieldStudio\\LaravelExpoNotifier\\ExpoNotificationsServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "YieldStudio\\LaravelExpoNotifier\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "James Hemery",
+                    "email": "james@yieldstudio.fr",
+                    "homepage": "https://yieldstudio.fr",
+                    "role": "Developer"
+                },
+                {
+                    "name": "David Tang",
+                    "email": "david@yieldstudio.fr",
+                    "homepage": "https://yieldstudio.fr",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Easily send Expo notifications with Laravel.",
+            "homepage": "https://github.com/YieldStudio/laravel-expo-notifier",
+            "keywords": [
+                "expo",
+                "laravel",
+                "notification",
+                "notifier",
+                "yieldstudio"
+            ],
+            "support": {
+                "issues": "https://github.com/YieldStudio/laravel-expo-notifier/issues",
+                "source": "https://github.com/YieldStudio/laravel-expo-notifier/tree/0.0.11"
+            },
+            "time": "2024-02-16T14:06:29+00:00"
         }
     ],
     "packages-dev": [
