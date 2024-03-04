@@ -5,8 +5,6 @@
 @endsection
 
 @section('content')
-
-
     <!-- Begin Page Content -->
     <div class="container-fluid">
 
@@ -33,14 +31,63 @@
                     </div>
                 </div>
 
-                <form method="POST" id="my-form">
+                <form method="POST">
                     @csrf
                     @method('PUT')
                     <div class="row">
                         <div class="col-4 form-group">
                             <label for="subjects">Chapter</label>
                             <input type="text" class="form-control" id="staticEmail" name="topic_chapter" required>
+                        </div>
 
+                        <div class="col-2 d-flex justify-content-center align-items-center">
+                            <input type="submit" value="Add" class="btn btn-primary">
+                        </div>
+                    </div>
+                </form>
+
+                <div class="table-responsive">
+                    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                        <thead>
+                            <tr>
+                                <th>Id</th>
+                                <th>Chapter Title</th>
+                            </tr>
+                        </thead>
+                        <tfoot>
+                            <tr>
+                                <th>Id</th>
+                                <th>Chapter Title</th>
+                            </tr>
+                        </tfoot>
+                        <tbody id="chapters">
+
+                            @foreach ($chapters as $chapter)
+                                <tr>
+                                    <td>
+                                        {{ $chapter->id }}
+                                    </td>
+                                    <td>
+                                        {{ $chapter->chapter_title }}
+                                    </td>
+                                </tr>
+                            @endforeach
+
+                        </tbody>
+                    </table>
+                </div>
+                <form method="POST" id="my-form">
+                    @csrf
+                    @method('PUT')
+                    <div class="row">
+
+                        <div class="col-4 form-group">
+                            <label for="subjects">Chapter</label>
+                            <select class="form-control" id="staticEmail" name="chapter_id">
+                                @foreach ($chapters as $chapter)
+                                    <option value=" {{ $chapter->id }}"> {{ $chapter->chapter_title }}</option>
+                                @endforeach
+                            </select>
                         </div>
                         <div class="col-4 form-group">
                             <label for="subjects">Topic Title</label>
@@ -84,7 +131,7 @@
                             @foreach ($outline as $course)
                                 <tr>
                                     <td>{{ $course->id }}</td>
-                                    <td>{{ $course->chapter }} </td>
+                                    <td>{{ $course->chapter_title }} </td>
                                     <td> {{ $course->title }} </td>
                                     <td> {{ $course->deliver_date }} </td>
                                     <td>
@@ -138,10 +185,8 @@
 
 
 @section('footer')
-
-
-<script>
-         function deleteClicked(e) {
+    <script>
+        function deleteClicked(e) {
             var id = $(e).attr('data-id');
             console.log(id)
             var csrfToken = $('meta[name="csrf-token"]').attr('content');
@@ -157,7 +202,7 @@
                 },
                 success: function(response) {
                     // Handle successful response
-                    showToast('Delete request', 'Delete request successful' ,'success');
+                    showToast('Delete request', 'Delete request successful', 'success');
 
                     // Optionally, you can remove the element from the DOM
                     $(e).closest('tr').remove();
@@ -168,6 +213,5 @@
                 }
             });
         };
-</script>
-
+    </script>
 @endsection

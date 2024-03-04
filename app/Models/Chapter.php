@@ -5,19 +5,16 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class outline extends Model
+class Chapter extends Model
 {
     use HasFactory;
 
-    protected $table = 'outline';
+    protected $table = 'chapter';
     protected $fillable = [
         'school_id',
         'course_id',
         'teacher_id',
         'class_id',
-        'chapter_id',
-        'title',
-        'is_covered',
-        'deliver_date',
+        'chapter_title',
     ];
 }

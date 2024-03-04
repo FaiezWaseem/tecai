@@ -1,0 +1,1 @@
+var wordsJSON = [{"word":"keboard","hintType":"text","hint":"Takes input and display on screen"},{"word":"mouse","hintType":"text","hint":"dislpay a cursor on screen used to select or click"}]

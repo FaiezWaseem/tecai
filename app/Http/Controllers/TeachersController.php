@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Chapter;
 use App\Models\teachers;
 use App\Models\school;
 use App\Models\course;
@@ -137,10 +138,11 @@ class TeachersController extends Controller
         }
 
         return view("dashboard.admin.teachers.view")
-        ->with("teachers", $teachers)
-        ->with("coursesByTeacher", $coursesByTeacher);
+            ->with("teachers", $teachers)
+            ->with("coursesByTeacher", $coursesByTeacher);
     }
-    public function SchoolAdminCreateTeachers(Request $request){
+    public function SchoolAdminCreateTeachers(Request $request)
+    {
         $requestMethod = $request->method();
         if ($requestMethod === 'POST') {
             $teacher = new teachers;
@@ -156,7 +158,8 @@ class TeachersController extends Controller
             ;
         }
     }
-    public function SchoolAdminDeleteTeachers(Request $request){
+    public function SchoolAdminDeleteTeachers(Request $request)
+    {
         if ($request->id) {
             $deletedRows = teachers::destroy($request->id);
             if ($deletedRows > 0) {
@@ -248,8 +251,10 @@ class TeachersController extends Controller
         if ($request->input('course_id')) {
             session(['course_id' => $request->input('course_id')]);
 
-            $topics = outline::where('class_id', '=', session('class_id'))
-                ->where('course_id', '=', session('course_id'))
+            $topics = outline::where('outline.class_id', '=', session('class_id'))
+                ->where('outline.course_id', '=', session('course_id'))
+                ->join('chapter', 'chapter.id', 'outline.chapter_id')
+                ->select('chapter.chapter_title', 'outline.*')
                 ->get();
 
             return view('dashboard.teachers.assignment.create')
@@ -497,7 +502,8 @@ class TeachersController extends Controller
             ->with("courses_all", $courses_all)
             ->with("classes_taken", $classes_taken);
     }
-    public function SchoolAdminEditDeleteTeachers(Request $request, $id){
+    public function SchoolAdminEditDeleteTeachers(Request $request, $id)
+    {
         teacher_classes::destroy($request->input('id'));
         return response()->json([
             'deleted' => true
@@ -566,7 +572,7 @@ class TeachersController extends Controller
             'courses' => $courses
         ]);
     }
-    
+
     public function deleteTeacherClass(Request $request, $id)
     {
         teacher_classes::destroy($request->input('id'));
@@ -644,7 +650,14 @@ class TeachersController extends Controller
     public function TeacherViewOutline(Request $request)
     {
 
-        $outline = outline::where('teacher_id', '=', session('user')['id'])
+        $outline = outline::where('outline.teacher_id', '=', session('user')['id'])
+            ->where('outline.school_id', '=', session('user')['school_id'])
+            ->where('outline.course_id', '=', $request->route('course_id'))
+            ->where('outline.class_id', '=', $request->route('class_id'))
+            ->join('chapter', 'chapter.id', 'outline.chapter_id')
+            ->select('outline.*', 'chapter.chapter_title')
+            ->get();
+        $chapters = Chapter::where('teacher_id', '=', session('user')['id'])
             ->where('school_id', '=', session('user')['school_id'])
             ->where('course_id', '=', $request->route('course_id'))
             ->where('class_id', '=', $request->route('class_id'))
@@ -656,33 +669,51 @@ class TeachersController extends Controller
 
         return view('dashboard.teachers.outline.view')
             ->with('outline', $outline)
+            ->with('chapters', $chapters)
             ->with('courseName', $courseName['course_name'])
             ->with('className', $className['class_name']);
     }
     public function TeacherCreateOutline(Request $request)
     {
 
+
         $classId = $request->route('class_id');
         $courseId = $request->route('course_id');
         $teacherId = session('user')['id'];
         $schoolId = session('user')['school_id'];
 
-        $topic_chapter = $request->input('topic_chapter');
-        $topic_title = $request->input('topic_title');
-        $topic_deadline = $request->input('topic_deadline');
-
-        $outline = new outline;
-        $outline->school_id = $schoolId;
-        $outline->course_id = $courseId;
-        $outline->teacher_id = $teacherId;
-        $outline->class_id = $classId;
-        $outline->chapter = $topic_chapter;
-        $outline->title = $topic_title;
-        $outline->deliver_date = $topic_deadline;
-        $outline->is_covered = 0;
-        $outline->save();
 
 
+
+        if ($request->has('topic_chapter')) {
+
+            $topic_chapter = $request->input('topic_chapter');
+
+            $chapter = new Chapter;
+            $chapter->school_id = $schoolId;
+            $chapter->course_id = $courseId;
+            $chapter->teacher_id = $teacherId;
+            $chapter->class_id = $classId;
+            $chapter->chapter_title = $topic_chapter;
+            $chapter->save();
+
+        } else if ($request->has('topic_title') && $request->has('topic_deadline')) {
+
+            $topic_title = $request->input('topic_title');
+            $topic_deadline = $request->input('topic_deadline');
+
+            $outline = new outline;
+            $outline->school_id = $schoolId;
+            $outline->course_id = $courseId;
+            $outline->teacher_id = $teacherId;
+            $outline->class_id = $classId;
+            $outline->chapter_id = $request->chapter_id;
+            $outline->title = $topic_title;
+            $outline->deliver_date = $topic_deadline;
+            $outline->is_covered = 0;
+            $outline->save();
+
+        }
 
 
         return redirect()->route('teacher.classe.outline.show', [

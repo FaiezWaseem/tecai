@@ -162,7 +162,7 @@
                   
                     <select class="form-control" aria-label="Default select example" name="topic_id">
                         @foreach($topics as $topic)
-                        <option value="{{ $topic->id }}"> {{ $topic->chapter }} - {{ $topic->title }}</option>
+                        <option value="{{ $topic->id }}"> {{ $topic->chapter_title }} - {{ $topic->title }}</option>
                         @endforeach
                       </select>
                 </div>   

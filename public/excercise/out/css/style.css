@@ -13,7 +13,7 @@ body {
 .tile {
   width: 34.5px;
   height: 34.5px;
-  background: #0c323d;
+  background: #9A031E;
   border-radius: 8px;
   text-align: center;
   color: black;
@@ -64,7 +64,7 @@ body {
 .keyboard-tile {
   width: 43px;
   height: 43px;
-  background: #0fdbcc;
+  background: #E36414;
   border-radius: 8px;
   text-align: center;
   color: black;
@@ -136,15 +136,15 @@ body {
   top: 80px;
   width: 432px;
   height: 225px;
-  background: #0c323d;
+  background: #FB8B24;
   border-radius: 10px;
 }
 
 .crossword-title {
   position: absolute;
   left: 150px;
-  top: 14px;
-  background: #0c323d;
+  top: 0px;
+  /*background: #0c323d;*/
   padding-top: 7px;
   padding-bottom: 5px;
   padding-left: 10px;
