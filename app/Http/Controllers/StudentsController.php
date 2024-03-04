@@ -7,6 +7,7 @@ use App\Models\activity;
 use App\Models\tasks;
 use App\Models\school;
 use App\Models\classes;
+use App\Models\SchoolsAdmin;
 
 
 use Illuminate\Http\Request;
@@ -175,9 +176,9 @@ class StudentsController extends Controller
 
     public function SchoolAdminViewStudents()
     {
-        $schoolId = session('user')['school_id'];
+        $schoolId = HelperFunctionsController::getUserSchoolsIds();
 
-        $students = students::where('school', $schoolId)
+        $students = students::whereIn('school', $schoolId)
             ->join('school', 'school.id', 'students.school')
             ->select('students.*', 'school.school_name')
             ->paginate(50);
@@ -221,17 +222,16 @@ class StudentsController extends Controller
             $student->email = $request->email;
             $student->password = bcrypt($request->password);
             $student->dob = $request->dob;
-            $student->school = session('user')['school_id'];
+            $student->school = $request->school_id;
             $student->class = $request->class;
             $student->section = $request->section;
             $student->gender = $request->gender;
             $student->contact = $request->contact;
-
             $student->save();
 
             return redirect()->route('schooladmin.students.view');
         } else {
-            $schools = school::all();
+            $schools = HelperFunctionsController::getUserSchools();
             return view('dashboard.admin.students.create')
                 ->with('schools', $schools)
             ;

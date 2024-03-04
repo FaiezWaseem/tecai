@@ -39,6 +39,7 @@
                             <tr>
                                 <th>Actions</th>
                                 <th>Class Name</th>
+                                <th>School Name</th>
                                 <th>Created At</th>
                                 <th>Updated At</th>
                             </tr>
@@ -53,7 +54,8 @@
                                         <i class="fa fa-trash text-danger"  ></i>
                                     </button>
                                 </td>
-                                <td>{{ $item->class_name }}</td>
+                                <td>{{ $item->class_name  }}</td>
+                                <td> {{ $item->school_name }}</td>
                                 <td>{{ $item->created_at }}</td>
                                 <td>{{ $item->updated_at }}</td>
                             </tr>
@@ -63,6 +65,7 @@
                             <tr>
                                 <th>Actions</th>
                                 <th>Class Name</th>
+                                <th>School Name</th>
                                 <th>Created At</th>
                                 <th>Updated At</th>
                             </tr>

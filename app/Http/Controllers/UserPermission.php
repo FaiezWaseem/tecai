@@ -12,4 +12,5 @@ class UserPermission
     public static function isTeacher(){
         return session('isTeacher');
     }
+
 }

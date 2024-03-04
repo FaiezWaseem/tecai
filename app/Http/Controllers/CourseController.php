@@ -13,7 +13,7 @@ class CourseController extends Controller
         $courses = DB::table('course')
         ->join('school', 'course.school_id', '=','school.id')
         ->select('course.*','school.school_name')
-        ->where('course.school_id', '=', session('user')['school_id'])
+        ->whereIn('course.school_id', HelperFunctionsController::getUserSchoolsIds())
         ->get();
         return view("dashboard.admin.courses.view")->with("courses", $courses);
     }
@@ -22,11 +22,12 @@ class CourseController extends Controller
         if($requestMethod === 'POST'){
             $course = new course;
             $course->course_name = $request->input("course_name");
-            $course->school_id = session('user')['school_id'];
+            $course->school_id = $request->school_id;
             $course->save();
             return redirect()->route('schooladmin.courses.view');
         }else{
-            return view('dashboard.admin.courses.create');
+            $schools = HelperFunctionsController::getUserSchools();
+            return view('dashboard.admin.courses.create', compact('schools'));
         }
     }
     public function SchoolAdminDeleteCourse(Request $request){

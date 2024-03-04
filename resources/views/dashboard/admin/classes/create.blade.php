@@ -41,6 +41,19 @@
                             <span id="txtUserName_Error" class="error invalid-feedback hide"></span>
                         </div>
                     </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label for="txtUserName">School <span class="text-danger">*</span></label>
+                            <select class="form-control" name="school_id" >
+                                @foreach ($schools as $item)
+                                <option value="{{ $item->id }}">{{  $item->school_name }}</option>
+                                    
+                                @endforeach
+                            </select>
+
+                            <span id="txtUserName_Error" class="error invalid-feedback hide"></span>
+                        </div>
+                    </div>
          
                 </div>
                 <div class="row">

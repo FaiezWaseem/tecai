@@ -302,3 +302,23 @@ ADD COLUMN chapter_id BIGINT REFERENCES chapter(id);
 
 ALTER TABLE `outline`
 DROP COLUMN chapter;
+
+
+
+Alter Table admin drop foreign key admin_school_id_school_id;
+
+ALTER TABLE `admin`
+DROP COLUMN school_id;
+
+
+
+CREATE TABLE `schools_admin` (
+  `id` BIGINT PRIMARY KEY AUTO_INCREMENT NOT NULL,
+  `school_id` BIGINT NOT NULL,
+  `admin_id` BIGINT NOT NULL,
+  `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+ALTER TABLE `schools_admin` ADD CONSTRAINT `_schools_admin_school_id_school_id` FOREIGN KEY (`school_id`) REFERENCES `school`(`id`);
+ALTER TABLE `schools_admin` ADD CONSTRAINT `schools_admin_admin_id` FOREIGN KEY (`admin_id`) REFERENCES `admin`(`id`);

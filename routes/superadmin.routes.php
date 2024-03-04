@@ -61,6 +61,10 @@ Route::middleware('CheckSuperAdmin')->prefix('/superadmin')->group(function () {
     ->name('superadmin.schooladmins.edit');
     Route::put('/admins/school/{id}/edit', [App\Http\Controllers\AdminController::class, 'SuperAdminEditSchoolAdmins'])
     ->name('superadmin.schooladmins.edit');
+    Route::delete('/admins/school/{id}/edit', [App\Http\Controllers\AdminController::class, 'SuperAdminRemoveSchoolFromSchoolAdmin'])
+    ->name('superadmin.schooladmins.edit');
+    Route::post('/admins/school/{id}/edit', [App\Http\Controllers\AdminController::class, 'SuperAdminAddSchoolToSchoolAdmin'])
+    ->name('superadmin.schooladmins.edit');
     
     /**
      *  Route : SuperAdmin / View All Schools

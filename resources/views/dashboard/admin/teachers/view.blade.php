@@ -42,37 +42,40 @@
                             <tr>
                                 <th>Actions</th>
                                 <th>Id</th>
+                                <th>School </th>
                                 <th>Teacher</th>
                                 <th>Classes</th>
                             </tr>
                         </thead>
                         <tbody>
-
+                            
                             @foreach ($coursesByTeacher as $item)
-                                <tr>
-                                    <td>
-                                        <a href="{{ route('schooladmin.teachers.edit', ['id' => $item['id']]) }}">
-                                            <i class="fa fa-edit text-primary"></i>
-                                        </a>
-                                        <button class="btn" data-toggle="modal" data-target="#DeleteModal"
-                                            onclick="setdeleteModalId({{ $item['id'] }})">
-                                            <i class="fa fa-trash text-danger"></i>
-                                        </button>
-                                    </td>
-                                    <td>{{ $item['id'] }}</td>
-                                    <td>{{ $item['teacher_name'] }} </td>
-                                    <td>
-                                        @foreach ($item['classes'] as $class)
-                                            Class : {{ $class->class_name }} , Subject :{{ $class->course_name }} <br>
-                                        @endforeach
-                                    </td>
-                                </tr>
-                            @endforeach
-                        </tbody>
-                        <tfoot>
                             <tr>
+                                <td>
+                                    <a href="{{ route('schooladmin.teachers.edit', ['id' => $item['id']]) }}">
+                                        <i class="fa fa-edit text-primary"></i>
+                                    </a>
+                                    <button class="btn" data-toggle="modal" data-target="#DeleteModal"
+                                    onclick="setdeleteModalId({{ $item['id'] }})">
+                                    <i class="fa fa-trash text-danger"></i>
+                                </button>
+                            </td>
+                            <td>{{ $item['id'] }}</td>
+                            <td>{{ $item['school_name'] }} </td>
+                            <td>{{ $item['teacher_name'] }} </td>
+                            <td>
+                                @foreach ($item['classes'] as $class)
+                                Class : {{ $class->class_name }} , Subject :{{ $class->course_name }} <br>
+                                @endforeach
+                            </td>
+                                </tr>
+                                @endforeach
+                            </tbody>
+                            <tfoot>
+                                <tr>
                                 <th>Actions</th>
                                 <th>Id</th>
+                                <th>School </th>
                                 <th>Teacher</th>
                                 <th>Classes</th>
                             </tr>

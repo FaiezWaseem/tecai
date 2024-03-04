@@ -40,6 +40,7 @@
                                 <th>Actions</th>
                                 <th>Id</th>
                                 <th>Photo</th>
+                                <th>School Name</th>
                                 <th>Student Name</th>
                                 <th>Father Name</th>
                                 <th>Class</th>
@@ -48,7 +49,6 @@
                                 <th>DOB</th>
                                 <th>Contact</th>
                                 <th>Gender</th>
-                                <th>School Name</th>
                                 <th>Created At</th>
                                 <th>Updated At</th>
                             </tr>
@@ -67,6 +67,7 @@
                                 </td>
                                 <td>{{ $item->id }}</td>
                                 <td> <img src="{{ $item->photo }}" width="40px" height="40px" alt=""> </td>
+                                <td>{{ $item->school_name }} </td>
                                 <td>{{ $item->name }} </td>
                                 <td>{{ $item->father_name }} </td>
                                 <td>{{ $item->class }} </td>
@@ -75,7 +76,6 @@
                                 <td>{{ $item->dob }} </td>
                                 <td>{{ $item->contact }} </td>
                                 <td>{{ $item->gender }} </td>
-                                <td>{{ $item->school_name }} </td>
                                 <td>{{ $item->created_at }}</td>
                                 <td>{{ $item->updated_at }}</td>
                             </tr>
@@ -86,6 +86,7 @@
                                 <th>Actions</th>
                                 <th>Id</th>
                                 <th>Photo</th>
+                                <th>School Name</th>
                                 <th>Student Name</th>
                                 <th>Father Name</th>
                                 <th>Class</th>
@@ -94,7 +95,6 @@
                                 <th>DOB</th>
                                 <th>Contact</th>
                                 <th>Gender</th>
-                                <th>School Name</th>
                                 <th>Created At</th>
                                 <th>Updated At</th>
                             </tr>

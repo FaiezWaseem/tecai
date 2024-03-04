@@ -9,7 +9,10 @@ class ClassesController extends Controller
 {
 
     public function SchoolAdminViewClasses(){
-        $classes = classes::where('school_id', session('user')['school_id'])->get();
+        $classes = classes::whereIn('school_id', HelperFunctionsController::getUserSchoolsIds())
+        ->join('school', 'classes.school_id', '=','school.id')
+        ->select('classes.*','school.school_name')
+        ->get();
         return view('dashboard.admin.classes.view')
         ->with('classes', $classes);
     }
@@ -45,11 +48,12 @@ class ClassesController extends Controller
             ]);
             $class = new classes;
             $class->class_name = $request->class_name;
-            $class->school_id = session('user')['school_id'];
+            $class->school_id = $request->school_id;
             $class->save();
             return redirect()->route('schooladmin.classes.view');
         }else{
-            return view('dashboard.admin.classes.create');
+            $schools = HelperFunctionsController::getUserSchools();
+            return view('dashboard.admin.classes.create' , compact('schools'));
         }
     }
 

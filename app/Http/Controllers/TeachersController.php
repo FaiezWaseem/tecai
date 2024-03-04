@@ -115,7 +115,7 @@ class TeachersController extends Controller
         $teachers = DB::table('teachers')
             ->join('school', 'teachers.school_id', '=', 'school.id')
             ->select('teachers.*', 'school.school_name')
-            ->where('teachers.school_id', '=', session('user')['school_id'])
+            ->whereIn('teachers.school_id',HelperFunctionsController::getUserSchoolsIds())
             ->paginate(10);
         $coursesByTeacher = [];
         foreach ($teachers as $teacher) {
@@ -147,12 +147,12 @@ class TeachersController extends Controller
         if ($requestMethod === 'POST') {
             $teacher = new teachers;
             $teacher->name = $request->input("teacher_name");
-            $teacher->school_id = session('user')['school_id'];
+            $teacher->school_id = $request->school_id;
             $teacher->password = bcrypt($request->input("password"));
             $teacher->save();
             return redirect()->route('schooladmin.teachers.view');
         } else {
-            $schools = school::all();
+            $schools = HelperFunctionsController::getUserSchools();
             return view('dashboard.admin.teachers.create')
                 ->with('schools', $schools)
             ;
