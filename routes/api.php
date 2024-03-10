@@ -53,5 +53,7 @@ Route::middleware('verify.token')->group(function () {
 
     Route::post('/grade/assignment/{id}', [App\Http\Controllers\StudentsController::class, 'studentGradeAssignment']);
 
+    Route::get('/attendance', [App\Http\Controllers\StudentsController::class, 'getAttendance']);
+    Route::post('/attendance', [App\Http\Controllers\StudentsController::class, 'getAttendanceByDate']);
 });
 Route::get('/assignments/{id}', [App\Http\Controllers\StudentsController::class, 'getAssignment']);

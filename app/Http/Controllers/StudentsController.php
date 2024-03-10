@@ -7,7 +7,7 @@ use App\Models\activity;
 use App\Models\tasks;
 use App\Models\school;
 use App\Models\classes;
-use App\Models\SchoolsAdmin;
+use App\Models\Attendance;
 
 
 use Illuminate\Http\Request;
@@ -415,5 +415,41 @@ class StudentsController extends Controller
         ]);
     }
 
+    public function getAttendance(Request $request)
+    {
+        $date = now();
 
+        $attendance = Attendance::where('student_id', $request->id)
+            ->whereDate('date', '=', $date)
+            ->join('students', 'attendance.student_id', '=', 'students.id')
+            ->join('classes', 'attendance.class_id', '=', 'classes.id')
+            ->join('course', 'attendance.course_id', '=', 'course.id')
+            ->select('attendance.*', 'students.name', 'classes.class_name', 'course.course_name')
+            ->get();
+
+        return response()->json([
+            'status' => true,
+            'attendance' => $attendance,
+        ], 200);
+    }
+    public function getAttendanceByDate(Request $request)
+    {
+        $date = now();
+        if ($request->has('date')) {
+            $date = $request->date;
+        }
+
+        $attendance = Attendance::where('student_id', $request->id)
+            ->whereDate('date', '=', $date)
+            ->join('students', 'attendance.student_id', '=', 'students.id')
+            ->join('classes', 'attendance.class_id', '=', 'classes.id')
+            ->join('course', 'attendance.course_id', '=', 'course.id')
+            ->select('attendance.*', 'students.name', 'classes.class_name', 'course.course_name')
+            ->get();
+
+        return response()->json([
+            'status' => true,
+            'attendance' => $attendance,
+        ], 200);
+    }
 }
