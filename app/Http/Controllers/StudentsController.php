@@ -211,7 +211,8 @@ class StudentsController extends Controller
             ]);
         }
     }
-    public function SchoolAdminCreateStudent(Request $request){
+    public function SchoolAdminCreateStudent(Request $request)
+    {
         if ($request->father_name && $request->name && $request->dob && $request->email && $request->password) {
 
             $student = new students();
@@ -237,7 +238,8 @@ class StudentsController extends Controller
             ;
         }
     }
-    public function SchoolAdminEditStudent(Request $request){
+    public function SchoolAdminEditStudent(Request $request)
+    {
         $requestMethod = $request->method();
 
         if ($requestMethod === 'PUT') {
@@ -316,6 +318,26 @@ class StudentsController extends Controller
             'user' => $student,
         ], 200);
     }
+    public function updateStudentToken(Request $request)
+    {
+        try {
+            $student = students::where('id', $request->id)->first();
+            $student->token = $request->token;
+            $student->save();
+
+            return response()->json([
+                'success' => 'student token updated',
+                'status' => true,
+                'user' => $student,
+            ], 200);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'success' => $th->getMessage(),
+                'status' => false,
+            ], 200);
+        }
+    }
+
     public function getAssignments(Request $request)
     {
         $student = students::where('students.id', $request->id)
