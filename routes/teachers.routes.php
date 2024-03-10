@@ -58,7 +58,7 @@ Route::middleware('CheckTeacher')->prefix('/teacher')->group(function () {
      *  # Display List
      */
     Route::get('/classes/view', [App\Http\Controllers\TeachersController::class, 'TeacherViewClasses'])
-        ->name('teacher.classes.view'); 
+        ->name('teacher.classes.view');
     /**
      *  Route : Teacher / Class  Course Outline View
      *  # Display List
@@ -69,5 +69,20 @@ Route::middleware('CheckTeacher')->prefix('/teacher')->group(function () {
         ->name('teacher.classe.outline.put');
     Route::delete('/{class_id}/{course_id}/outline', [App\Http\Controllers\TeachersController::class, 'TeacherDeleteOutline'])
         ->name('teacher.classe.outline.remove');
+
+
+    /**
+     *  Route : Teacher / Class Attendance
+     *  # Display List
+     */
+    Route::get('/{class_id}/{course_id}/attendance/view', [App\Http\Controllers\AttendanceController::class, 'TeacherViewAttendance'])
+        ->name('teacher.attendances.view');
+    Route::post('/{class_id}/{course_id}/attendance/view', [App\Http\Controllers\AttendanceController::class, 'TeacherViewAttendanceByDate'])
+        ->name('teacher.attendances.view');
+    
+    Route::get('/{class_id}/{course_id}/attendance/create', [App\Http\Controllers\AttendanceController::class, 'TeacherCreateAttendance'])
+        ->name('teacher.attendances.create');
+    Route::post('/{class_id}/{course_id}/attendance/create', [App\Http\Controllers\AttendanceController::class, 'TeacherStoreAttendance'])
+        ->name('teacher.attendances.create.post');
 
 });

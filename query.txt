@@ -322,3 +322,29 @@ CREATE TABLE `schools_admin` (
 
 ALTER TABLE `schools_admin` ADD CONSTRAINT `_schools_admin_school_id_school_id` FOREIGN KEY (`school_id`) REFERENCES `school`(`id`);
 ALTER TABLE `schools_admin` ADD CONSTRAINT `schools_admin_admin_id` FOREIGN KEY (`admin_id`) REFERENCES `admin`(`id`);
+
+
+
+
+CREATE TABLE `attendance` (
+  `id` BIGINT PRIMARY KEY AUTO_INCREMENT NOT NULL,
+  `student_id` BIGINT NOT NULL,
+  `school_id` BIGINT NOT NULL,
+  `class_id` BIGINT NOT NULL,
+  `teacher_id` BIGINT NOT NULL,
+  `status` VARCHAR(255) DEFAULT "absent" NOT NULL,
+  `date` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+ALTER TABLE `attendance` ADD CONSTRAINT `attendance_school_id` FOREIGN KEY (`school_id`) REFERENCES `school`(`id`);
+ALTER TABLE `attendance` ADD CONSTRAINT `attendance_class_id` FOREIGN KEY (`class_id`) REFERENCES `classes`(`id`);
+ALTER TABLE `attendance` ADD CONSTRAINT `attendance_student_id` FOREIGN KEY (`student_id`) REFERENCES `students`(`id`);
+ALTER TABLE `attendance` ADD CONSTRAINT `attendance_teacher_id` FOREIGN KEY (`teacher_id`) REFERENCES `teachers`(`id`);
+
+
+ALTER TABLE `attendance`
+ADD COLUMN course_id BIGINT REFERENCES course(id);
+
+ALTER TABLE `outline` ADD CONSTRAINT `attendance_course_id` FOREIGN KEY (`course_id`) REFERENCES `course`(`id`);
