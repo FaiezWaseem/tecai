@@ -139,12 +139,14 @@ class ContentController extends Controller
     }
     public function getContent(Request $request)
     {
-        $contents = TContent::where('tcontent.tcourse_id', $request->id)
-            ->join('tboards', 'tboards.id', '=', 'tcontent.tboard_id')
+         $contents = TContent::join('tboards', 'tboards.id', '=', 'tcontent.tboard_id')
             ->join('tclasses', 'tclasses.id', '=', 'tcontent.tclass_id')
             ->join('tchapters', 'tchapters.id', '=', 'tcontent.tchapter_id')
+            ->join('tcourse', 'tcourse.id', '=', 'tcontent.tcourse_id')
+            ->where('tcontent.tcourse_id', $request->id)
+            ->select('tcontent.*', 'tclasses.class_name', 'tchapters.chapter_title', 'tboards.board_name', 'tcourse.course_name')
+            ->get();
 
-            ->paginate(20);
         return $contents;
     }
     private function saveFile($file, $path)
