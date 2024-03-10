@@ -140,7 +140,11 @@
     <!-- AdminLTE for demo purposes -->
     <script src="{{ asset('dist/js/demo.js') }}"></script>
     <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
-    <script src="{{ asset('dist/js/pages/dashboard.js') }}"></script>
+    @if (request()->is('dashboard/school_admin'))
+        <script src="{{ asset('dist/js/pages/schooladmin.js') }}"  ></script>
+    @else
+        <script src="{{ asset('dist/js/pages/dashboard.js') }}"></script>
+    @endif
 
     @yield('footer')
 </body>
