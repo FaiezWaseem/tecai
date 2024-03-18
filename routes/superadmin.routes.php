@@ -101,6 +101,8 @@ Route::middleware('CheckSuperAdmin')->prefix('/superadmin')->group(function () {
      */
     Route::get('/students/view', [App\Http\Controllers\StudentsController::class, 'SuperAdminViewStudents'])
     ->name('superadmin.students.view');
+    Route::post('/students/view', [App\Http\Controllers\StudentsController::class, 'SuperAdminViewStudents'])
+    ->name('superadmin.students.view');
     /**
      * Route SuperAdmin / Delete Student
      */

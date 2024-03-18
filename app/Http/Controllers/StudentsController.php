@@ -36,13 +36,20 @@ class StudentsController extends Controller
             ->with('classes', $classes);
 
     }
-    public function SuperAdminViewStudents()
+    public function SuperAdminViewStudents(Request $request)
     {
-        $students = students::join('school', 'school.id', 'students.school')
+        $rqMethod = $request->method();
+
+        if($rqMethod === 'POST'){
+            $students = students::join('school', 'school.id', 'students.school')
             ->select('students.*', 'school.school_name')
-            ->paginate(50);
+            ->get();
+            return response()->json([
+                'students' => $students
+            ]);
+        }
+       
         return view('dashboard.superadmin.students.view')
-            ->with('students', $students)
         ;
     }
     public function SuperAdminCreateStudents(Request $request)
@@ -174,16 +181,23 @@ class StudentsController extends Controller
 
     // ==================== SCHOOL ADMIN
 
-    public function SchoolAdminViewStudents()
+    public function SchoolAdminViewStudents(Request $request)
     {
-        $schoolId = HelperFunctionsController::getUserSchoolsIds();
 
-        $students = students::whereIn('school', $schoolId)
+        $schoolId = HelperFunctionsController::getUserSchoolsIds();
+        $rqMethod = $request->method();
+
+        if($rqMethod === 'POST'){
+            $students = students::whereIn('school', $schoolId)
             ->join('school', 'school.id', 'students.school')
             ->select('students.*', 'school.school_name')
-            ->paginate(50);
+            ->get();
+            return response()->json([
+                'students' => $students
+            ]);
+        }
+
         return view('dashboard.admin.students.view')
-            ->with('students', $students)
         ;
     }
     public function SchoolAdminDeleteStudent(Request $request)
@@ -422,9 +436,7 @@ class StudentsController extends Controller
         $attendance = Attendance::where('student_id', $request->id)
             ->whereDate('date', '=', $date)
             ->join('students', 'attendance.student_id', '=', 'students.id')
-            ->join('classes', 'attendance.class_id', '=', 'classes.id')
-            ->join('course', 'attendance.course_id', '=', 'course.id')
-            ->select('attendance.*', 'students.name', 'classes.class_name', 'course.course_name')
+            ->select('attendance.*', 'students.name')
             ->get();
 
         return response()->json([
@@ -442,9 +454,7 @@ class StudentsController extends Controller
         $attendance = Attendance::where('student_id', $request->id)
             ->whereDate('date', '=', $date)
             ->join('students', 'attendance.student_id', '=', 'students.id')
-            ->join('classes', 'attendance.class_id', '=', 'classes.id')
-            ->join('course', 'attendance.course_id', '=', 'course.id')
-            ->select('attendance.*', 'students.name', 'classes.class_name', 'course.course_name')
+            ->select('attendance.*', 'students.name')
             ->get();
 
         return response()->json([

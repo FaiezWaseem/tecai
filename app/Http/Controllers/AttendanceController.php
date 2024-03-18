@@ -32,7 +32,7 @@ class AttendanceController extends Controller
         $class_id = $request->class_id;
         $course_id = $request->course_id;
         $date = now();
-        if($request->date){
+        if ($request->date) {
             $date = $request->date;
         }
         $attendance = Attendance::where('class_id', $class_id)
@@ -72,7 +72,6 @@ class AttendanceController extends Controller
 
         return view('dashboard.teachers.attendance.create', compact('class_id', 'course_id', 'students'));
     }
-
     public function TeacherStoreAttendance(Request $request)
     {
         $attendanceData = $request->input('attendance');
@@ -96,6 +95,82 @@ class AttendanceController extends Controller
             'course_id' =>
                 $request->course_id
         ]);
+    }
+
+    public function SchoolAdminViewAttendance(Request $request)
+    {
+
+        $schoolsId = HelperFunctionsController::getUserSchoolsIds();
+
+        $date = now();
+
+        $attendance = Attendance::whereIn('attendance.school_id', $schoolsId)
+            ->whereDate('date', '=', $date)
+            ->join('students', 'attendance.student_id', '=', 'students.id')
+
+            ->select('attendance.*', 'students.name')
+            ->get();
+
+        return view('dashboard.admin.students.attendance.view', compact('attendance'));
+    }
+    public function SchoolAdminViewAttendanceByDate(Request $request)
+    {
+        $date = now();
+        if ($request->date) {
+            $date = $request->date;
+        }
+        $schoolsId = HelperFunctionsController::getUserSchoolsIds();
+
+        $attendance = Attendance::whereIn('attendance.school_id', $schoolsId)
+            ->whereDate('date', '=', $date)
+            ->join('students', 'attendance.student_id', '=', 'students.id')
+            ->join('classes', 'attendance.class_id', '=', 'classes.id')
+            ->join('course', 'attendance.course_id', '=', 'course.id')
+            ->select('attendance.*', 'students.name', 'classes.class_name', 'course.course_name')
+            ->get();
+
+        return view('dashboard.admin.students.attendance.view', compact('attendance'));
+    }
+    public function SchoolAdminCreateAttendance(Request $request)
+    {
+
+        $schoolIds = HelperFunctionsController::getUserSchoolsIds();
+
+        $students = students::whereIn('school', $schoolIds)
+            ->join('classes', 'students.class', '=', 'classes.class_name')
+            ->join('school', 'students.school', 'school.id')
+            ->select('students.*', 'classes.class_name', 'school.school_name')
+            ->get();
+
+
+        return view('dashboard.admin.students.attendance.create', compact('students'));
+    }
+
+    public function SchoolAdminStoreAttendance(Request $request)
+    {
+        $attendanceData = $request->input('attendance');
+
+        foreach ($attendanceData as $studentId => $status) {
+
+            $std = students::find($studentId);
+
+            $existingAttendance = Attendance::where('student_id', $studentId)
+                ->whereDate('date','=', now())
+                ->count();
+
+            if ($existingAttendance > 0) {
+                continue;
+            }
+
+            Attendance::create([
+                'student_id' => $studentId,
+                'status' => $status,
+                'date' => now(),
+                'school_id' => $std->school,
+            ]);
+        }
+
+        return redirect()->route('schooladmin.attendance.create');
     }
 
 }

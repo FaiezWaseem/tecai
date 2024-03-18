@@ -8,6 +8,7 @@ use App\Models\SchoolsAdmin;
 use App\Models\teachers;
 use App\Models\students;
 use App\Models\classes;
+use App\Models\Chapter;
 use App\Models\teacher_classes;
 use App\Models\Attendance;
 use App\Models\activity;
@@ -18,123 +19,6 @@ use Illuminate\Support\Facades\DB;
 
 class AdminController extends Controller
 {
-
-    public function index()
-    {
-
-
-        if (UserPermission::isSuperAdmin()) {
-
-            // SUPER ADMIN
-
-            $teachers = DB::table('teachers')
-                ->join('school', 'teachers.school_id', '=', 'school.id')
-                ->select('teachers.*', 'school.school_name')
-                ->paginate(10);
-            $schools = school::all();
-
-            $students = students::take(10)->get();
-
-            $classes = classes::all();
-
-            $studentsCount = students::count();
-            $schoolsCount = school::count();
-            $teachersCount = teachers::count();
-            $adminsCount = admin::count();
-
-            return view("index")
-                ->with("teachers", $teachers)
-                ->with("schools", $schools)
-                ->with('students', $students)
-                ->with('classes', $classes)
-                ->with('stats', [
-                    'studentsCount' => $studentsCount,
-                    'schoolsCount' => $schoolsCount,
-                    'teachersCount' => $teachersCount,
-                    'adminsCount' => $adminsCount,
-                ]);
-        } else if (UserPermission::isAdmin()) {
-            // SCHOOL ADMIN
-            $teachers = DB::table('teachers')
-                ->join('school', 'teachers.school_id', '=', 'school.id')
-                ->select('teachers.*', 'school.school_name')
-                ->where('teachers.school_id', '=', session('user')['school_id'])
-                ->paginate(10);
-            $schoolId = session('user')['school_id'];
-
-            $students = students::take(10)->get();
-
-            $classes = classes::where('school_id', $schoolId)->get();
-
-            $outline = DB::table('outline')
-                ->join('course', 'outline.course_id', '=', 'course.id')
-                ->join('teachers', 'outline.teacher_id', '=', 'teachers.id')
-                ->join('classes', 'outline.class_id', '=', 'classes.id')
-                ->select('course.id', 'teachers.name', 'course.course_name', 'classes.class_name')
-                ->where('outline.school_id', '=', session('user')['school_id'])
-                ->groupBy('course.id', 'teachers.name', 'course.course_name', 'classes.class_name')
-                ->selectRaw('course.id, teachers.name, course.course_name, classes.class_name, COUNT(*) as count, COUNT(CASE WHEN outline.is_covered = 1 THEN 1 ELSE NULL END) as count_covered')
-                ->first();
-
-            $coursesByTeacher = [];
-
-            foreach ($teachers as $teacher) {
-                $teacherId = $teacher->id;
-                $teacherName = $teacher->name;
-                $schoolName = $teacher->school_name;
-                $classes = teacher_classes::where('teacher_id', '=', $teacherId)
-                    ->join('classes', 'teacher_classes.class_id', '=', 'classes.id')
-                    ->join('course', 'teacher_classes.course_id', '=', 'course.id')
-                    ->select('course.course_name', 'classes.class_name', 'teacher_classes.id')
-                    ->get();
-
-                $coursesByTeacher[] = [
-                    'teacher_name' => $teacherName,
-                    'school_name' => $schoolName,
-                    'classes' => $classes,
-                    'id' => $teacherId
-
-                ];
-            }
-            $studentsCount = students::where('school', $schoolId)->count();
-            $schoolsCount = 1;
-            $teachersCount = teachers::where('school_id', $schoolId)->count();
-            $adminsCount = admin::where('school_id', $schoolId)->count();
-
-            return view("index")
-                ->with("teachers", $teachers)
-                ->with("coursesByTeacher", $coursesByTeacher)
-                ->with('students', $students)
-                ->with('classes', $classes)
-                ->with('stats', [
-                    'studentsCount' => $studentsCount,
-                    'schoolsCount' => $schoolsCount,
-                    'teachersCount' => $teachersCount,
-                    'adminsCount' => $adminsCount,
-                ])
-                ->with('outlines', [$outline]);
-        } else if (UserPermission::isTeacher()) {
-            // TEACHER
-
-            $classes = teacher_classes::where('teacher_id', '=', session('user')['id'])
-                ->count();
-
-            $students = teacher_classes::where('teacher_id', '=', session('user')['id'])
-                ->join('classes', 'teacher_classes.class_id', '=', 'classes.id')
-                ->join('students', 'classes.class_name', '=', 'students.class')
-                ->count();
-
-            $activities = activity::where('tid', '=', session('user')['id'])->count();
-
-
-
-            return view("index")
-                ->with('classes', $classes)
-                ->with('students', $students)
-                ->with('activities', $activities);
-
-        }
-    }
 
     // Super Admin Dashboard
     public function SuperAdminViewHome()
@@ -331,13 +215,13 @@ class AdminController extends Controller
             $date = now();
 
             $attendance = Attendance::whereIn('school_id', $schoolIds)
-            ->whereDate('date', '=', $date)
-            ->select(
-                DB::raw('COUNT(CASE WHEN status = "present" THEN 1 END) AS total_present'),
-                DB::raw('COUNT(CASE WHEN status = "absent" THEN 1 END) AS total_absent'),
-                DB::raw('COUNT(CASE WHEN status = "late" THEN 1 END) AS total_late')
-            )
-            ->first();
+                ->whereDate('date', '=', $date)
+                ->select(
+                    DB::raw('COUNT(CASE WHEN status = "present" THEN 1 END) AS total_present'),
+                    DB::raw('COUNT(CASE WHEN status = "absent" THEN 1 END) AS total_absent'),
+                    DB::raw('COUNT(CASE WHEN status = "late" THEN 1 END) AS total_late')
+                )
+                ->first();
 
 
             $studentsCount = students::whereIn('school', $schoolIds)->count();
@@ -374,22 +258,62 @@ class AdminController extends Controller
     {
         if (UserPermission::isTeacher()) {
 
-            $classes = teacher_classes::where('teacher_id', '=', session('user')['id'])
+            $tid = session('user')['id'];
+
+            $classes = teacher_classes::where('teacher_id', '=', $tid)
                 ->count();
 
-            $students = teacher_classes::where('teacher_id', '=', session('user')['id'])
+            $students = teacher_classes::where('teacher_id', '=', $tid)
                 ->join('classes', 'teacher_classes.class_id', '=', 'classes.id')
                 ->join('students', 'classes.class_name', '=', 'students.class')
                 ->count();
 
-            $activities = activity::where('tid', '=', session('user')['id'])->count();
+            $activities = activity::where('tid', '=', $tid)->count();
+
+            $classesCount = teacher_classes::where('teacher_id', '=', $tid)->count();
 
 
+
+            $chaptersCount = Chapter::where('teacher_id', '=', $tid)
+                ->count();
+
+            $studentsCount = $students = DB::table('teacher_classes')
+                ->join('classes', 'teacher_classes.class_id', '=', 'classes.id')
+                ->join('students', function ($join) {
+                    $join->on('classes.class_name', '=', 'students.class')
+                        ->on('teacher_classes.school_id', '=', 'students.school');
+                })
+                ->where('teacher_classes.teacher_id', '=', $tid)
+                ->select('students.*')
+                ->count();
+
+            $studentGenderCounts = DB::table('teacher_classes')
+                ->join('classes', 'teacher_classes.class_id', '=', 'classes.id')
+                ->join('students', function ($join) {
+                    $join->on('classes.class_name', '=', 'students.class')
+                        ->on('teacher_classes.school_id', '=', 'students.school');
+                })
+                ->where('teacher_classes.teacher_id', '=', $tid)
+                ->select('students.gender', DB::raw('COUNT(*) as count'))
+                ->groupBy('students.gender')
+                ->pluck('count', 'gender')
+                ->map(function ($count, $gender) {
+                    return [$gender => $count];
+                })
+                ->values()
+                ->toArray();
 
             return view("dashboard.teachers.home.view")
                 ->with('classes', $classes)
                 ->with('students', $students)
-                ->with('activities', $activities);
+                ->with('activities', $activities)
+                ->with('stats', [
+                    'classesCount' => $classesCount,
+                    'chaptersCount' => $chaptersCount,
+                    'studentsCount' => $studentsCount,
+                    'studentGenderCounts' => $studentGenderCounts,
+                ])
+            ;
         }
     }
 

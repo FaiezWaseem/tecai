@@ -231,7 +231,7 @@ async function postData() {
   if(res.success){
    showLoader(false)
   var link = document.createElement("a"); // Or maybe get it from the current document
-  link.href = '../../../api/assignments/' + res.id +"?teacher=true";
+  link.href = '../../../teacher/assignment/view/' + res.id +"?teacher=true";
   link.target = '_blank'
   document.body.appendChild(link);
   link.click();

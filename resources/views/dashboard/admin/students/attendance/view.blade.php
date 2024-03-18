@@ -1,7 +1,7 @@
 @extends('dashboard.common')
 
 @section('sidebar')
-    @include('dashboard.teachers.sidebar')
+    @include('dashboard.admin.sidebar')
 @endsection
 
 @section('content')
@@ -10,65 +10,76 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1 class="m-0">Teacher Classes View</h1>
+                    <h1 class="m-0">Attendance View</h1>
                 </div><!-- /.col -->
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a href="#">Home</a></li>
-                        <li class="breadcrumb-item">Classes</li>
+                        <li class="breadcrumb-item">Attendance</li>
                         <li class="breadcrumb-item active">Views</li>
                     </ol>
-                </div><!-- /.col -->
-            </div><!-- /.row -->
-        </div><!-- /.container-fluid -->
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <form  method="post" class="d-flex justify-content-start">
+                        @csrf
+                        @method('POST')
+                        <input type="date" name="date" value="{{ $date ?? '' }}" class="form-control">
+                       <input type="submit" value="filter" class="btn btn-primary">
+                    </form>
+                </div>
+                <div class="col-md-6"></div>
+                <div class="col-md-2">
+                    <a  href="{{ route('schooladmin.attendance.create') }}" class="btn btn-primary">Add Attendance</a>
+                </div>
+            </div>
+        </div>
     </div>
- 
-    <!-- /.content-header -->
-    <!-- Main content -->
+
     <section class="content">
         <div class="container-fluid">
-            <!-- Small boxes (Stat box) -->
+          
             <div class="card">
                 <div class="card-header">
-                    <h3 class="card-title">Classes</h3>
+                    <h3 class="card-title">Attendance</h3>
                 </div>
-                <!-- /.card-header -->
+               
                 <div class="card-body">
                     <table id="example1" class="table table-bordered table-striped">
                         <thead>
                             <tr>
-                                <th>Students</th>
-                                <th>Outline</th>
-                                <th>Grade</th>
-                                <th>Subject</th>
+                                <th>Actions</th>
+                                <th>Student</th>
+                                <th>Status</th>
+                                <th>Date</th>
                             </tr>
                         </thead>
                         <tbody>
                             
-                            @foreach ($classes as $item)
-                            <tr>
-                                <td class="d-flex justify-content-between" >
-                                    <a >
-                                       Students
-                                    </a>
-                                </td>
-                                <td>
-                                    <a href="{{ route('teacher.classe.outline.show', ['class_id' => $item->class_id , 'course_id' => $item->course_id]) }}">
-                                        <i class="fa fa-eye"></i>   outline
-                                    </a>
-                                </td>
-                                <td>{{ $item->class_name }}</td>
-                                <td>{{ $item->course_name }}</td>
-                            </tr>
+                            @foreach ($attendance as $item)
+                                <tr>
+                                    <td  >
+                                        <a href="#">
+                                        Edit
+                                        </a>
+                                    </td>
+                                
+                                    <td>{{ $item->name }}</td>
+                                    <td
+                                    style="color: {{ $item->status == 'present' ? 'green' : ($item->status == 'late' ? 'orange' : 'red') }};
+                                    font-weight: bold;"
+                                    >{{ $item->status }}</td>
+                                    <td>{{ $item->date }}</td>
+                                </tr>
                             @endforeach
                         </tbody>
                         <tfoot>
                             <tr>
-                                <th>Students</th>
-                                <th>Outline</th>
-                          
-                                <th>Grade</th>
-                                <th>Subject</th>
+                                <th>Actions</th>
+                                <th>Student</th>
+                                <th>Status</th>
+                                <th>Date</th>
                             </tr>
                         </tfoot>
                     </table>
@@ -104,7 +115,7 @@
                 "responsive": true,
                 "lengthChange": false,
                 "autoWidth": false,
-                "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
+                "buttons": ["copy", "csv", "excel", "pdf", "print"]
             }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
 
         });

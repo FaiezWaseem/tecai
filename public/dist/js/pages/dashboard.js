@@ -324,3 +324,12 @@ function showToast(title, message, type = 'success' | 'warning' | 'info' | 'erro
       afterHidden: function() {} // will be triggered after the toast has been hidden
   });
 }
+function replaceNumberInUrl(url, number) {
+  // Convert the number to a string
+  const numberString = number.toString();
+
+  // Use regular expression to replace the number in the URL
+  const replacedUrl = url.replace(/\/\d+(?=\/|$)/, '/' + numberString);
+
+  return replacedUrl;
+}

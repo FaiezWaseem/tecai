@@ -22,7 +22,7 @@
             </div><!-- /.row -->
         </div><!-- /.container-fluid -->
     </div>
- 
+
     <!-- /.content-header -->
     <!-- Main content -->
     <section class="content">
@@ -42,6 +42,7 @@
                                 <th>Photo</th>
                                 <th>Student Name</th>
                                 <th>Father Name</th>
+                                <th>Email</th>
                                 <th>Class</th>
                                 <th>Sec</th>
                                 <th>DOB</th>
@@ -49,35 +50,10 @@
                                 <th>Gender</th>
                                 <th>School Name</th>
                                 <th>Created At</th>
-                                <th>Updated At</th>
                             </tr>
                         </thead>
                         <tbody>
-                            
-                            @foreach ($students as $item)
-                            <tr>
-                                <td>
-                                    <a href="{{ route('superadmin.students.edit', ['id'=> $item->id]) }}">
-                                        <i class="fa fa-edit text-primary"  ></i>
-                                    </a>
-                                    <button class="btn" data-toggle="modal" data-target="#DeleteModal" onclick="setdeleteModalId({{$item->id}})">
-                                        <i class="fa fa-trash text-danger"  ></i>
-                                    </button>
-                                </td>
-                                <td>{{ $item->id }}</td>
-                                <td> <img src="{{ $item->photo }}" width="40px" height="40px" alt=""> </td>
-                                <td>{{ $item->name }} </td>
-                                <td>{{ $item->father_name }} </td>
-                                <td>{{ $item->class }} </td>
-                                <td>{{ $item->section }} </td>
-                                <td>{{ $item->dob }} </td>
-                                <td>{{ $item->contact }} </td>
-                                <td>{{ $item->gender }} </td>
-                                <td>{{ $item->school_name }} </td>
-                                <td>{{ $item->created_at }}</td>
-                                <td>{{ $item->updated_at }}</td>
-                            </tr>
-                            @endforeach
+
                         </tbody>
                         <tfoot>
                             <tr>
@@ -86,6 +62,7 @@
                                 <th>Photo</th>
                                 <th>Student Name</th>
                                 <th>Father Name</th>
+                                <th>Email</th>
                                 <th>Class</th>
                                 <th>Sec</th>
                                 <th>DOB</th>
@@ -93,11 +70,9 @@
                                 <th>Gender</th>
                                 <th>School Name</th>
                                 <th>Created At</th>
-                                <th>Updated At</th>
                             </tr>
                         </tfoot>
                     </table>
-                    {{$students->links() }}
                 </div>
                 <!-- /.card-body -->
             </div>
@@ -125,15 +100,74 @@
     <script src="{{ asset('plugins/datatables-buttons/js/buttons.print.min.js') }}"></script>
     <script src="{{ asset('plugins/datatables-buttons/js/buttons.colVis.min.js') }}"></script>
     <script>
-        $(function() {
-            $("#example1").DataTable({
-                "responsive": true,
-                "info": false,
-                "autoWidth": false,
-                paging: false,
-                "buttons": ["copy", "csv", "excel", "pdf", "print"]
-            }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
+        setTimeout(() => {
+            showLoader(true)
+            fetchRecords()
+        }, 1000);
 
-        });
+        const fetchRecords = async () => {
+            const csrfToken = $('meta[name="csrf-token"]').attr('content');
+
+            console.log(csrfToken)
+            $.ajax({
+                url: '{{ route('superadmin.students.view') }}', // Current page URL
+                type: 'POST', // or 'GET', 'PUT', etc. depending on your needs
+                data: {
+                    _token: csrfToken, // Include the CSRF token in the request data
+                },
+                dataType: 'json', // Specify the expected response data type
+                success: function(data) {
+                    // Handle the response from the server
+
+                    console.log(data)
+                    loadInTable(data.students)
+
+                },
+                error: function(xhr, status, error) {
+                    // Handle any errors that occurred during the request
+                    console.error(error);
+                    alert('Failed to fetched Departments :  ERROR : ' + error)
+                }
+            });
+    
+        }
+
+        const loadInTable = (json) => {
+            const table = $('#example1 tbody');
+            const size = json.length;
+            console.log(size)
+            for (let i = 0; i < size; i++) {
+                const student = json[i];
+                const row = $('<tr>');
+                const actions = $('<td>').text('');
+                const cell0 = $('<td>').text(student.id);
+                const cell1 = $('<td>').text('');
+                const cell2 = $('<td>').text(student.name);
+                const cell3 = $('<td>').text(student.father_name);
+                const cell4 = $('<td>').text(student.email);
+                const cell5 = $('<td>').text(student.class);
+                const cell6 = $('<td>').text(student.section);
+                const cell7 = $('<td>').text(student.dob);
+                const cell8 = $('<td>').text(student.contact);
+                const cell9 = $('<td>').text(student.gender);
+                const cell10 = $('<td>').text(student.school_name);
+                const cell11 = $('<td>').text(student.created_at);
+
+
+                row.append(actions, cell0, cell1, cell2, cell3, cell4, cell5, cell6, cell7, cell8, cell9, cell10 , cell11);
+                // Append the row to the table
+                table.append(row);
+            }
+            $(function() {
+                $("#example1").DataTable({
+                    "responsive": true,
+                    "lengthChange": false,
+                    "autoWidth": false,
+                    "buttons": ["copy", "csv", "excel", "pdf", "print"]
+                }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
+
+            });
+            showLoader(false)
+        }
     </script>
 @endsection

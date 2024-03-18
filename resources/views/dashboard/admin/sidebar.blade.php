@@ -192,6 +192,12 @@
                   <p>Add New Student</p>
                 </a>
               </li>
+              <li class="nav-item">
+                <a href="{{ route('schooladmin.attendance.view') }}" class="nav-link {{ request()->is('dashboard/school_admin/attendance/create') ? 'active' : '' }}">
+                  <i class="far fa fa-eye nav-icon"></i>
+                  <p>View Attendance</p>
+                </a>
+              </li>
             </ul>
           </li>
           <li class="nav-item {{ request()->is('dashboard/school_admin/teachers*') ? 'menu-open' : '' }}">

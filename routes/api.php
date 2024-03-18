@@ -22,8 +22,8 @@ Route::get('/hello', function (Request $request) {
 
     $response =  (new Expo)->send([
         [
-            'title' => 'KFC KFC FREE FREE KFC',
-            'body' => 'Kfc choro tailwindcsss per focus karo',
+            'title' => 'Experince Mill raha hai na apko aur kiya chahiya',
+            'body' => 'FREE LABOUR',
             'to' => 'ExponentPushToken[If6jGaG5bKaIYvfHsiByou]',
         ]
     ])->push();

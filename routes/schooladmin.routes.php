@@ -61,6 +61,8 @@ Route::middleware('CheckSchoolAdmin')->prefix('/school_admin')->group(function (
      */
     Route::get('/students/view', [App\Http\Controllers\StudentsController::class, 'SchoolAdminViewStudents'])
         ->name('schooladmin.students.view');
+    Route::post('/students/view', [App\Http\Controllers\StudentsController::class, 'SchoolAdminViewStudents'])
+        ->name('schooladmin.students.view');
     /**
      *  Route : SchoolAdmin / create Student
      *  # Display create Form
@@ -110,5 +112,17 @@ Route::middleware('CheckSchoolAdmin')->prefix('/school_admin')->group(function (
         ->name('schooladmin.teachers.edit');
 
     // ========================== SCHOOL TEACHER EDIT NEED TO BE IMPLEMENTED ==========================
+
+
+    Route::get('/attendance/view', [App\Http\Controllers\AttendanceController::class, 'SchoolAdminViewAttendance'])
+    ->name('schooladmin.attendance.view');
+    Route::post('/attendance/view', [App\Http\Controllers\AttendanceController::class, 'SchoolAdminViewAttendanceByDate'])
+    ->name('schooladmin.attendance.view');
+
+
+    Route::get('/attendance/create', [App\Http\Controllers\AttendanceController::class, 'SchoolAdminCreateAttendance'])
+    ->name('schooladmin.attendance.create');
+    Route::post('/attendance/create', [App\Http\Controllers\AttendanceController::class, 'SchoolAdminStoreAttendance'])
+    ->name('schooladmin.attendance.create');
 
 });
