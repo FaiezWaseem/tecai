@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Chapter;
+use App\Models\students;
 use App\Models\teachers;
 use App\Models\school;
 use App\Models\course;
@@ -115,7 +116,7 @@ class TeachersController extends Controller
         $teachers = DB::table('teachers')
             ->join('school', 'teachers.school_id', '=', 'school.id')
             ->select('teachers.*', 'school.school_name')
-            ->whereIn('teachers.school_id',HelperFunctionsController::getUserSchoolsIds())
+            ->whereIn('teachers.school_id', HelperFunctionsController::getUserSchoolsIds())
             ->paginate(10);
         $coursesByTeacher = [];
         foreach ($teachers as $teacher) {
@@ -540,6 +541,8 @@ class TeachersController extends Controller
         $courses = $request->input('subjects');
         $class = $request->input('classes');
 
+        $teacher = teachers::find($id);
+
 
         foreach ($courses as $course) {
 
@@ -547,7 +550,7 @@ class TeachersController extends Controller
             $existingAssignment = teacher_classes::where('teacher_id', $id)
                 ->where('class_id', $class[0])
                 ->where('course_id', $course)
-                ->where('school_id', session('user')['school_id'])
+                ->where('school_id',$teacher->school_id)
                 ->first();
 
             if ($existingAssignment) {
@@ -558,7 +561,7 @@ class TeachersController extends Controller
             $teacher_class->teacher_id = $id;
             $teacher_class->class_id = $class[0];
             $teacher_class->course_id = $course;
-            $teacher_class->school_id = session('user')['school_id'];
+            $teacher_class->school_id = $teacher->school_id;
             $teacher_class->save();
         }
 
@@ -630,6 +633,19 @@ class TeachersController extends Controller
                 $activity->title = session('title');
                 $activity->type = $request->input('type');
                 $activity->save();
+
+                $students = teacher_classes::where('teacher_id', '=', session('user')['id'])
+                    ->join('classes', 'teacher_classes.class_id', '=', 'classes.id')
+                    ->join('students', 'classes.class_name', '=', 'students.class')
+                    ->get();
+
+                  foreach ($students as $key => $student) {
+                    if($student->token){
+                        HelperFunctionsController::sendNotification($student->token , 'New Assignment' , 'Dear Student you have new Assignment Due . '.session('title'));
+                    }
+                  }  
+
+
                 return response()->json(['success' => true, 'message' => 'Assignment Created Successfully', 'id' => $activity->id]);
             default:
                 return response()->json(['success' => false, 'message' => 'Invalid Type']);

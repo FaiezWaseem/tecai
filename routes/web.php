@@ -17,9 +17,14 @@ Route::get('/user', function(){
 Route::get('/preview/file/{id}', [App\Http\Controllers\PreviewFileController::class, 'index'])
 ->name('preview.file');
 
+Route::get('/teacher/preview/file/{id}', [App\Http\Controllers\PreviewFileController::class, 'TeacherViewFile'])
+->name('teacher.preview.file');
+
 Route::get('/preview/file/download/{id}', [App\Http\Controllers\PreviewFileController::class, 'downloadFile'])
 ->name('preview.file.download')
 ;
+
+
 
 require_once __DIR__ . '/home.routes.php';
 

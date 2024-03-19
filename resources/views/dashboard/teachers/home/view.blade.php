@@ -201,6 +201,9 @@
 @endsection
 
 @section('footer')
+     
+
+   @if ($stats['studentGenderCounts'])
     <script>
         const total_stds = {{ $stats['studentsCount'] }};
         const total_male_stds = {{ $stats['studentGenderCounts'][1]['male'] }};
@@ -210,4 +213,5 @@
         loadAttendanceCanvas([15 , 4, 2]);
         loadCourseCoverageCanvas([5 ,4]);
     </script>
+    @endif
 @endsection

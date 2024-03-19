@@ -101,7 +101,7 @@
 
                                                 $ChaptersTopics = [];
 
-                                                foreach ($contents as $item) {
+                                                foreach ($slos as $item) {
                                                     $chapterName = $item['chapter_title'];
                                                     $topicTitle = $item['topic_title'];
 
@@ -190,6 +190,7 @@
 
                                             <!-- Card body -->
                                             <div class="card-body p-0 pt-3">
+                                        
 
                                                 @foreach ($ChaptersTopics as $chapterName => $topicTitles)
                                                     <h4>{{ $chapterName }}</h4>

@@ -1,7 +1,7 @@
 @extends('dashboard.common')
 
 @section('sidebar')
-    @include('dashboard.superadmin.sidebar')
+    @include('dashboard.teachers.sidebar')
 @endsection
 
 @section('content')
@@ -15,7 +15,7 @@
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item">
-                            <a href="{{ route('superadmin.home.view') }}">Home</a>
+                            <a href="{{ route('teacher.home.view') }}">Home</a>
                         </li>
                         <li class="breadcrumb-item">LMS</li>
                         <li class="breadcrumb-item">Content</li>
@@ -68,53 +68,19 @@
                     </div>
                     <div class="col-md-4">
                         <div class="form-group">
-                            <label for="txtUserName">Board <span class="text-danger">*</span></label>
-                            <select name="tboard_id" class="form-control">
-                                @foreach ($boards as $item)
-                                    <option value="{{ $item->id }}"> {{ $item->board_name }} </option>
-                                @endforeach
-                            </select>
-                            <span id="txtUserName_Error" class="error invalid-feedback hide"></span>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="form-group">
                             <label for="txtUserName">Class <span class="text-danger">*</span></label>
-                            <select name="tclass_id" class="form-control">
+                            <select name="class_id" class="form-control">
+                                <option value="0">--Select--</option>
                                 @foreach ($classes as $item)
-                                    <option value="{{ $item->id }}"> {{ $item->class_name }} </option>
+                                <option value="{{ $item->id }}"> {{ $item->class_name }} </option>    
                                 @endforeach
+                                
                             </select>
                             <span id="txtUserName_Error" class="error invalid-feedback hide"></span>
                         </div>
                     </div>
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            <label for="txtUserName">Course <span class="text-danger">*</span></label>
-                            <select name="tcourse_id" class="form-control" id="classes">
-                                <option value="-1"> --Select-- </option>
-                                @foreach ($courses as $item)
-                                    <option value="{{ $item->id }}"> {{ $item->course_name }} </option>
-                                @endforeach
-                            </select>
-                            <span id="txtUserName_Error" class="error invalid-feedback hide"></span>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            <label for="txtUserName">Chapter <span class="text-danger">*</span></label>
-                            <select name="tchapter_id" class="form-control" id="chapters">
-                            </select>
-                            <span id="txtUserName_Error" class="error invalid-feedback hide"></span>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            <label for="txtUserName">Title <span class="text-danger">*</span></label>
-                            <input type="text" name="content_title" class="form-control" >
-                            <span id="txtUserName_Error" class="error invalid-feedback hide"></span>
-                        </div>
-                    </div>
+              
+              
 
                 </div>
 

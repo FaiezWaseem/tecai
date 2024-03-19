@@ -9,7 +9,7 @@
         <a href="{{ route('teacher.home.view') }}" class="nav-link text-white">Home</a>
       </li>
       <li class="nav-item d-none d-sm-inline-block">
-        <a href="#" class="nav-link text-white">Contact</a>
+        <a href="{{ route('home') }}" class="nav-link text-white">Content</a>
       </li>
     </ul>
 
@@ -209,6 +209,52 @@
                 <a href="{{ route('teacher.classes.view') }}" class="nav-link {{ request()->is('dashboard/teacher/classes/view') ? 'active' : '' }}">
                   <i class="far fa fa-eye nav-icon"></i>
                   <p>View My Classes</p>
+                </a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-item {{ request()->is('dashboard/teacher/content*') ? 'menu-open' : '' }}">
+            <a href="#" class="nav-link {{ request()->is('dashboard/teacher/content/view') ? 'active' : '' }}">
+              <i class="nav-icon fas fa-layer-group"></i>
+              <p>
+                Content
+                <i class="fas fa-angle-left right"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="{{ route('teacher.content.view') }}" class="nav-link {{ request()->is('dashboard/teacher/content/view') ? 'active' : '' }}">
+                  <i class="far fa fa-eye nav-icon"></i>
+                  <p>View Content</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="{{ route('teacher.content.create') }}" class="nav-link {{ request()->is('dashboard/teacher/content/create') ? 'active' : '' }}">
+                  <i class="far fa fa-plus-square nav-icon"></i>
+                  <p>Add New Content</p>
+                </a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-item {{ request()->is('dashboard/teacher/homework*') ? 'menu-open' : '' }}">
+            <a href="#" class="nav-link {{ request()->is('dashboard/teacher/homework/view') ? 'active' : '' }}">
+              <i class="nav-icon fas fa-folder-open"></i>
+              <p>
+                HomeWork
+                <i class="fas fa-angle-left right"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="{{ route('teacher.homework.view') }}" class="nav-link {{ request()->is('dashboard/teacher/homework/view') ? 'active' : '' }}">
+                  <i class="far fa fa-eye nav-icon"></i>
+                  <p>View all HomeWork</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="{{ route('teacher.homework.create') }}" class="nav-link {{ request()->is('dashboard/teacher/homework/create') ? 'active' : '' }}">
+                  <i class="far fa fa-plus-square nav-icon"></i>
+                  <p>Add New HomeWork</p>
                 </a>
               </li>
             </ul>

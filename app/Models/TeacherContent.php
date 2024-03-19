@@ -16,6 +16,7 @@ class TeacherContent extends Model
         'content_link',
         'course_id',
         'class_id',
+        'thumbnail',
         'teacher_id',
         'school_id',
     ];

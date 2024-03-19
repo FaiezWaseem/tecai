@@ -9,7 +9,7 @@
         <a href="{{ route('schooladmin.home.view') }}" class="nav-link text-white">Home</a>
       </li>
       <li class="nav-item d-none d-sm-inline-block">
-        <a href="#" class="nav-link text-white">Contact</a>
+        <a href="{{ route('home') }}" class="nav-link text-white">Content</a>
       </li>
     </ul>
 

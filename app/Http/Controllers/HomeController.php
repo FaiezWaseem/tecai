@@ -43,11 +43,12 @@ class HomeController extends Controller
         ->where('tcontent.tboard_id', '=', $board_id)
         ->where('tcontent.tclass_id' , $class_id)
         ->join('tchapters', 'tchapters.id', '=', 'tcontent.tchapter_id')
-        ->join('ttopics', 'ttopics.id', '=', 'tcontent.tslo_id')
-        ->select('tcontent.*', 'ttopics.topic_title' , 'tchapters.chapter_title')
+        ->select('tcontent.*', 'tcontent.content_title as topic_title' , 'tchapters.chapter_title')
         ->get();
 
-        $slos = Ttopics::where('tchapter_id', $course_id)->get();
+        $slos = Ttopics::where('tchapter_id', $course_id)
+        ->join('tchapters' , 'tchapters.id' , '=' , 'ttopics.tchapter_id')
+        ->get();
 
         return view('home.subject', compact('contents','course_name','course_id','slos'));
     }

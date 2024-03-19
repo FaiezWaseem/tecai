@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\TContent;
+use App\Models\teacher_classes;
+use App\Models\TeacherContent;
 use App\Models\Ttopics;
 use Illuminate\Http\Request;
 use App\Models\Tboards;
@@ -47,8 +49,7 @@ class ContentController extends Controller
             ->join('tclasses', 'tclasses.id', '=', 'tcontent.tclass_id')
             ->join('tchapters', 'tchapters.id', '=', 'tcontent.tchapter_id')
             ->join('tcourse', 'tcourse.id', '=', 'tcontent.tcourse_id')
-            ->join('ttopics', 'ttopics.id', '=', 'tcontent.tslo_id')
-            ->select('tcontent.*', 'ttopics.topic_title', 'tclasses.class_name', 'tchapters.chapter_title', 'tboards.board_name', 'tcourse.course_name')
+            ->select('tcontent.*', 'tcontent.content_title as topic_title', 'tclasses.class_name', 'tchapters.chapter_title', 'tboards.board_name', 'tcourse.course_name')
             ->paginate(20);
         return view('dashboard.superadmin.lms.content.view')
             ->with('content', $content)
@@ -74,13 +75,15 @@ class ContentController extends Controller
                 $content->content_type = $request->content_type;
                 $content->content_link = $fullpath;
                 $content->thumbnail = $thumbPath;
-                $content->tslo_id = $request->tslo_id;
+                $content->content_title = $request->content_title;
+                // $content->tslo_id = $request->tslo_id;
                 $content->save();
+                return redirect()->route('superadmin.lms.content.view');
             } else {
                 return "No file selected";
             }
+            return 'Some Error Occured';
 
-            return redirect()->route('superadmin.lms.content.view');
         } else {
             $boards = Tboards::all();
             $courses = TCourses::all();
@@ -120,6 +123,57 @@ class ContentController extends Controller
     public function SuperAdminEditLMSContent(Request $request)
     {
         // ------------------------- NEED TO IMPLEMENT
+    }
+
+
+    public function TeacherViewContent(Request $request){
+
+        $tid = session('user')['id'];
+        $content = TeacherContent::where('teacher_id' , '=' , $tid)
+        ->get();
+
+        return view('dashboard.teachers.content.view' , compact('content'));
+    }
+    public function TeacherCreateContent(Request $request){
+        
+        $tid = session('user')['id'];
+        $schoolId = session('user')['school_id'];
+
+        $requestMethod = $request->method();
+        
+        if ($requestMethod === 'POST') {
+            if ($request->hasFile('content_link') && $request->hasFile('thumbnail')) {
+                $file = $request->file('content_link');
+                $file2 = $request->file('thumbnail');
+
+                $fullpath = $this->saveFile($file, 'web_uploads/school_teacher_content/');
+                $thumbPath = $this->saveFile($file2, 'web_uploads/school_teacher_content/thumbnail/');
+
+                $content = new TeacherContent();
+                $content->content_type = $request->content_type;
+                $content->content_link = $fullpath;
+                $content->teacher_id = $tid;
+                $content->school_id = $schoolId;
+                $content->class_id = $request->class_id;
+                $content->course_id = 0;
+                $content->thumbnail = $thumbPath;
+                $content->save();
+
+                return redirect()->route('teacher.content.view');
+
+            }else{
+                return 'No File Selected';
+            }
+        }   
+
+
+        $classes = teacher_classes::where('teacher_id', '=', $tid)
+        ->join('classes' , 'teacher_classes.class_id' , 'classes.id')
+        ->select('classes.*')
+        ->distinct('class_name')
+        ->get();
+
+        return view('dashboard.teachers.content.create' , compact('classes'));
     }
 
     public function create(Request $request)

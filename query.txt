@@ -384,3 +384,32 @@ CREATE TABLE `teacher_content` (
   `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+
+
+
+
+ALTER TABLE `teacher_content`
+ADD COLUMN thumbnail varchar(500) default null;
+
+
+
+
+CREATE TABLE `homework` (
+  `id` BIGINT PRIMARY KEY AUTO_INCREMENT NOT NULL,
+  `school_id` BIGINT NOT NULL,
+  `class_id` BIGINT NOT NULL,
+  `teacher_id` BIGINT NOT NULL,
+  `image` VARCHAR(500)  NULL,
+  `content` VARCHAR(500)  NULL,
+  `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+ALTER TABLE `homework`
+ADD COLUMN date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+
+
+
+
+ALTER TABLE `tcontent`
+ADD COLUMN content_title varchar(300) default null;

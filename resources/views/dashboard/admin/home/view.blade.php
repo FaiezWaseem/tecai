@@ -246,7 +246,7 @@
                         </div><!-- /.card-body -->
                     </div>
 
-        
+
 
                     <!-- Calendar -->
                     <div class="card bg-gradient-success">
@@ -299,9 +299,15 @@
 
 
 @section('footer')
-    <script>
-        loadStudentCanvas([{{ $stats['studentsCount'] }}, {{ $stats['studentsMaleCount'] }},{{ $stats['studentsFemaleCount'] }}]);
-        loadCourseCoverageCanvas([ {{$outlines[0]->count}}, {{$outlines[0]->count_covered}}]);
-        loadAttendanceCanvas([{{ $attendance->total_present }} , {{ $attendance->total_absent }} , {{ $attendance->total_late }}]);
-    </script>
+    @if ($outlines)
+        <script>
+            loadStudentCanvas([{{ $stats['studentsCount'] }}, {{ $stats['studentsMaleCount'] }},
+                4{{ $stats['studentsFemaleCount'] }}
+            ]);
+            loadCourseCoverageCanvas([{{ $outlines[0]->count }}, {{ $outlines[0]->count_covered }}]);
+            loadAttendanceCanvas([{{ $attendance->total_present }}, {{ $attendance->total_absent }},
+                {{ $attendance->total_late }}
+            ]);
+        </script>
+    @endif
 @endsection

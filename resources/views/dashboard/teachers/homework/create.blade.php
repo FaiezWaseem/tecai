@@ -1,7 +1,7 @@
 @extends('dashboard.common')
 
 @section('sidebar')
-    @include('dashboard.superadmin.sidebar')
+    @include('dashboard.teachers.sidebar')
 @endsection
 
 @section('content')
@@ -10,15 +10,15 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1 class="m-0">ADD NEW CONTENT</h1>
+                    <h1 class="m-0">ADD NEW HOMEWORK</h1>
                 </div><!-- /.col -->
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item">
-                            <a href="{{ route('superadmin.home.view') }}">Home</a>
+                            <a href="{{ route('teacher.home.view') }}">Home</a>
                         </li>
-                        <li class="breadcrumb-item">LMS</li>
-                        <li class="breadcrumb-item">Content</li>
+                        <li class="breadcrumb-item">Teacher</li>
+                        <li class="breadcrumb-item">Homework</li>
                         <li class="breadcrumb-item active">Create</li>
                     </ol>
                 </div><!-- /.col -->
@@ -46,75 +46,33 @@
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label for="txtUserName">Content File </label>
-                            <input accept=".png, .jpg, .jpeg, .gif, .pdf, .mp4, .zip, .rar, .swf" class="form-control"
-                                name="content_link" type="file" onchange="validateFileSize(this)" value="">
-                            <span id="txtUserName_Error" class="error invalid-feedback hide"></span>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            <label for="txtUserName">Content Type <span class="text-danger">*</span></label>
-                            <select name="content_type" class="form-control">
-                                <option value="0">--Select--</option>
-                                <option value="Video">Video</option>
-                                <option value="Pdf">Pdf</option>
-                                <option value="Flash">Flash</option>
-                                <option value="Web">GIF</option>
-                                <option value="Web">Web</option>
-                            </select>
-                            <span id="txtUserName_Error" class="error invalid-feedback hide"></span>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            <label for="txtUserName">Board <span class="text-danger">*</span></label>
-                            <select name="tboard_id" class="form-control">
-                                @foreach ($boards as $item)
-                                    <option value="{{ $item->id }}"> {{ $item->board_name }} </option>
-                                @endforeach
-                            </select>
+                            <label for="txtUserName">Content </label>
+                            <textarea name="content" class="form-control" cols="30" rows="5"></textarea>
                             <span id="txtUserName_Error" class="error invalid-feedback hide"></span>
                         </div>
                     </div>
                     <div class="col-md-4">
                         <div class="form-group">
                             <label for="txtUserName">Class <span class="text-danger">*</span></label>
-                            <select name="tclass_id" class="form-control">
+                            <select name="class_id" class="form-control">
+                                <option value="0">--Select--</option>
                                 @foreach ($classes as $item)
                                     <option value="{{ $item->id }}"> {{ $item->class_name }} </option>
                                 @endforeach
+
                             </select>
                             <span id="txtUserName_Error" class="error invalid-feedback hide"></span>
                         </div>
                     </div>
                     <div class="col-md-4">
                         <div class="form-group">
-                            <label for="txtUserName">Course <span class="text-danger">*</span></label>
-                            <select name="tcourse_id" class="form-control" id="classes">
-                                <option value="-1"> --Select-- </option>
-                                @foreach ($courses as $item)
-                                    <option value="{{ $item->id }}"> {{ $item->course_name }} </option>
-                                @endforeach
-                            </select>
+                            <label for="txtUserName">Date <span class="text-danger">*</span></label>
+                            <input type="date" name="date"  class="form-control">
                             <span id="txtUserName_Error" class="error invalid-feedback hide"></span>
                         </div>
                     </div>
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            <label for="txtUserName">Chapter <span class="text-danger">*</span></label>
-                            <select name="tchapter_id" class="form-control" id="chapters">
-                            </select>
-                            <span id="txtUserName_Error" class="error invalid-feedback hide"></span>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            <label for="txtUserName">Title <span class="text-danger">*</span></label>
-                            <input type="text" name="content_title" class="form-control" >
-                            <span id="txtUserName_Error" class="error invalid-feedback hide"></span>
-                        </div>
-                    </div>
+
+
 
                 </div>
 

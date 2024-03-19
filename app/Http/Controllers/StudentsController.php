@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\HomeWork;
 use App\Models\students;
 use App\Models\activity;
 use App\Models\tasks;
@@ -40,15 +41,15 @@ class StudentsController extends Controller
     {
         $rqMethod = $request->method();
 
-        if($rqMethod === 'POST'){
+        if ($rqMethod === 'POST') {
             $students = students::join('school', 'school.id', 'students.school')
-            ->select('students.*', 'school.school_name')
-            ->get();
+                ->select('students.*', 'school.school_name')
+                ->get();
             return response()->json([
                 'students' => $students
             ]);
         }
-       
+
         return view('dashboard.superadmin.students.view')
         ;
     }
@@ -187,11 +188,11 @@ class StudentsController extends Controller
         $schoolId = HelperFunctionsController::getUserSchoolsIds();
         $rqMethod = $request->method();
 
-        if($rqMethod === 'POST'){
+        if ($rqMethod === 'POST') {
             $students = students::whereIn('school', $schoolId)
-            ->join('school', 'school.id', 'students.school')
-            ->select('students.*', 'school.school_name')
-            ->get();
+                ->join('school', 'school.id', 'students.school')
+                ->select('students.*', 'school.school_name')
+                ->get();
             return response()->json([
                 'students' => $students
             ]);
@@ -416,6 +417,9 @@ class StudentsController extends Controller
             ]);
         }
 
+        $std = HelperFunctionsController::getCurrentStudent();
+
+
 
         $tasks = new tasks();
         $tasks->std_id = $request->id;
@@ -423,6 +427,13 @@ class StudentsController extends Controller
         $tasks->points_obtained = $request->points_obtained;
         $tasks->points_total = $request->points_total;
         $tasks->save();
+
+
+        if($std->token){
+            HelperFunctionsController::sendNotification($std->token,'You have been Graded on The Assignment', $std->name .' Your Score is saved.');
+        }
+
+
         return response()->json([
             'success' => true,
             'task' => $tasks
@@ -461,5 +472,28 @@ class StudentsController extends Controller
             'status' => true,
             'attendance' => $attendance,
         ], 200);
+    }
+    public function getHomeWorks(Request $request)
+    {
+        $date = now();
+
+        $student = students::where('students.id', $request->id)
+            ->join('school', 'students.school', '=', 'school.id')
+            ->first();
+        $class = classes::where('class_name', $student->class)->first();
+
+        $homeworks = HomeWork::where('school_id','=',$student->school)
+        ->where('class_id', '=' , $class->id)
+        ->get()
+        ;
+
+        return response()->json([
+            'success' => true,
+            'homeworks' => $homeworks,
+            'class' => $class,
+            'student' => $student,
+            'class_id' => $class->id,
+            'class_name' => $class->class_name,
+        ]);
     }
 }

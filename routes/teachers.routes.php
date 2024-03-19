@@ -70,19 +70,31 @@ Route::middleware('CheckTeacher')->prefix('/teacher')->group(function () {
     Route::delete('/{class_id}/{course_id}/outline', [App\Http\Controllers\TeachersController::class, 'TeacherDeleteOutline'])
         ->name('teacher.classe.outline.remove');
 
-
     /**
-     *  Route : Teacher / Class Attendance
+     *  Route : Teacher /Custom Content
      *  # Display List
      */
-    Route::get('/{class_id}/{course_id}/attendance/view', [App\Http\Controllers\AttendanceController::class, 'TeacherViewAttendance'])
-        ->name('teacher.attendances.view');
-    Route::post('/{class_id}/{course_id}/attendance/view', [App\Http\Controllers\AttendanceController::class, 'TeacherViewAttendanceByDate'])
-        ->name('teacher.attendances.view');
-    
-    Route::get('/{class_id}/{course_id}/attendance/create', [App\Http\Controllers\AttendanceController::class, 'TeacherCreateAttendance'])
-        ->name('teacher.attendances.create');
-    Route::post('/{class_id}/{course_id}/attendance/create', [App\Http\Controllers\AttendanceController::class, 'TeacherStoreAttendance'])
-        ->name('teacher.attendances.create.post');
+    Route::get('/content/view', [App\Http\Controllers\ContentController::class, 'TeacherViewContent'])
+        ->name('teacher.content.view');
+
+    Route::get('/content/create', [App\Http\Controllers\ContentController::class, 'TeacherCreateContent'])
+        ->name('teacher.content.create');
+    Route::post('/content/create', [App\Http\Controllers\ContentController::class, 'TeacherCreateContent'])
+        ->name('teacher.content.create');
+
+
+    /**
+     *  Route : Teacher / homework
+     *  # Display List
+     */
+    Route::get('/homework/view', [App\Http\Controllers\HomeWorkController::class, 'TeacherViewHomeWork'])
+        ->name('teacher.homework.view'); 
+    Route::delete('/homework/view/{id}', [App\Http\Controllers\HomeWorkController::class, 'TeacherDeleteHomeWork'])
+        ->name('teacher.homework.delete'); 
+
+    Route::get('/homework/create', [App\Http\Controllers\HomeWorkController::class, 'TeacherCreateHomeWork'])
+        ->name('teacher.homework.create');    
+    Route::post('/homework/create', [App\Http\Controllers\HomeWorkController::class, 'TeacherCreateHomeWork'])
+        ->name('teacher.homework.create');    
 
 });

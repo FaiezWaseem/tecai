@@ -18,5 +18,6 @@ class TContent extends Model
         'tchapter_id',
         'tslo_id',
         'thumbnail',
+        'content_title',
     ];
 }

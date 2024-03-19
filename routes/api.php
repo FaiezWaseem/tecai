@@ -3,7 +3,6 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use ExpoSDK\Expo;
-use ExpoSDK\ExpoMessage;
 
 
 /*
@@ -17,13 +16,17 @@ use ExpoSDK\ExpoMessage;
 |
 */
 
+Route::get('/student/preview/file/download/{id}', [App\Http\Controllers\PreviewFileController::class, 'ApiStudentHomeWorkPreview'])
+->name('preview.file.download.student')
+;
+
 
 Route::get('/hello', function (Request $request) {
 
     $response =  (new Expo)->send([
         [
-            'title' => 'Experince Mill raha hai na apko aur kiya chahiya',
-            'body' => 'FREE LABOUR',
+            'title' => 'Bhai new user ka token nhi araha',
+            'body' => 'kaam karna',
             'to' => 'ExponentPushToken[If6jGaG5bKaIYvfHsiByou]',
         ]
     ])->push();
@@ -33,6 +36,7 @@ Route::get('/hello', function (Request $request) {
 
     return $data;
 });
+
 
 Route::post('/login', [App\Http\Controllers\StudentsController::class, 'login']);
 
@@ -55,5 +59,8 @@ Route::middleware('verify.token')->group(function () {
 
     Route::get('/attendance', [App\Http\Controllers\StudentsController::class, 'getAttendance']);
     Route::post('/attendance', [App\Http\Controllers\StudentsController::class, 'getAttendanceByDate']);
+
+
+    Route::get('/homeworks', [App\Http\Controllers\StudentsController::class, 'getHomeWorks']);
 });
 Route::get('/assignments/{id}', [App\Http\Controllers\StudentsController::class, 'getAssignment']);
