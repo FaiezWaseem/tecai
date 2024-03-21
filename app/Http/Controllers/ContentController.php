@@ -50,7 +50,7 @@ class ContentController extends Controller
             ->join('tchapters', 'tchapters.id', '=', 'tcontent.tchapter_id')
             ->join('tcourse', 'tcourse.id', '=', 'tcontent.tcourse_id')
             ->select('tcontent.*', 'tcontent.content_title as topic_title', 'tclasses.class_name', 'tchapters.chapter_title', 'tboards.board_name', 'tcourse.course_name')
-            ->paginate(20);
+            ->paginate(10);
         return view('dashboard.superadmin.lms.content.view')
             ->with('content', $content)
         ;
@@ -82,7 +82,7 @@ class ContentController extends Controller
             } else {
                 return "No file selected";
             }
-            return 'Some Error Occured';
+      
 
         } else {
             $boards = Tboards::all();
@@ -122,7 +122,74 @@ class ContentController extends Controller
     }
     public function SuperAdminEditLMSContent(Request $request)
     {
-        // ------------------------- NEED TO IMPLEMENT
+        $requestMethod = $request->method();
+        if ($requestMethod === 'PUT') {
+            if ($request->hasFile('content_link') && $request->hasFile('thumbnail')) {
+                $file = $request->file('content_link');
+                $file2 = $request->file('thumbnail');
+
+                $fullpath = $this->saveFile($file, 'web_uploads/');
+                $thumbPath = $this->saveFile($file2, 'web_uploads/thumbnail/');
+
+
+                $content = TContent::find($request->id);
+                if($request->tboard_id){
+                    $content->tboard_id = $request->tboard_id;
+                }
+                if($request->tcourse_id){
+                    $content->tcourse_id = $request->tcourse_id;
+                }
+                if($request->tclass_id){
+                    $content->tclass_id = $request->tclass_id;
+                }
+                if($request->tchapter_id){
+                    $content->tchapter_id = $request->tchapter_id;
+                }
+                if($request->content_type){
+                    $content->content_type = $request->content_type;
+                }
+                $content->content_link = $fullpath;
+                $content->thumbnail = $thumbPath;
+                if($request->content_title){
+                    $content->content_title = $request->content_title;
+                }
+                $content->save();
+                return redirect()->route('superadmin.lms.content.view');
+            } else {
+                $content = TContent::find($request->id);
+                if($request->tboard_id){
+                    $content->tboard_id = $request->tboard_id;
+                }
+                if($request->tcourse_id){
+                    $content->tcourse_id = $request->tcourse_id;
+                }
+                if($request->tclass_id){
+                    $content->tclass_id = $request->tclass_id;
+                }
+                if($request->tchapter_id){
+                    $content->tchapter_id = $request->tchapter_id;
+                }
+                if($request->content_type){
+                    $content->content_type = $request->content_type;
+                }
+                if($request->content_title){
+                    $content->content_title = $request->content_title;
+                }
+                $content->save();
+                return redirect()->route('superadmin.lms.content.view');
+            }
+        } else {
+            $boards = Tboards::all();
+            $courses = TCourses::all();
+            $classes = TClasses::all();
+            $content = TContent::find($request->id);
+            return view('dashboard.superadmin.lms.content.edit')
+                ->with('boards', $boards)
+                ->with('courses', $courses)
+                ->with('classes', $classes)
+                ->with('content', $content)
+            ;
+        }
     }
 
 

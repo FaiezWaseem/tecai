@@ -164,6 +164,8 @@ Route::middleware('CheckSuperAdmin')->prefix('/superadmin')->group(function () {
      */
     Route::get('/lms/content/{id}/edit', [App\Http\Controllers\ContentController::class, 'SuperAdminEditLMSContent'])
     ->name('superadmin.lms.content.edit');
+    Route::put('/lms/content/{id}/edit', [App\Http\Controllers\ContentController::class, 'SuperAdminEditLMSContent'])
+    ->name('superadmin.lms.content.edit');
     /**
      * Route SuperAdmin / Delete Teacher
      */

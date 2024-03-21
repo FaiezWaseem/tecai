@@ -63,7 +63,7 @@
                                     {{-- <a href="{{ Storage::disk('local')->temporaryUrl($item->content_link, now()->addMinutes(120)) }}">
                                         <i class="fa fa-eye text-success"  ></i>
                                     </a> --}}
-                                    <a href="{{ route('superadmin.students.edit', ['id'=> $item->id]) }}">
+                                    <a href="{{ route('superadmin.lms.content.edit', ['id'=> $item->id]) }}">
                                         <i class="fa fa-edit text-primary"  ></i>
                                     </a>
                                     <button class="btn" data-toggle="modal" data-target="#DeleteModal" onclick="setdeleteModalId({{$item->id}})">

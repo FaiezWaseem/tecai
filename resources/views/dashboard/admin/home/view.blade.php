@@ -299,7 +299,7 @@
 
 
 @section('footer')
-    @if ($outlines)
+    @if ( $outlines && count($outlines) > 0)
         <script>
             loadStudentCanvas([{{ $stats['studentsCount'] }}, {{ $stats['studentsMaleCount'] }},
                 4{{ $stats['studentsFemaleCount'] }}

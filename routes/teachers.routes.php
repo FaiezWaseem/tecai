@@ -65,6 +65,8 @@ Route::middleware('CheckTeacher')->prefix('/teacher')->group(function () {
      */
     Route::get('/{class_id}/{course_id}/outline', [App\Http\Controllers\TeachersController::class, 'TeacherViewOutline'])
         ->name('teacher.classe.outline.show');
+    Route::post('/{class_id}/{course_id}/outline', [App\Http\Controllers\TeachersController::class, 'TeacherCreateOutline'])
+        ->name('teacher.classe.outline.put');
     Route::put('/{class_id}/{course_id}/outline', [App\Http\Controllers\TeachersController::class, 'TeacherCreateOutline'])
         ->name('teacher.classe.outline.put');
     Route::delete('/{class_id}/{course_id}/outline', [App\Http\Controllers\TeachersController::class, 'TeacherDeleteOutline'])

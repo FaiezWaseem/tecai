@@ -33,7 +33,7 @@
 
                 <form method="POST">
                     @csrf
-                    @method('PUT')
+
                     <div class="row">
                         <div class="col-4 form-group">
                             <label for="subjects">Chapter</label>
@@ -78,7 +78,6 @@
                 </div>
                 <form method="POST" id="my-form">
                     @csrf
-                    @method('PUT')
                     <div class="row">
 
                         <div class="col-4 form-group">
@@ -131,25 +130,23 @@
                             @foreach ($outline as $course)
                                 <tr>
                                     <td>{{ $course->id }}</td>
-                                    <td>{{ $course->chapter_title }} </td>
-                                    <td> {{ $course->title }} </td>
-                                    <td> {{ $course->deliver_date }} </td>
+                                    <td>{{ $course->chapter_title }}</td>
+                                    <td>{{ $course->title }}</td>
+                                    <td>{{ $course->deliver_date }}</td>
                                     <td>
                                         <div class="form-check">
                                             @if ($course->is_covered == 0)
-                                                <input class="form-check-input" type="checkbox" id="flexCheckDefault">
-                                                <label class="form-check-label" for="flexCheckDefault">
-                                                    Not Covered
-                                                </label>
+                                                <input class="form-check-input" type="checkbox"
+                                                    id="flexCheckDefault_{{ $course->id }}"
+                                                    onchange="handleCheckboxChange('{{ $course->id }}')">
+                                                <label class="form-check-label"
+                                                    for="flexCheckDefault_{{ $course->id }}">Not Covered</label>
                                             @else
                                                 <input class="form-check-input" type="checkbox" checked="true"
-                                                    id="flexCheckDefault" disabled="true">
-                                                <label class="form-check-label" for="flexCheckDefault">
-                                                    Covered
-                                                </label>
+                                                    id="flexCheckDefault_{{ $course->id }}" disabled="true">
+                                                <label class="form-check-label"
+                                                    for="flexCheckDefault_{{ $course->id }}">Covered</label>
                                             @endif
-
-
                                         </div>
                                     </td>
                                     <td>
@@ -185,6 +182,44 @@
 
 
 @section('footer')
+    <script>
+        function handleCheckboxChange(checkboxId) {
+            var checkbox = $('#flexCheckDefault_' + checkboxId);
+            var csrfToken = $('meta[name="csrf-token"]').attr('content');
+            console.log(checkbox)
+
+            if (checkbox.is(':checked')) {
+                // Checkbox is checked, send the AJAX request
+                $.ajax({
+                    url: window.location.href, // Replace with your actual route URL
+                    type: 'PUT', // Or 'GET' depending on your server-side implementation
+                    data: {
+                        isCovered: true,
+                        id: checkboxId
+                    },
+                    headers: {
+                        'X-CSRF-TOKEN': csrfToken
+                    },
+                    success: function(response) {
+                        // Handle the response from the server
+                        console.log(response);
+                    },
+                    error: function(xhr) {
+                        // Handle the error case
+                        console.log(xhr.responseText);
+                    }
+                });
+            } else {
+                // Checkbox is unchecked, do something else if needed
+            }
+        }
+
+        $(document).ready(function() {
+            $('#flexCheckDefault').change(function() {
+                handleCheckboxChange('flexCheckDefault');
+            });
+        });
+    </script>
     <script>
         function deleteClicked(e) {
             var id = $(e).attr('data-id');

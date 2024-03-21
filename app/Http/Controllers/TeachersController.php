@@ -730,6 +730,11 @@ class TeachersController extends Controller
             $outline->save();
 
         }
+        if($request->has('isCovered')){
+            $outline = outline::find($request->id);
+            $outline->is_covered = 1;
+            $outline->save();
+        }
 
 
         return redirect()->route('teacher.classe.outline.show', [
