@@ -146,13 +146,12 @@
                                                                                     @if (isset($content['thumbnail']))
                                                                                         <img class='item-icon'
                                                                                             loading="lazy"
-                                                                                            src='{{ Storage::disk('local')->temporaryUrl($content['thumbnail'], now()->addMinutes(3)) }}' />
+                                                                                            src='{{ Storage::disk('local')->temporaryUrl($content['thumbnail'], now()->addMinutes(10)) }}' />
                                                                                     @endif
                                                                                 </a>
                                                                                 <!-- Content -->
                                                                                 <div class="ms-3">
-                                                                                    <a href="{{ route('preview.file', ['id' => $content['id']]) }}"
-                                                                                        class="d-inline-block text-truncate mb-0 h6 fw-normal w-100px w-sm-200px w-md-400px">{{ isset($content['topic_title']) ? $content['topic_title'] : '' }}</a>
+                                                                                    <a href="{{ route('preview.file', ['id' => $content['id']]) }}" class="d-inline-block text-truncate mb-0 h6 fw-normal w-100px w-sm-200px w-md-400px">{{ isset($content['topic_title']) ? $content['topic_title'] : '' }}</a>
                                                                                     <ul class="nav nav-divider small mb-0">
                                                                                         <li class="nav-item">
                                                                                             {{ isset($content['content_type']) ? $content['content_type'] : '' }}
@@ -163,7 +162,7 @@
                                                                             </div>
                                                                         </div>
                                                                         <!-- Actions Mark button -->
-                                                                        <a href="{{ route('preview.file.download', ['id' => $content['id']]) }}"
+                                                                        <a href="{{ route('preview.file', ['id' => $content['id']]) }}"
                                                                             class="p-2 mb-0 text-secondary"
                                                                             data-bs-toggle="tooltip" data-bs-placement="top"
                                                                             aria-label="Open" data-bs-original-title="Open">

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\SchoolsAdmin;
 use App\Models\students;
+use App\Models\teachers;
 use ExpoSDK\Expo;
 
 class HelperFunctionsController extends Controller
@@ -25,6 +26,9 @@ class HelperFunctionsController extends Controller
         ->join('school', 'school.id', 'schools_admin.school_id')
         ->select('school.school_name', 'school.id as id')
         ->get();
+    }
+    public static function getTeacherSchoolById($id){
+       return  teachers::find($id) -> pluck('school_id')[0];
     }
     public static function sendNotification(string $to , string $title , string $body ){
         $response =  (new Expo)->send([

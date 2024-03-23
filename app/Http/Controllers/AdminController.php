@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\admin;
 use App\Models\school;
+use App\Models\SchoolContentPermission;
 use App\Models\SchoolsAdmin;
+use App\Models\Tboards;
 use App\Models\teachers;
 use App\Models\students;
 use App\Models\classes;
@@ -189,6 +191,52 @@ class AdminController extends Controller
             return redirect()->route('superadmin.schooladmins.view');
         } else {
             return redirect()->route('superadmin.schooladmins.view');
+        }
+    }
+    public function SuperAdminViewSchoolPermissions(Request $request)
+    {
+
+        $rqMethod = $request->method();
+        $schoolId = $request->id;
+
+        if ($rqMethod === 'PUT') {
+            $boardId = $request->board_id;
+            $isChecked = $request->isChecked;
+            $record = SchoolContentPermission::where('school_id', $schoolId)
+                ->where('board_id', $boardId)
+                ->first();
+
+            if ($record) {
+                if ($isChecked === "true") {
+                    return response()->json([
+                        'deleted' => false,
+                    ]);
+                    // return redirect()->route('superadmin.school.permissions.view', ['id' => $schoolId]);
+                } else {
+
+                    $record->delete();
+                    return response()->json([
+                        'deleted' => true
+                    ]);
+                    // return redirect()->route('superadmin.school.permissions.view', ['id' => $schoolId]);
+                }
+            } else {
+                $record = new SchoolContentPermission;
+                $record->board_id = $boardId;
+                $record->school_id = $schoolId;
+                $record->save();
+            }
+        }
+
+        if ($rqMethod === 'GET') {
+            $permissions = SchoolContentPermission::where('school_id', $schoolId)
+                ->get();
+            $boards = Tboards::all();
+
+            return view(
+                'dashboard.superadmin.schools.permissions.view',
+                compact('boards', 'permissions')
+            );
         }
     }
 

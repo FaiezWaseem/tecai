@@ -13,10 +13,13 @@ class PreviewFileController extends Controller
 {
     public function index(Request $request)
     {
-        $content = TContent::find($request->id);
+        $id = $request->id;
+        $content = TContent::find($id);
         $content_type = $content->content_type;
-        $url = Storage::disk('local')->temporaryUrl($content->content_link, now()->addMinutes(5));
-        return view('home.preview', compact('content_type', 'url'));
+        if ($content_type == 'Flash') {
+            return view('home.preview', compact('content_type', 'id'));
+        }
+        return $this->downloadFile($request);
     }
     public function TeacherViewFile(Request $request)
     {

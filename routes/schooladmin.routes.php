@@ -91,6 +91,14 @@ Route::middleware('CheckSchoolAdmin')->prefix('/school_admin')->group(function (
     Route::get('/teachers/view', [App\Http\Controllers\TeachersController::class, 'SchoolAdminViewTeachers'])
         ->name('schooladmin.teachers.view');
     /**
+     *  Route : SchoolAdmin / View Teachers Permissions
+     *  # Display Permission Form
+     */
+    Route::get('/teachers/permissions/{id}', [App\Http\Controllers\TeachersController::class, 'SchoolAdminViewTeacherPermission'])
+        ->name('schooladmin.permissions.teachers.view');
+    Route::put('/teachers/permissions/{id}', [App\Http\Controllers\TeachersController::class, 'SchoolAdminViewTeacherPermission'])
+        ->name('schooladmin.permissions.teachers.view');
+    /**
      *  Route : SchoolAdmin / create Course
      *  # Display create Form
      */
@@ -115,14 +123,14 @@ Route::middleware('CheckSchoolAdmin')->prefix('/school_admin')->group(function (
 
 
     Route::get('/attendance/view', [App\Http\Controllers\AttendanceController::class, 'SchoolAdminViewAttendance'])
-    ->name('schooladmin.attendance.view');
+        ->name('schooladmin.attendance.view');
     Route::post('/attendance/view', [App\Http\Controllers\AttendanceController::class, 'SchoolAdminViewAttendanceByDate'])
-    ->name('schooladmin.attendance.view');
+        ->name('schooladmin.attendance.view');
 
 
     Route::get('/attendance/create', [App\Http\Controllers\AttendanceController::class, 'SchoolAdminCreateAttendance'])
-    ->name('schooladmin.attendance.create');
+        ->name('schooladmin.attendance.create');
     Route::post('/attendance/create', [App\Http\Controllers\AttendanceController::class, 'SchoolAdminStoreAttendance'])
-    ->name('schooladmin.attendance.create');
+        ->name('schooladmin.attendance.create');
 
 });

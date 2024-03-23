@@ -66,6 +66,13 @@ Route::middleware('CheckSuperAdmin')->prefix('/superadmin')->group(function () {
     Route::post('/admins/school/{id}/edit', [App\Http\Controllers\AdminController::class, 'SuperAdminAddSchoolToSchoolAdmin'])
     ->name('superadmin.schooladmins.edit');
     
+
+    Route::get('/admins/school/permissions/{id}', [App\Http\Controllers\AdminController::class, 'SuperAdminViewSchoolPermissions'])
+    ->name('superadmin.school.permissions.view');
+    Route::put('/admins/school/permissions/{id}', [App\Http\Controllers\AdminController::class, 'SuperAdminViewSchoolPermissions'])
+    ->name('superadmin.school.permissions.view');
+
+
     /**
      *  Route : SuperAdmin / View All Schools
      *  # Display list of all schools 

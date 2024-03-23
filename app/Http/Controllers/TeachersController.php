@@ -3,7 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\Chapter;
+use App\Models\SchoolContentPermission;
 use App\Models\students;
+use App\Models\Tboards;
+use App\Models\TClasses;
+use App\Models\TCourses;
+use App\Models\TeacherContentPermission;
 use App\Models\teachers;
 use App\Models\school;
 use App\Models\course;
@@ -479,6 +484,72 @@ class TeachersController extends Controller
     }
 
 
+    public function SchoolAdminViewTeacherPermission(Request $request)
+    {
+        $teacherId = $request->id;
+        $rqMethod = $request->method();
+
+        $teacherSchoolId = HelperFunctionsController::getTeacherSchoolById($teacherId);
+
+        if($rqMethod === 'PUT'){
+            $isChecked = $request->isChecked === "true" ? true : false ;
+            $course_id = $request->courseId;
+            $class_id = $request->classId;
+            $board_id = $request->boardId;
+
+           $record = TeacherContentPermission::where('teacher_id', $teacherId)
+           ->where('class_id', $class_id)
+           ->where('board_id', $board_id)
+           ->where('course_id', $course_id)
+           ->first()
+           ;
+
+           if($record){
+
+            if(!$isChecked){
+                $record->delete();
+                return response()->json([
+                    'status' => true                
+                ]);
+            }
+
+            return response()->json([
+                'status' => true                
+            ]);
+
+           }else{
+
+
+            $record = new TeacherContentPermission;
+            $record->teacher_id = $teacherId;
+            $record->class_id = $class_id;
+            $record->course_id  = $course_id;
+            $record->board_id = $board_id;
+            $record->save();
+
+            return response()->json([
+                'status' => true                
+            ]);
+
+           }
+
+        }
+
+        if ($rqMethod === 'GET') {
+
+            $boardIds = SchoolContentPermission::where('school_id', $teacherSchoolId)
+                ->pluck('board_id');
+
+            $boards = Tboards::whereIn('id', $boardIds)->get();
+            $classes = TClasses::all();
+            $courses = TCourses::all();
+
+            $permissions = TeacherContentPermission::where('teacher_id', $teacherId)
+            ->get();
+
+            return view('dashboard.admin.teachers.permissions.view', compact('boardIds', 'boards', 'classes', 'courses','permissions'));
+        }
+    }
 
     public function SchoolAdminEditTeachers($id)
     {
@@ -550,7 +621,7 @@ class TeachersController extends Controller
             $existingAssignment = teacher_classes::where('teacher_id', $id)
                 ->where('class_id', $class[0])
                 ->where('course_id', $course)
-                ->where('school_id',$teacher->school_id)
+                ->where('school_id', $teacher->school_id)
                 ->first();
 
             if ($existingAssignment) {
@@ -639,11 +710,11 @@ class TeachersController extends Controller
                     ->join('students', 'classes.class_name', '=', 'students.class')
                     ->get();
 
-                  foreach ($students as $key => $student) {
-                    if($student->token){
-                        HelperFunctionsController::sendNotification($student->token , 'New Assignment' , 'Dear Student you have new Assignment Due . '.session('title'));
+                foreach ($students as $key => $student) {
+                    if ($student->token) {
+                        HelperFunctionsController::sendNotification($student->token, 'New Assignment', 'Dear Student you have new Assignment Due . ' . session('title'));
                     }
-                  }  
+                }
 
 
                 return response()->json(['success' => true, 'message' => 'Assignment Created Successfully', 'id' => $activity->id]);
@@ -730,7 +801,7 @@ class TeachersController extends Controller
             $outline->save();
 
         }
-        if($request->has('isCovered')){
+        if ($request->has('isCovered')) {
             $outline = outline::find($request->id);
             $outline->is_covered = 1;
             $outline->save();

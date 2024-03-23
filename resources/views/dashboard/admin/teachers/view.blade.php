@@ -41,6 +41,7 @@
                         <thead>
                             <tr>
                                 <th>Actions</th>
+                                <th>LMS Permissions</th>
                                 <th>Id</th>
                                 <th>School </th>
                                 <th>Teacher</th>
@@ -60,6 +61,12 @@
                                     <i class="fa fa-trash text-danger"></i>
                                 </button>
                             </td>
+                            <td>
+                                <a href="{{ route('schooladmin.permissions.teachers.view', ['id' => $item['id']]) }}">
+                                    <i class="fa fa-eye text-primary"></i>
+                                    Permissions
+                                </a>
+                            </td>
                             <td>{{ $item['id'] }}</td>
                             <td>{{ $item['school_name'] }} </td>
                             <td>{{ $item['teacher_name'] }} </td>
@@ -74,6 +81,7 @@
                             <tfoot>
                                 <tr>
                                 <th>Actions</th>
+                                <th>LMS Permissions</th>
                                 <th>Id</th>
                                 <th>School </th>
                                 <th>Teacher</th>

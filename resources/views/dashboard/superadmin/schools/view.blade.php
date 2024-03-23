@@ -38,6 +38,7 @@
                         <thead>
                             <tr>
                                 <th>Actions</th>
+                                <th>LMS Permissions</th>
                                 <th>School Name</th>
                                 <th>Created At</th>
                                 <th>Updated At</th>
@@ -55,6 +56,12 @@
                                         <i class="fa fa-trash text-danger"  ></i>
                                     </button>
                                 </td>
+                                <td>
+                                    <a href="{{ route('superadmin.school.permissions.view', ['id'=> $item->id]) }}">
+                                        <i class="fa fa-edit text-primary"  ></i>
+                                        Permissions
+                                    </a>
+                                </td>
                                 <td>{{ $item->school_name }}</td>
                                 <td>{{ $item->created_at }}</td>
                                 <td>{{ $item->updated_at }}</td>
@@ -64,6 +71,7 @@
                         <tfoot>
                             <tr>
                                 <th>Actions</th>
+                                <th>LMS Permissions</th>
                                 <th>School Name</th>
                                 <th>Created At</th>
                                 <th>Updated At</th>

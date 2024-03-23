@@ -4,25 +4,23 @@ use App\Http\Controllers\HelperFunctionsController;
 use Illuminate\Support\Facades\Route;
 
 
-Route::get('/test', function(){
-  return view('dashboard.examples.datatable');
-});
-Route::get('/user', function(){
-  return response()->json([
-    'schools'=> HelperFunctionsController::getUserSchoolsIds(),
-    'user'=> session('user')
-  ]);
-});
+// Route::get('/test', function(){
+//   return view('dashboard.examples.datatable');
+// });
+// Route::get('/user', function(){
+//   return response()->json([
+//     'schools'=> HelperFunctionsController::getUserSchoolsIds(),
+//     'user'=> session('user')
+//   ]);
+// });
 
-Route::get('/preview/file/{id}', [App\Http\Controllers\PreviewFileController::class, 'index'])
-->name('preview.file');
+
 
 Route::get('/teacher/preview/file/{id}', [App\Http\Controllers\PreviewFileController::class, 'TeacherViewFile'])
-->name('teacher.preview.file');
-
+    ->name('teacher.preview.file');
 Route::get('/preview/file/download/{id}', [App\Http\Controllers\PreviewFileController::class, 'downloadFile'])
-->name('preview.file.download')
-;
+    ->name('preview.file.download');
+
 
 
 
@@ -37,6 +35,10 @@ Route::post('/login', [App\Http\Controllers\AuthController::class, 'authenticate
 
 // Auth only routes
 Route::middleware('auth')->prefix('/dashboard')->group(function () {
+
+
+    Route::get('/preview/file/{id}', [App\Http\Controllers\PreviewFileController::class, 'index'])
+        ->name('preview.file');
 
 
     /**
@@ -127,5 +129,5 @@ Route::middleware('auth')->prefix('/dashboard')->group(function () {
     Route::post('/students/filter', [App\Http\Controllers\StudentsController::class, 'filter'])
         ->name('students.filter.post');
 
-    
+
 });
