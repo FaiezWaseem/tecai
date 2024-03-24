@@ -17,7 +17,7 @@ class VerifyTokenMiddleware
         if (!$token) {
             return response()->json([
                 'success' => false,
-                'message' => 'Token not provided',
+                'message' => 'Student Not Authorized',
             ], 401);
         }
 

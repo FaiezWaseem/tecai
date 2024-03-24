@@ -41,6 +41,13 @@
                             <span id="txtUserName_Error" class="error invalid-feedback hide"></span>
                         </div>
                     </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="txtUserName">Allow Ecoaching} </label>
+                            <input type="checkbox" name="ecoaching" class="form-control" {{ $isActive == 1 ? 'checked' : '' }}>
+                            <span id="txtUserName_Error" class="error invalid-feedback hide"></span>
+                        </div>
+                    </div>
          
                 </div>
                 <div class="row">

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Ecoaching;
 use App\Models\school;
 use Illuminate\Http\Request;
 
@@ -57,17 +58,36 @@ class SchoolController extends Controller
         }
     }
     public function SuperAdminEditSchool(Request $request){
+
         if($request->id && $request->school_name){
             $school = school::find($request->id);
             if($request->school_name){
                 $school->school_name = $request->input("school_name");
             }
             $school->save();
+
+            if($request->ecoaching){
+               $isExists =  Ecoaching::where('school_id', $request->id)->first();
+               if(!$isExists){
+                $c = new Ecoaching;
+                $c->school_id = $request->id;
+                $c->save();
+               }
+            }else{
+                $isExists =  Ecoaching::where('school_id',$request->id)->first();
+                if($isExists){
+                    $isExists->delete();
+                }
+            }
+
             return redirect()->route('superadmin.schools.view');
         }else{
+            $isExists =  Ecoaching::where('school_id',$request->id)->first();
+            $isActive = $isExists ? true : false;
             $school = school::find($request->id);
             return view('dashboard.superadmin.schools.edit')
             ->with('school', $school)
+            ->with('isActive', $isActive)
             ;
         }
     }
