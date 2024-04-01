@@ -164,6 +164,8 @@ Route::middleware('CheckSuperAdmin')->prefix('/superadmin')->group(function () {
      */
     Route::get('/lms/content/view', [App\Http\Controllers\ContentController::class, 'SuperAdminViewLMSContent'])
     ->name('superadmin.lms.content.view');
+    Route::post('/lms/content/view', [App\Http\Controllers\ContentController::class, 'SuperAdminViewLMSContent'])
+    ->name('superadmin.lms.content.view');
     /**
      *  Route Admin / update Content
      *  # Display Update Form and Update Record

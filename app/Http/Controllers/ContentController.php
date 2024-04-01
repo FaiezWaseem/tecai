@@ -43,17 +43,46 @@ class ContentController extends Controller
         return response()->json(['slo' => $slo]);
     }
 
-    function SuperAdminViewLMSContent()
+    function SuperAdminViewLMSContent(Request $request)
     {
-        $content = TContent::join('tboards', 'tboards.id', '=', 'tcontent.tboard_id')
-            ->join('tclasses', 'tclasses.id', '=', 'tcontent.tclass_id')
-            ->join('tchapters', 'tchapters.id', '=', 'tcontent.tchapter_id')
-            ->join('tcourse', 'tcourse.id', '=', 'tcontent.tcourse_id')
-            ->select('tcontent.*', 'tcontent.content_title as topic_title', 'tclasses.class_name', 'tchapters.chapter_title', 'tboards.board_name', 'tcourse.course_name')
-            ->paginate(10);
-        return view('dashboard.superadmin.lms.content.view')
-            ->with('content', $content)
-        ;
+
+        $boards = Tboards::all();
+        $classes = TClasses::all();
+        $courses = TCourses::all();
+
+        $rqMethod = $request->method();
+        if ($rqMethod === 'GET') {
+            $content = TContent::join('tboards', 'tboards.id', '=', 'tcontent.tboard_id')
+                ->join('tclasses', 'tclasses.id', '=', 'tcontent.tclass_id')
+                ->join('tchapters', 'tchapters.id', '=', 'tcontent.tchapter_id')
+                ->join('tcourse', 'tcourse.id', '=', 'tcontent.tcourse_id')
+                ->select('tcontent.*', 'tcontent.content_title as topic_title', 'tclasses.class_name', 'tchapters.chapter_title', 'tboards.board_name', 'tcourse.course_name')
+                ->paginate(10);
+            return view('dashboard.superadmin.lms.content.view')
+                ->with('content', $content)
+                ->with('boards', $boards)
+                ->with('classes', $classes)
+                ->with('courses', $courses)
+
+            ;
+        } else if ($rqMethod === 'POST') {
+
+            $content = TContent::where('tcontent.tboard_id', '=', $request->tboard_id)
+                ->where('tcontent.tclass_id', '=', $request->tclass_id)
+                ->where('tcontent.tcourse_id', '=', $request->tcourse_id)
+                ->join('tboards', 'tboards.id', '=', 'tcontent.tboard_id')
+                ->join('tclasses', 'tclasses.id', '=', 'tcontent.tclass_id')
+                ->join('tchapters', 'tchapters.id', '=', 'tcontent.tchapter_id')
+                ->join('tcourse', 'tcourse.id', '=', 'tcontent.tcourse_id')
+                ->select('tcontent.*', 'tcontent.content_title as topic_title', 'tclasses.class_name', 'tchapters.chapter_title', 'tboards.board_name', 'tcourse.course_name')
+                ->paginate(50);
+            return view('dashboard.superadmin.lms.content.view')
+                ->with('content', $content)
+                ->with('boards', $boards)
+                ->with('classes', $classes)
+                ->with('courses', $courses)
+            ;
+        }
     }
     public function SuperAdminCreateLMSContent(Request $request)
     {
@@ -82,7 +111,7 @@ class ContentController extends Controller
             } else {
                 return "No file selected";
             }
-      
+
 
         } else {
             $boards = Tboards::all();
@@ -133,46 +162,46 @@ class ContentController extends Controller
 
 
                 $content = TContent::find($request->id);
-                if($request->tboard_id){
+                if ($request->tboard_id) {
                     $content->tboard_id = $request->tboard_id;
                 }
-                if($request->tcourse_id){
+                if ($request->tcourse_id) {
                     $content->tcourse_id = $request->tcourse_id;
                 }
-                if($request->tclass_id){
+                if ($request->tclass_id) {
                     $content->tclass_id = $request->tclass_id;
                 }
-                if($request->tchapter_id){
+                if ($request->tchapter_id) {
                     $content->tchapter_id = $request->tchapter_id;
                 }
-                if($request->content_type){
+                if ($request->content_type) {
                     $content->content_type = $request->content_type;
                 }
                 $content->content_link = $fullpath;
                 $content->thumbnail = $thumbPath;
-                if($request->content_title){
+                if ($request->content_title) {
                     $content->content_title = $request->content_title;
                 }
                 $content->save();
                 return redirect()->route('superadmin.lms.content.view');
             } else {
                 $content = TContent::find($request->id);
-                if($request->tboard_id){
+                if ($request->tboard_id) {
                     $content->tboard_id = $request->tboard_id;
                 }
-                if($request->tcourse_id){
+                if ($request->tcourse_id) {
                     $content->tcourse_id = $request->tcourse_id;
                 }
-                if($request->tclass_id){
+                if ($request->tclass_id) {
                     $content->tclass_id = $request->tclass_id;
                 }
-                if($request->tchapter_id){
+                if ($request->tchapter_id) {
                     $content->tchapter_id = $request->tchapter_id;
                 }
-                if($request->content_type){
+                if ($request->content_type) {
                     $content->content_type = $request->content_type;
                 }
-                if($request->content_title){
+                if ($request->content_title) {
                     $content->content_title = $request->content_title;
                 }
                 $content->save();
@@ -193,21 +222,23 @@ class ContentController extends Controller
     }
 
 
-    public function TeacherViewContent(Request $request){
+    public function TeacherViewContent(Request $request)
+    {
 
         $tid = session('user')['id'];
-        $content = TeacherContent::where('teacher_id' , '=' , $tid)
-        ->get();
+        $content = TeacherContent::where('teacher_id', '=', $tid)
+            ->get();
 
-        return view('dashboard.teachers.content.view' , compact('content'));
+        return view('dashboard.teachers.content.view', compact('content'));
     }
-    public function TeacherCreateContent(Request $request){
-        
+    public function TeacherCreateContent(Request $request)
+    {
+
         $tid = session('user')['id'];
         $schoolId = session('user')['school_id'];
 
         $requestMethod = $request->method();
-        
+
         if ($requestMethod === 'POST') {
             if ($request->hasFile('content_link') && $request->hasFile('thumbnail')) {
                 $file = $request->file('content_link');
@@ -228,19 +259,19 @@ class ContentController extends Controller
 
                 return redirect()->route('teacher.content.view');
 
-            }else{
+            } else {
                 return 'No File Selected';
             }
-        }   
+        }
 
 
         $classes = teacher_classes::where('teacher_id', '=', $tid)
-        ->join('classes' , 'teacher_classes.class_id' , 'classes.id')
-        ->select('classes.*')
-        ->distinct('class_name')
-        ->get();
+            ->join('classes', 'teacher_classes.class_id', 'classes.id')
+            ->select('classes.*')
+            ->distinct('class_name')
+            ->get();
 
-        return view('dashboard.teachers.content.create' , compact('classes'));
+        return view('dashboard.teachers.content.create', compact('classes'));
     }
 
     public function create(Request $request)
@@ -260,7 +291,7 @@ class ContentController extends Controller
     }
     public function getContent(Request $request)
     {
-         $contents = TContent::join('tboards', 'tboards.id', '=', 'tcontent.tboard_id')
+        $contents = TContent::join('tboards', 'tboards.id', '=', 'tcontent.tboard_id')
             ->join('tclasses', 'tclasses.id', '=', 'tcontent.tclass_id')
             ->join('tchapters', 'tchapters.id', '=', 'tcontent.tchapter_id')
             ->join('tcourse', 'tcourse.id', '=', 'tcontent.tcourse_id')
@@ -277,10 +308,10 @@ class ContentController extends Controller
             // Get the original filename
             $originalFilename = $file->getClientOriginalName();
             // Generate a unique filename
-            $filename = uniqid(). '-' . $originalFilename . '.' . $file->getClientOriginalExtension();
+            $filename = uniqid() . '-' . $originalFilename . '.' . $file->getClientOriginalExtension();
 
             $fullPath = $path . $filename;
-            Storage::disk('public')->put( $fullPath, file_get_contents($file));
+            Storage::disk('public')->put($fullPath, file_get_contents($file));
             return $fullPath;
         }
         return false;

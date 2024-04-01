@@ -6,6 +6,7 @@ use App\Models\admin;
 use App\Models\school;
 use App\Models\SchoolContentPermission;
 use App\Models\SchoolsAdmin;
+use App\Models\tasks;
 use App\Models\Tboards;
 use App\Models\teachers;
 use App\Models\students;
@@ -351,6 +352,46 @@ class AdminController extends Controller
                 ->values()
                 ->toArray();
 
+            $activities = activity::where('tid', $tid)
+                ->pluck('id')
+                ->values()
+                ->toArray()
+            ;
+
+            // $marks = tasks::whereIn('activity_id',  $activities)
+            //     ->join('activity', 'activity.id', '=', 'tasks.activity_id')
+            //     ->join('classes', 'classes.id', '=', 'activity.class_id')
+            //     ->join('course', 'course.id', '=', 'activity.course_id')
+            //     ->join('students', 'students.class', '=', 'classes.class_name')
+            //     ->select(
+            //         'tasks.id',
+            //         'tasks.points_obtained as obtained',
+            //         'tasks.points_total as total',
+            //         'activity.title',
+            //         'tasks.added_on as attempted_date',
+            //         'classes.class_name',
+            //         'course.course_name',
+            //         'students.id as stdId',
+            //         'students.name as stdName',
+            //         'students.class as stdclass',
+            //     )
+            //     ->get();
+
+            $marks = tasks::whereIn('activity_id', $activities)
+                ->join('students', 'students.id', '=', 'tasks.std_id')
+                ->select(
+                    'tasks.id',
+                    'tasks.points_obtained as obtained',
+                    'tasks.points_total as total',
+                    'tasks.activity_id',
+                    'tasks.added_on as attempted_date',
+                    'students.id as stdId',
+                    'students.name as stdName',
+                    'students.class as stdclass'
+                )
+                ->paginate(10);
+                
+
             return view("dashboard.teachers.home.view")
                 ->with('classes', $classes)
                 ->with('students', $students)
@@ -361,6 +402,7 @@ class AdminController extends Controller
                     'studentsCount' => $studentsCount,
                     'studentGenderCounts' => $studentGenderCounts,
                 ])
+                ->with('marks', $marks)
             ;
         }
     }

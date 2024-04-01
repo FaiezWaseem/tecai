@@ -11,9 +11,9 @@
             <div class="row mb-2">
                 <div class="col-sm-6">
                     <h1 class="m-0">Dashboard</h1>
-                {{-- <?php
-                  echo json_encode($stats);
-                ?> --}}
+                    {{-- <?php
+                    echo json_encode($marks);
+                    ?> --}}
                 </div><!-- /.col -->
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
@@ -73,7 +73,7 @@
                         <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
                     </div>
                 </div>
-      
+
             </div>
 
             <!-- Main row -->
@@ -109,6 +109,92 @@
                             </div>
                         </div><!-- /.card-body -->
                     </div>
+
+                    {{-- Student MARKS --}}
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">
+                                <i class="fas fa-chart-pie mr-1"></i>
+                                Assignments
+                            </h3>
+                            <div class="card-tools">
+                                <ul class="nav nav-pills ml-auto">
+
+
+                                </ul>
+                            </div>
+                        </div><!-- /.card-header -->
+                        <div class="card-body">
+                            <div class="tab-content p-0">
+                                <table class="table">
+                                    <thead>
+                                        <th>Id</th>
+                                        <th>Class</th>
+                                        <th>Student</th>
+                                        <th>Obtained</th>
+                                        <th>Total</th>
+                                        <th>Attempted</th>
+                                    </thead>
+                                    <tbody>
+                                        @foreach ($marks as $item)
+                                            <tr>
+                                                <td>{{ $item->id }}</td>
+                                                <td>{{ $item->stdclass }}</td>
+                                                <td>{{ $item->stdName }}</td>
+                                                <td>{{ $item->obtained }}</td>
+                                                <td>{{ $item->total }}</td>
+                                                <td>{{ $item->attempted_date }}</td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                    <tfoot>
+                                        <th>Id</th>
+                                        <th>Class</th>
+                                        <th>Student</th>
+                                        <th>Obtained</th>
+                                        <th>Total</th>
+                                        <th>Attempted</th>
+                                    </tfoot>
+                                </table>
+                                {{ $marks->links() }}
+                            </div>
+                        </div><!-- /.card-body -->
+                    </div>
+
+                </section>
+                <!-- /.Left col -->
+                <!-- right col (We are only adding the ID to make the widgets sortable)-->
+                <section class="col-lg-5 connectedSortable">
+
+
+
+                    {{-- ATTENDANCE CHART --}}
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">
+                                <i class="fas fa-chart-pie mr-1"></i>
+                                Attendance
+                            </h3>
+                            <div class="card-tools">
+                                <ul class="nav nav-pills ml-auto">
+
+
+                                </ul>
+                            </div>
+                        </div><!-- /.card-header -->
+                        <div class="card-body">
+                            <div class="tab-content p-0">
+                                <!-- Morris chart - Sales -->
+                                <div class="chart tab-pane" id="revenue-chart" style="position: relative; height: 300px;">
+                                    <canvas id="revenue-chart-canvas" height="300" style="height: 300px;"></canvas>
+                                </div>
+                                <div class="chart tab-pane active" id="sales-chart"
+                                    style="position: relative; height: 300px;">
+                                    <canvas id="sales-chart-canvas" height="300" style="height: 300px;"></canvas>
+                                </div>
+                            </div>
+                        </div><!-- /.card-body -->
+                    </div>
                     {{-- COURSE COVERAGE --}}
                     <div class="card">
                         <div class="card-header">
@@ -140,7 +226,8 @@
                         <div class="card-body">
                             <div class="tab-content p-0">
                                 <!-- Morris chart - Sales -->
-                                <div class="chart tab-pane" id="revenue-chart" style="position: relative; height: 300px;">
+                                <div class="chart tab-pane" id="revenue-chart"
+                                    style="position: relative; height: 300px;">
                                     <canvas id="revenue-chart-canvas" height="300" style="height: 300px;"></canvas>
                                 </div>
                                 <div class="chart tab-pane active" id="course-coverage-chart"
@@ -151,42 +238,6 @@
                             </div>
                         </div><!-- /.card-body -->
                     </div>
-                </section>
-                <!-- /.Left col -->
-                <!-- right col (We are only adding the ID to make the widgets sortable)-->
-                <section class="col-lg-5 connectedSortable">
-
-
-
-                    {{-- ATTENDANCE CHART --}}
-                    <div class="card">
-                        <div class="card-header">
-                            <h3 class="card-title">
-                                <i class="fas fa-chart-pie mr-1"></i>
-                                Attendance
-                            </h3>
-                            <div class="card-tools">
-                                <ul class="nav nav-pills ml-auto">
-
-
-                                </ul>
-                            </div>
-                        </div><!-- /.card-header -->
-                        <div class="card-body">
-                            <div class="tab-content p-0">
-                                <!-- Morris chart - Sales -->
-                                <div class="chart tab-pane" id="revenue-chart"
-                                    style="position: relative; height: 300px;">
-                                    <canvas id="revenue-chart-canvas" height="300" style="height: 300px;"></canvas>
-                                </div>
-                                <div class="chart tab-pane active" id="sales-chart"
-                                    style="position: relative; height: 300px;">
-                                    <canvas id="sales-chart-canvas" height="300" style="height: 300px;"></canvas>
-                                </div>
-                            </div>
-                        </div><!-- /.card-body -->
-                    </div>
-
 
 
 
@@ -201,17 +252,15 @@
 @endsection
 
 @section('footer')
-     
+    @if ($stats['studentGenderCounts'])
+        <script>
+            const total_stds = {{ $stats['studentsCount'] }};
+            const total_male_stds = {{ $stats['studentGenderCounts'][1]['male'] }};
+            const total_female_stds = {{ $stats['studentGenderCounts'][0]['female'] }};
 
-   @if ($stats['studentGenderCounts'])
-    <script>
-        const total_stds = {{ $stats['studentsCount'] }};
-        const total_male_stds = {{ $stats['studentGenderCounts'][1]['male'] }};
-        const total_female_stds = {{ $stats['studentGenderCounts'][0]['female'] }};
-
-        loadStudentCanvas([ total_stds , total_male_stds , total_female_stds]);
-        loadAttendanceCanvas([15 , 4, 2]);
-        loadCourseCoverageCanvas([5 ,4]);
-    </script>
+            loadStudentCanvas([total_stds, total_male_stds, total_female_stds]);
+            loadAttendanceCanvas([15, 4, 2]);
+            loadCourseCoverageCanvas([5, 4]);
+        </script>
     @endif
 @endsection
