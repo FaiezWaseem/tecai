@@ -45,7 +45,11 @@ Route::post('/login', [App\Http\Controllers\StudentsController::class, 'login'])
 
 
 Route::middleware('verify.token')->group(function () {
+    
     Route::get('/user', [App\Http\Controllers\StudentsController::class, 'getStudent']);
+    
+    Route::get('/marks', [App\Http\Controllers\StudentsController::class, 'getStudentMarks']);
+
     Route::get('/assignments', [App\Http\Controllers\StudentsController::class, 'getAssignments']);
 
     Route::post('/user/update/token', [App\Http\Controllers\StudentsController::class, 'updateStudentToken']);
@@ -69,3 +73,4 @@ Route::middleware('verify.token')->group(function () {
 
 });
 Route::get('/assignments/{id}', [App\Http\Controllers\StudentsController::class, 'getAssignment']);
+

@@ -21,7 +21,8 @@ Route::get('/teacher/preview/file/{id}', [App\Http\Controllers\PreviewFileContro
 Route::get('/preview/file/download/{id}', [App\Http\Controllers\PreviewFileController::class, 'downloadFile'])
     ->name('preview.file.download');
 
-
+    Route::get('/preview/file/{id}', [App\Http\Controllers\PreviewFileController::class, 'index'])
+        ->name('preview.file');
 
 
 require_once __DIR__ . '/home.routes.php';
@@ -37,8 +38,7 @@ Route::post('/login', [App\Http\Controllers\AuthController::class, 'authenticate
 Route::middleware('auth')->prefix('/dashboard')->group(function () {
 
 
-    Route::get('/preview/file/{id}', [App\Http\Controllers\PreviewFileController::class, 'index'])
-        ->name('preview.file');
+
 
 
     /**

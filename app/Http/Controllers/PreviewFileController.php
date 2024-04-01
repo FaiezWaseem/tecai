@@ -16,10 +16,24 @@ class PreviewFileController extends Controller
         $id = $request->id;
         $content = TContent::find($id);
         $content_type = $content->content_type;
+
         if ($content_type == 'Flash') {
-            return view('home.preview', compact('content_type', 'id'));
+            return view('home.viewer.flash', compact('content_type', 'id'));
         }
-        return $this->downloadFile($request);
+        if ($content_type == 'Pdf') {
+            return view('home.viewer.pdf', compact('content_type', 'id'));
+        }
+        if ($content_type == 'Video') {
+            return view('home.viewer.video', compact('content_type', 'id'));
+        }
+        if ($content_type == 'GIF') {
+            return view('home.viewer.gif', compact('content_type', 'id'));
+        }
+        if ($content_type == 'Ppt') {
+            return view('home.viewer.ppt', compact('content_type', 'id'));
+        }
+
+        // return $this->downloadFile($request);
     }
     public function TeacherViewFile(Request $request)
     {
@@ -50,6 +64,18 @@ class PreviewFileController extends Controller
             $fileName = 'your-custom-filename.swf';
             $headers = [
                 'Content-Type' => 'application/x-shockwave-flash',
+            ];
+        } elseif ($content_type == 'GIF') {
+            $filePath = Storage::disk('local')->path($content->content_link);
+            $fileName = 'sample.gif';
+            $headers = [
+                'Content-Type' => 'image/gif',
+            ];
+        } elseif ($content_type == 'Ppt') {
+            $filePath = Storage::disk('local')->path($content->content_link);
+            $fileName = 'sample.pptx';
+            $headers = [
+                'Content-Type' => 'application/vnd.openxmlformats-officedocument.presentationml.presentation',
             ];
         }
 

@@ -358,18 +358,35 @@ class StudentsController extends Controller
         $student = students::where('students.id', $request->id)
             ->join('school', 'students.school', '=', 'school.id')
             ->first();
+        $studentId = $student->id;
         $class = classes::where('class_name', $student->class)->first();
-        $activity = activity::where('class_id', $class->id)
+        $query = activity::where('class_id', $class->id)
             ->join('course', 'activity.course_id', '=', 'course.id')
             ->join('teachers', 'activity.tid', '=', 'teachers.id')
-            ->select('activity.*', 'teachers.name as teacher_name')
-            ->get();
+            ->select(
+                'activity.id',
+                'activity.added_on',
+                'activity.title',
+                'activity.type',
+                'activity.updated_at',
+                'activity.created_at',
+                'activity.deadline',
+                'activity.total_marks',
+                'teachers.name as teacher_name'
+            )
+            ->whereNotIn('activity.id', function ($query) use ($studentId) {
+                $query->select('activity_id')
+                    ->from('tasks')
+                    ->where('std_id', $studentId)
+                    ;
+            });
+
+        $activity = $query->get();
 
         return response()->json([
             'success' => true,
             'assignments' => $activity,
             'class' => $class,
-            'student' => $student,
             'class_id' => $class->id,
             'class_name' => $class->class_name,
         ]);
@@ -429,8 +446,8 @@ class StudentsController extends Controller
         $tasks->save();
 
 
-        if($std->token){
-            HelperFunctionsController::sendNotification($std->token,'You have been Graded on The Assignment', $std->name .' Your Score is saved.');
+        if ($std->token) {
+            HelperFunctionsController::sendNotification($std->token, 'You have been Graded on The Assignment', $std->name . ' Your Score is saved.');
         }
 
 
@@ -482,9 +499,9 @@ class StudentsController extends Controller
             ->first();
         $class = classes::where('class_name', $student->class)->first();
 
-        $homeworks = HomeWork::where('school_id','=',$student->school)
-        ->where('class_id', '=' , $class->id)
-        ->get()
+        $homeworks = HomeWork::where('school_id', '=', $student->school)
+            ->where('class_id', '=', $class->id)
+            ->get()
         ;
 
         return response()->json([
@@ -494,6 +511,28 @@ class StudentsController extends Controller
             'student' => $student,
             'class_id' => $class->id,
             'class_name' => $class->class_name,
+        ]);
+    }
+    public function getStudentMarks(Request $request)
+    {
+        $studentId = $request->id;
+        $marks = tasks::where('std_id', $studentId)
+            ->join('activity', 'activity.id', '=', 'tasks.activity_id')
+            ->join('classes', 'classes.id', '=', 'activity.class_id')
+            ->join('course', 'course.id', '=', 'activity.course_id')
+            ->select(
+                'tasks.id',
+                'tasks.points_obtained as obtained',
+                'tasks.points_total as total',
+                'activity.title',
+                'tasks.added_on as attempted_date',
+                'classes.class_name',
+                'course.course_name'
+            )
+            ->get();
+        return response()->json([
+            'marks' => $marks,
+            'status' => true
         ]);
     }
 }

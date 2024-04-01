@@ -47,7 +47,7 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="txtUserName">Content File </label>
-                            <input accept=".png, .jpg, .jpeg, .gif, .pdf, .mp4, .zip, .rar, .swf" class="form-control"
+                            <input accept=".png, .jpg, .jpeg, .gif, .pdf, .mp4, .zip, .rar, .swf, .ppt, .pptx" class="form-control"
                                 name="content_link" type="file" onchange="validateFileSize(this)" value="">
                             <span id="txtUserName_Error" class="error invalid-feedback hide"></span>
                         </div>
@@ -60,7 +60,8 @@
                                 <option value="Video">Video</option>
                                 <option value="Pdf">Pdf</option>
                                 <option value="Flash">Flash</option>
-                                <option value="Web">GIF</option>
+                                <option value="GIF">GIF</option>
+                                <option value="Ppt">PowerPoint</option>
                                 <option value="Web">Web</option>
                             </select>
                             <span id="txtUserName_Error" class="error invalid-feedback hide"></span>

@@ -60,7 +60,8 @@
                                 <option value="Video" {{ $content->content_type === 'Video' ? 'selected' : '' }}>Video</option>
                                 <option value="Pdf" {{ $content->content_type === 'Pdf' ? 'selected' : '' }}>Pdf</option>
                                 <option value="Flash" {{ $content->content_type === 'Flash' ? 'selected' : '' }}>Flash</option>
-                                <option value="Web" {{ $content->content_type === 'GIF' ? 'selected' : '' }}>GIF</option>
+                                <option value="GIF" {{ $content->content_type === 'GIF' ? 'selected' : '' }}>GIF</option>
+                                <option value="Ppt" {{ $content->content_type === 'Ppt' ? 'selected' : '' }}>PowerPoint</option>
                                 <option value="Web" {{ $content->content_type === 'Web' ? 'selected' : '' }}>Web</option>
                             </select>
                             <span id="txtUserName_Error" class="error invalid-feedback hide"></span>
