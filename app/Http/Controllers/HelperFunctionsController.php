@@ -42,7 +42,7 @@ class HelperFunctionsController extends Controller
         $data = $response->getData();
         return $data;       
     }
-    public static function getCurrentStudent(){
-        return students::where('id', '='  ,session('user')['id'])->first();
+    public static function getCurrentStudent($id){
+        return students::where('id', '='  , $id)->first();
     }
 }

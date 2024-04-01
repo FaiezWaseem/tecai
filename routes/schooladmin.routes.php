@@ -11,6 +11,8 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('CheckSchoolAdmin')->prefix('/school_admin')->group(function () {
     Route::get('/', [App\Http\Controllers\AdminController::class, 'SchoolAdminViewHome'])
         ->name('schooladmin.home.view');
+    Route::post('/', [App\Http\Controllers\AdminController::class, 'SchoolAdminFilterCourseCoverage'])
+        ->name('schooladmin.home.view');
     /**
      *  Route : SchoolAdmin / View All Classes
      *  # Display list of all Classes

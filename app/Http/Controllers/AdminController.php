@@ -286,6 +286,9 @@ class AdminController extends Controller
                 ->distinct()
                 ->count();
 
+
+            $teachers = teachers::whereIn('school_id', $schoolIds)->get();
+
             return view("dashboard.admin.home.view")
                 ->with('classes', $classes)
                 ->with('attendance', $attendance)
@@ -298,9 +301,26 @@ class AdminController extends Controller
                     'studentsMaleCount' => $studentsMaleCount,
                 ])
                 ->with('outlines', $outline)
+                ->with('teachers', $teachers)
 
             ;
         }
+    }
+    public function SchoolAdminFilterCourseCoverage(Request $request)
+    {
+        $tid = $request->tid;
+        $outline = DB::table('outline')
+            ->where('outline.teacher_id', '=', $tid)
+            ->join('course', 'outline.course_id', '=', 'course.id')
+            ->join('teachers', 'outline.teacher_id', '=', 'teachers.id')
+            ->join('classes', 'outline.class_id', '=', 'classes.id')
+            ->select('course.id', 'teachers.name', 'course.course_name', 'classes.class_name')
+            ->groupBy('course.id', 'teachers.name', 'course.course_name', 'classes.class_name')
+            ->selectRaw('course.id, teachers.name, course.course_name, classes.class_name, COUNT(*) as count, COUNT(CASE WHEN outline.is_covered = 1 THEN 1 ELSE NULL END) as count_covered')
+            ->get();
+        return response()->json([
+            'chaptersCount' => $outline
+        ]);
     }
 
     public function TeacherViewHome()
@@ -390,7 +410,7 @@ class AdminController extends Controller
                     'students.class as stdclass'
                 )
                 ->paginate(10);
-                
+
 
             return view("dashboard.teachers.home.view")
                 ->with('classes', $classes)

@@ -358,9 +358,9 @@ class StudentsController extends Controller
         $student = students::where('students.id', $request->id)
             ->join('school', 'students.school', '=', 'school.id')
             ->first();
-        $studentId = $student->id;
+        $studentId = $request->id;
         $class = classes::where('class_name', $student->class)->first();
-        $query = activity::where('class_id', $class->id)
+        $query = Activity::where('class_id', $class->id)
             ->join('course', 'activity.course_id', '=', 'course.id')
             ->join('teachers', 'activity.tid', '=', 'teachers.id')
             ->select(
@@ -374,11 +374,10 @@ class StudentsController extends Controller
                 'activity.total_marks',
                 'teachers.name as teacher_name'
             )
-            ->whereNotIn('activity.id', function ($query) use ($studentId) {
-                $query->select('activity_id')
+            ->whereNotIn('activity.id', function ($subquery) use ($studentId) {
+                $subquery->select('activity_id')
                     ->from('tasks')
-                    ->where('std_id', $studentId)
-                    ;
+                    ->where('std_id', $studentId);
             });
 
         $activity = $query->get();
@@ -434,7 +433,7 @@ class StudentsController extends Controller
             ]);
         }
 
-        $std = HelperFunctionsController::getCurrentStudent();
+        $std = HelperFunctionsController::getCurrentStudent($request->id);
 
 
 
@@ -449,7 +448,6 @@ class StudentsController extends Controller
         if ($std->token) {
             HelperFunctionsController::sendNotification($std->token, 'You have been Graded on The Assignment', $std->name . ' Your Score is saved.');
         }
-
 
         return response()->json([
             'success' => true,
@@ -481,6 +479,22 @@ class StudentsController extends Controller
 
         $attendance = Attendance::where('student_id', $request->id)
             ->whereDate('date', '=', $date)
+            ->join('students', 'attendance.student_id', '=', 'students.id')
+            ->select('attendance.*', 'students.name')
+            ->get();
+
+        return response()->json([
+            'status' => true,
+            'attendance' => $attendance,
+        ], 200);
+    }
+    public function getAttendanceMonth(Request $request)
+    {
+        $startDate = now()->startOfMonth();
+        $endDate = now()->endOfMonth();
+
+        $attendance = Attendance::where('student_id', $request->id)
+            ->whereBetween('date', [$startDate, $endDate])
             ->join('students', 'attendance.student_id', '=', 'students.id')
             ->select('attendance.*', 'students.name')
             ->get();

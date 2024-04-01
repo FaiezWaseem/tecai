@@ -34,7 +34,11 @@ function ondropTarget(drag_id, drop_id, dragtarget, droptarget) {
         console.log('GAME OVER')
         console.log(score, total)
         gradeAssignment(score, total)
-            .then(res => console.log(res))
-            .catch(err => console.log(err))
+            .then(res => {
+                if(res.status){
+                    alert('You are graded')
+                }
+            })
+            .catch(err => alert(err))
     }
 }
