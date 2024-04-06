@@ -379,8 +379,8 @@
                       </ul>
                   </li>
 
-                  <li class="nav-item">
-                      <a href="#" class="nav-link">
+                  <li class="nav-item {{ request()->is('dashboard/superadmin/ecoaching*') ? 'menu-open' : '' }}">
+                      <a href="#" class="nav-link {{ request()->is('dashboard/superadmin/ecoaching*') ? 'active' : '' }}">
                           <i class="nav-icon far fa-plus-square"></i>
                           <p>
                               E-Coaching
@@ -398,8 +398,8 @@
                             </a>
                             <ul class="nav nav-treeview" style="display: none;">
                                 <li class="nav-item">
-                                    <a href="{{ route('superadmin.lms.slo.view') }}"
-                                        class="nav-link {{ request()->is('dashboard/superadmin/lms/chapters/view') ? 'active' : '' }}">
+                                    <a href="{{ route('superadmin.ecoaching.students.view') }}"
+                                        class="nav-link {{ request()->is('dashboard/superadmin/ecoaching/students/view') ? 'active' : '' }}">
                                         <i class="far fa fa-eye nav-icon"></i>
                                         <p>View Students</p>
                                     </a>
@@ -448,8 +448,8 @@
                             </a>
                             <ul class="nav nav-treeview" style="display: none;">
                                 <li class="nav-item">
-                                    <a href="{{ route('superadmin.lms.slo.view') }}"
-                                        class="nav-link {{ request()->is('dashboard/superadmin/lms/chapters/view') ? 'active' : '' }}">
+                                    <a href="{{ route('superadmin.ecoaching.plans.view') }}"
+                                        class="nav-link {{ request()->is('dashboard/superadmin/ecoaching/plans/view') ? 'active' : '' }}">
                                         <i class="far fa fa-eye nav-icon"></i>
                                         <p>View Plans</p>
                                     </a>

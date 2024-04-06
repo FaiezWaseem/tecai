@@ -7,12 +7,10 @@ use Illuminate\Http\Request;
 
 class EPlanController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+
+    public function SuperAdminViewPlans()
     {
-        //
+        return view('dashboard.superadmin.ecoaching.plans.view');
     }
 
     /**

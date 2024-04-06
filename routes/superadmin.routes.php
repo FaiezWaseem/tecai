@@ -322,4 +322,22 @@ Route::middleware('CheckSuperAdmin')->prefix('/superadmin')->group(function () {
      */
     Route::get('/lms/slo/{id}/edit', [App\Http\Controllers\TtopicsController::class, 'SuperAdminEditSLO'])
     ->name('superadmin.lms.slo.edit');
+    /**
+     * Route Admin / View Ecoaching Plans
+     * # Display a list of all Topics of Chapters
+     */
+    Route::get('/ecoaching/plans/view', [App\Http\Controllers\EPlanController::class, 'SuperAdminViewPlans'])
+    ->name('superadmin.ecoaching.plans.view');
+    /**
+     * Route Admin / View Ecoaching Plans
+     * # Display a list of all Topics of Chapters
+     */
+    Route::get('/ecoaching/students/view', [App\Http\Controllers\EStudentsController::class, 'SuperAdminViewStudents'])
+    ->name('superadmin.ecoaching.students.view');
+    /**
+     * Route Admin / View Ecoaching Plans
+     * # Display a list of all Topics of Chapters
+     */
+    Route::get('/ecoaching/teachers/view', [App\Http\Controllers\EPlanController::class, 'SuperAdminViewTeachers'])
+    ->name('superadmin.teachers.plans.view');
 });
