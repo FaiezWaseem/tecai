@@ -2,6 +2,7 @@
 
 @section('sidebar')
     @include('dashboard.superadmin.sidebar')
+    <script src="https://cdn.jsdelivr.net/npm/resumablejs@1.1.0/resumable.min.js"></script>
 @endsection
 
 @section('content')
@@ -144,11 +145,11 @@
         function validateFileSize(input) {
             if (input.files && input.files[0]) {
                 var fileSize = input.files[0].size; // Size in bytes
-                var maxSize = 15 * 1024 * 1024; // 15MB in bytes
+                var maxSize = 51 * 1024 * 1024; // 50MB in bytes
 
                 if (fileSize > maxSize) {
                     input.value = ''; // Clear the selected file
-                    showToast('File size exceeds the limit of 15MB. Please choose a smaller file.')
+                    showToast('File size exceeds the limit of 50MB. Please choose a smaller file.')
                 }
             }
         }
