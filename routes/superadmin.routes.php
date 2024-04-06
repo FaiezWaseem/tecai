@@ -332,6 +332,23 @@ Route::middleware('CheckSuperAdmin')->prefix('/superadmin')->group(function () {
      * Route Admin / View Ecoaching Plans
      * # Display a list of all Topics of Chapters
      */
+    Route::get('/ecoaching/plans/create', [App\Http\Controllers\EPlanController::class, 'SuperAdminCreatePlans'])
+    ->name('superadmin.ecoaching.plans.create');
+    Route::post('/ecoaching/plans/create', [App\Http\Controllers\EPlanController::class, 'SuperAdminCreatePlans'])
+    ->name('superadmin.ecoaching.plans.create');
+    /**
+     * Route Admin / View Ecoaching Plans
+     * # Display a list of all Topics of Chapters
+     */
+    Route::get('/ecoaching/plan/{id}/edit', [App\Http\Controllers\EPlanController::class, 'SuperAdminEditPlan'])
+    ->name('superadmin.ecoaching.plan.edit');
+    
+    Route::post('/ecoaching/plan/{id}/add/course', [App\Http\Controllers\EPlanController::class, 'SuperAdminEditPlanAddCourse'])
+    ->name('e-learning.plan.addCourse');
+    /**
+     * Route Admin / View Ecoaching Plans
+     * # Display a list of all Topics of Chapters
+     */
     Route::get('/ecoaching/students/view', [App\Http\Controllers\EStudentsController::class, 'SuperAdminViewStudents'])
     ->name('superadmin.ecoaching.students.view');
     /**

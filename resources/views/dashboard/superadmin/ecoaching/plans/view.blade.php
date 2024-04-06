@@ -10,12 +10,12 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1 class="m-0">School Schools View</h1>
+                    <h1 class="m-0">Admin Plan View</h1>
                 </div><!-- /.col -->
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a href="#">Home</a></li>
-                        <li class="breadcrumb-item">Schools</li>
+                        <li class="breadcrumb-item">Plan</li>
                         <li class="breadcrumb-item active">Views</li>
                     </ol>
                 </div><!-- /.col -->
@@ -30,7 +30,7 @@
             <!-- Small boxes (Stat box) -->
             <div class="card">
                 <div class="card-header">
-                    <h3 class="card-title">Schools</h3>
+                    <h3 class="card-title">Plans</h3>
                 </div>
                 <!-- /.card-header -->
                 <div class="card-body">
@@ -38,31 +38,29 @@
                         <thead>
                             <tr>
                                 <th>Actions</th>
-                                <th>LMS Permissions</th>
-                                <th>School Name</th>
+                                <th>Name</th>
+                                <th>Details</th>
+                                <th>Price</th>
                                 <th>Created At</th>
                                 <th>Updated At</th>
                             </tr>
                         </thead>
                         <tbody>
                             
-                            @foreach ([] as $item)
+                            @foreach ($plans as $item)
                             <tr>
                                 <td>
-                                    <a href="{{ route('superadmin.schools.edit', ['id'=> $item->id]) }}">
+                                    <a href="{{ route('superadmin.ecoaching.plan.edit', ['id'=> $item->id]) }}">
                                         <i class="fa fa-edit text-primary"  ></i>
                                     </a>
                                     <button class="btn" data-toggle="modal" data-target="#DeleteModal" onclick="setdeleteModalId({{$item->id}})">
                                         <i class="fa fa-trash text-danger"  ></i>
                                     </button>
                                 </td>
-                                <td>
-                                    <a href="{{ route('superadmin.school.permissions.view', ['id'=> $item->id]) }}">
-                                        <i class="fa fa-edit text-primary"  ></i>
-                                        Permissions
-                                    </a>
-                                </td>
-                                <td>{{ $item->school_name }}</td>
+
+                                <td>{{ $item->plan_name }}</td>
+                                <td>{{ $item->plan_details }}</td>
+                                <td>{{ $item->plan_price }}</td>
                                 <td>{{ $item->created_at }}</td>
                                 <td>{{ $item->updated_at }}</td>
                             </tr>
@@ -71,8 +69,9 @@
                         <tfoot>
                             <tr>
                                 <th>Actions</th>
-                                <th>LMS Permissions</th>
-                                <th>School Name</th>
+                                <th>Name</th>
+                                <th>Details</th>
+                                <th>Price</th>
                                 <th>Created At</th>
                                 <th>Updated At</th>
                             </tr>
