@@ -8,4 +8,14 @@ use Illuminate\Database\Eloquent\Model;
 class EPlanPayment extends Model
 {
     use HasFactory;
+
+    protected $table = 'e_plan_payment';
+    protected $fillable = [
+        'plan_id',
+        'student_id',
+        'isApproved',
+        'start_time',
+        'end_time',
+        'payment_screenshot',
+    ];
 }
