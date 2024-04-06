@@ -388,24 +388,81 @@
                           </p>
                       </a>
                       <ul class="nav nav-treeview">
-                          <li class="nav-item">
-                              <a href="pages/examples/lockscreen.html" class="nav-link">
-                                  <i class="far fa-circle nav-icon"></i>
-                                  <p>Live Sessions</p>
-                              </a>
-                          </li>
-                          <li class="nav-item">
-                              <a href="pages/examples/legacy-user-menu.html" class="nav-link">
-                                  <i class="far fa-circle nav-icon"></i>
-                                  <p>TimeTable</p>
-                              </a>
-                          </li>
-                          <li class="nav-item">
-                              <a href="pages/examples/language-menu.html" class="nav-link">
-                                  <i class="far fa-circle nav-icon"></i>
-                                  <p>Recorded lectures</p>
-                              </a>
-                          </li>
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>
+                                   Students
+                                    <i class="right fas fa-angle-left"></i>
+                                </p>
+                            </a>
+                            <ul class="nav nav-treeview" style="display: none;">
+                                <li class="nav-item">
+                                    <a href="{{ route('superadmin.lms.slo.view') }}"
+                                        class="nav-link {{ request()->is('dashboard/superadmin/lms/chapters/view') ? 'active' : '' }}">
+                                        <i class="far fa fa-eye nav-icon"></i>
+                                        <p>View Students</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{ route('superadmin.lms.slo.create') }}"
+                                        class="nav-link {{ request()->is('dashboard/superadmin/lms/chapters/create') ? 'active' : '' }}">
+                                        <i class="far fa fa-plus-square nav-icon"></i>
+                                        <p>Add Student</p>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>
+                                    Teachers
+                                    <i class="right fas fa-angle-left"></i>
+                                </p>
+                            </a>
+                            <ul class="nav nav-treeview" style="display: none;">
+                                <li class="nav-item">
+                                    <a href="{{ route('superadmin.lms.slo.view') }}"
+                                        class="nav-link {{ request()->is('dashboard/superadmin/lms/chapters/view') ? 'active' : '' }}">
+                                        <i class="far fa fa-eye nav-icon"></i>
+                                        <p>View Teachers</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{ route('superadmin.lms.slo.create') }}"
+                                        class="nav-link {{ request()->is('dashboard/superadmin/lms/chapters/create') ? 'active' : '' }}">
+                                        <i class="far fa fa-plus-square nav-icon"></i>
+                                        <p>Add Teachers</p>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>
+                                    Plan
+                                    <i class="right fas fa-angle-left"></i>
+                                </p>
+                            </a>
+                            <ul class="nav nav-treeview" style="display: none;">
+                                <li class="nav-item">
+                                    <a href="{{ route('superadmin.lms.slo.view') }}"
+                                        class="nav-link {{ request()->is('dashboard/superadmin/lms/chapters/view') ? 'active' : '' }}">
+                                        <i class="far fa fa-eye nav-icon"></i>
+                                        <p>View Plans</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{ route('superadmin.lms.slo.create') }}"
+                                        class="nav-link {{ request()->is('dashboard/superadmin/lms/chapters/create') ? 'active' : '' }}">
+                                        <i class="far fa fa-plus-square nav-icon"></i>
+                                        <p>Add Plan</p>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
                       </ul>
                   </li>
 
