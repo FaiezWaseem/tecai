@@ -499,3 +499,18 @@ CREATE TABLE `e_payment_plan` (
   `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+ALTER TABLE `e_payment_plan`
+ADD COLUMN payment_screenshot varchar(500) default null;
+
+
+CREATE TABLE `e_content` (
+  `id` BIGINT PRIMARY KEY AUTO_INCREMENT NOT NULL,
+  `board_id` BIGINT NOT NULL,
+  `course_id` BIGINT NOT NULL,
+  `type` varchar(255) NOT NULL,
+  `thumbnail` varchar(255) NOT NULL,
+  `content_link` varchar(255) NOT NULL,
+  `content_type` varchar(255) NOT NULL,
+  `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
