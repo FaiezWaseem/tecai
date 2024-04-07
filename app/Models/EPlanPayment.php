@@ -9,7 +9,7 @@ class EPlanPayment extends Model
 {
     use HasFactory;
 
-    protected $table = 'e_plan_payment';
+    protected $table = 'e_payment_plan';
     protected $fillable = [
         'plan_id',
         'student_id',

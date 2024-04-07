@@ -405,7 +405,7 @@
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="{{ route('superadmin.lms.slo.create') }}"
+                                    <a href="{{ route('superadmin.ecoaching.students.create') }}"
                                         class="nav-link {{ request()->is('dashboard/superadmin/lms/chapters/create') ? 'active' : '' }}">
                                         <i class="far fa fa-plus-square nav-icon"></i>
                                         <p>Add Student</p>
