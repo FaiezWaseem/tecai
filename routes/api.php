@@ -15,10 +15,20 @@ Route::post('/login', [App\Http\Controllers\StudentsController::class, 'login'])
 Route::post('/ecoaching/login', [App\Http\Controllers\EStudentsController::class, 'EcoachingStudentLogin']);
 Route::post('/ecoaching/register', [App\Http\Controllers\EStudentsController::class, 'EcoachingStudentRegister']);
 
+
+Route::get('/ecoaching/guest/courses', [App\Http\Controllers\EStudentsController::class, 'EcoachingGuestCourses']);
+
+
 Route::get('/ecoaching/plans', [App\Http\Controllers\EPlanController::class, 'EcoachingStudentPlans']);
 
 
 Route::middleware('verify.token')->group(function () {
+    
+
+    // Ecoaching
+    Route::post('/ecoaching/courses', [App\Http\Controllers\EStudentsController::class, 'EcoachingStudentCourses']);
+    
+    
     
     Route::get('/user', [App\Http\Controllers\StudentsController::class, 'getStudent']);
     

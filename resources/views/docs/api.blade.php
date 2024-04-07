@@ -113,6 +113,8 @@
           }
     </pre>
     </div>
+    </div>
+    {{-- Student Plans --}}
     <div class="endpoint">
         <h3>Ecoaching Student Plans</h3>
         <p>HTTP Method: <span class="get">GET</span> </p>
@@ -138,7 +140,56 @@
           }
     </pre>
     </div>
-
+    {{-- Guest Courses --}}
+    <div class="endpoint">
+        <h3>Ecoaching Guest Courses</h3>
+        <p>HTTP Method: <span class="get">GET</span> </p>
+        <code>URL: /api/ecoaching/guest/courses</code>
+        <p>Parameters:</p>
+        <ul>
+        </ul>
+        <p>Example Response:</p>
+        <pre>
+          {
+            "courses": [
+              {
+                "id": 1,
+                "course_name": "Biology2",
+                "updated_at": "2024-02-23T09:40:13.000000Z",
+                "created_at": "2024-01-30T07:02:39.000000Z",
+                "thumbnail": "65d866dde4fa1.png"
+              }
+            ],
+            "status": true
+          }
+    </pre>
+    </div>
+   {{-- Student Courses --}}
+    <div class="endpoint">
+      <h3>Ecoaching Student Courses</h3>
+      <p>HTTP Method: <span class="post">POST</span> </p>
+      <code>URL: /api/ecoaching/courses</code>
+      <p>Headers</p>
+      <ul>
+        <li>Authorization : "Bearer <i>student_token_here</i>"</li>
+      </ul>
+      <p>Parameters:</p>
+      
+      <p>Example Response:</p>
+      <pre>
+        {
+          "courses": [
+            {
+              "id": 1,
+              "course_name": "Biology2",
+              "updated_at": "2024-02-23T09:40:13.000000Z",
+              "created_at": "2024-01-30T07:02:39.000000Z",
+              "thumbnail": "65d866dde4fa1.png"
+            }
+          ],
+          "status": true
+        }
+  </pre>
 
 
 </body>

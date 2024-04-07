@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\EPlan;
 use App\Models\EPlanPayment;
 use App\Models\EStudents;
+use App\Models\TCourses;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
 use Firebase\JWT\JWT;
@@ -129,6 +130,29 @@ class EStudentsController extends Controller
         }
     }
 
+    public function EcoachingStudentCourses(Request $request){
+        $stdId = $request->id;
+
+        $courses = EPlanPayment::where('student_id', $stdId)
+        ->where('isApproved', true)
+        ->join('e_plan', 'e_plan.id', '=', 'e_payment_plan.plan_id')
+        ->join('e_plan_course', 'e_plan_course.id', '=', 'e_plan.id')
+        ->join('tcourse', 'tcourse.id', '=', 'e_plan_course.course_id')
+        ->select('tcourse.*')
+        ->get();
+
+        return response()->json([
+            'courses' => $courses,
+           'status' => true
+        ], 200);
+    }
+    public function EcoachingGuestCourses(Request $request){
+      $courses =  TCourses::all();
+      return response()->json([
+        'courses' => $courses,
+       'status' => true
+    ], 200);
+    }
     private function saveFile($file, $path)
     {
         $filename = '';
