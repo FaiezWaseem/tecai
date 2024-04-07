@@ -5,12 +5,17 @@ use Illuminate\Support\Facades\Route;
 
 
 Route::get('/student/preview/file/download/{id}', [App\Http\Controllers\PreviewFileController::class, 'ApiStudentHomeWorkPreview'])
-    ->name('preview.file.download.student')
+->name('preview.file.download.student')
 ;
 
 
 
 Route::post('/login', [App\Http\Controllers\StudentsController::class, 'login']);
+
+Route::post('/ecoaching/login', [App\Http\Controllers\EStudentsController::class, 'EcoachingStudentLogin']);
+Route::post('/ecoaching/register', [App\Http\Controllers\EStudentsController::class, 'EcoachingStudentRegister']);
+
+Route::get('/ecoaching/plans', [App\Http\Controllers\EPlanController::class, 'EcoachingStudentPlans']);
 
 
 Route::middleware('verify.token')->group(function () {
@@ -42,6 +47,10 @@ Route::middleware('verify.token')->group(function () {
 
     Route::get('/course/content/{id}', [App\Http\Controllers\ContentController::class, 'getContent']);
 
+
+
+
+    
 });
 
 

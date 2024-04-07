@@ -7,6 +7,7 @@ use App\Models\EPlanPayment;
 use App\Models\EStudents;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
+use Firebase\JWT\JWT;
 
 class EStudentsController extends Controller
 {
@@ -61,44 +62,71 @@ class EStudentsController extends Controller
         }
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
+    public function EcoachingStudentLogin(Request $request)
     {
-        //
+        $user = EStudents::where('email', $request->input('email'))->first();
+        if (!$user || !\Hash::check($request->password, $user->password)) {
+            return response()->json([
+                'email' => 'The provided credentials do not match our records.',
+            ], 200);
+        }
+        $payload = [
+            'id' => $user->id,
+            'email' => $user->email,
+        ];
+        $jwt = JWT::encode($payload, 'tecai', 'HS256');
+
+        return response()->json([
+            'success' => 'You have successfully logged in.',
+            'user' => $user,
+            'token' => $jwt,
+        ], 200);
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(EStudents $eStudents)
+    public function EcoachingStudentRegister(Request $request)
     {
-        //
-    }
+        try {
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(EStudents $eStudents)
-    {
-        //
-    }
+            validator($request->all(), [
+                'name' =>'required',
+                'email' =>'required|email',
+                'password' => '<PASSWORD>',
+                'plan_id' =>'required',
+            ]);
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, EStudents $eStudents)
-    {
-        //
-    }
+            $user = EStudents::where('email', $request->input('email'))->first();
+            if ($user) {
+                return response()->json([
+                    'message' => 'Please enter a different email address.',
+                    'status' => false
+                ], 200);
+            }
+            $student = new EStudents();
+            $student->name = $request->input('name');
+            $student->email = $request->input('email');
+            $student->password = bcrypt($request->input('password'));
+            $student->save();
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(EStudents $eStudents)
-    {
-        //
+            
+            $newPlan = new EPlanPayment;
+            $newPlan->student_id = $student->id;
+            $newPlan->plan_id = $request->plan_id;
+            $newPlan->isApproved =  false;
+            $newPlan->start_time = now();
+            $newPlan->end_time = now()->addDays(30);
+            $newPlan->payment_screenshot = $request->input('payment_screenshot');
+            $newPlan->save();
+            return response()->json([
+                'success' => 'You have successfully registered.',
+                'status' => true
+            ], 200);
+            //code...
+        } catch (\Throwable $th) {
+            return response()->json([
+                'message' => $th->getMessage(),
+                'status' => false
+            ], 200);
+        }
     }
 
     private function saveFile($file, $path)

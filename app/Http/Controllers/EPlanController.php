@@ -34,20 +34,12 @@ class EPlanController extends Controller
         return view('dashboard.superadmin.ecoaching.plans.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(EPlan $ePlan)
-    {
-        //
+    public function EcoachingStudentPlans(){
+        $plans = EPlan::all();
+        return response()->json([
+            'plans' => $plans,
+            'status' => false
+        ], 200);
     }
 
     /**

@@ -15,6 +15,10 @@ use Illuminate\Support\Facades\Route;
 // });
 
 
+Route::get('/docs/api' , function(){
+    return view('docs.api');
+});
+
 
 Route::get('/teacher/preview/file/{id}', [App\Http\Controllers\PreviewFileController::class, 'TeacherViewFile'])
     ->name('teacher.preview.file');

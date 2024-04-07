@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\EStudents;
 use App\Models\HomeWork;
 use App\Models\students;
 use App\Models\activity;
@@ -304,8 +305,6 @@ class StudentsController extends Controller
 
     public function login(Request $request)
     {
-
-
         $user = students::where('email', $request->input('email'))->first();
         if (!$user || !\Hash::check($request->password, $user->password)) {
             return response()->json([
