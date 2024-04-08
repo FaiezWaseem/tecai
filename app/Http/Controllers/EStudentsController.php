@@ -88,13 +88,6 @@ class EStudentsController extends Controller
     {
         try {
 
-            validator($request->all(), [
-                'name' =>'required',
-                'email' =>'required|email',
-                'password' => '<PASSWORD>',
-                'plan_id' =>'required',
-            ]);
-
             $user = EStudents::where('email', $request->input('email'))->first();
             if ($user) {
                 return response()->json([
@@ -117,11 +110,12 @@ class EStudentsController extends Controller
             $newPlan->end_time = now()->addDays(30);
             $newPlan->payment_screenshot = $request->input('payment_screenshot');
             $newPlan->save();
+            
             return response()->json([
                 'success' => 'You have successfully registered.',
                 'status' => true
             ], 200);
-            //code...
+        
         } catch (\Throwable $th) {
             return response()->json([
                 'message' => $th->getMessage(),

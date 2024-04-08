@@ -463,6 +463,56 @@
                                 </li>
                             </ul>
                         </li>
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>
+                                    Live Session
+                                    <i class="right fas fa-angle-left"></i>
+                                </p>
+                            </a>
+                            <ul class="nav nav-treeview" style="display: none;">
+                                <li class="nav-item">
+                                    <a href="{{ route('superadmin.live_session.view') }}"
+                                        class="nav-link {{ request()->is('dashboard/superadmin/ecoaching/live_session/view') ? 'active' : '' }}">
+                                        <i class="far fa fa-eye nav-icon"></i>
+                                        <p>View LiveSessions</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{ route('superadmin.live_session.create') }}"
+                                        class="nav-link {{ request()->is('dashboard/superadmin/ecoaching/plans/create') ? 'active' : '' }}">
+                                        <i class="far fa fa-plus-square nav-icon"></i>
+                                        <p>Add LiveSessions</p>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>
+                                    Notes
+                                    <i class="right fas fa-angle-left"></i>
+                                </p>
+                            </a>
+                            <ul class="nav nav-treeview" style="display: none;">
+                                <li class="nav-item">
+                                    <a href="{{ route('superadmin.notes.view') }}"
+                                        class="nav-link {{ request()->is('dashboard/superadmin/ecoaching/plans/view') ? 'active' : '' }}">
+                                        <i class="far fa fa-eye nav-icon"></i>
+                                        <p>View Notes</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{ route('superadmin.notes.create') }}"
+                                        class="nav-link {{ request()->is('dashboard/superadmin/ecoaching/plans/create') ? 'active' : '' }}">
+                                        <i class="far fa fa-plus-square nav-icon"></i>
+                                        <p>Add Notes</p>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
                       </ul>
                   </li>
 

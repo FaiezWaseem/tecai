@@ -364,5 +364,33 @@ Route::middleware('CheckSuperAdmin')->prefix('/superadmin')->group(function () {
      * # Display a list of all Teachers
      */
     Route::get('/ecoaching/teachers/view', [App\Http\Controllers\EPlanController::class, 'SuperAdminViewTeachers'])
-    ->name('superadmin.teachers.plans.view');
+    ->name('superadmin.teachers.view');
+    /**
+     * Route Admin / View Ecoaching Teachers
+     * # Display a list of all Teachers
+     */
+    Route::get('/ecoaching/live_session/view', [App\Http\Controllers\EContentController::class, 'SuperAdminViewLiveSession'])
+    ->name('superadmin.live_session.view');
+    /**
+     * Route Admin / View Ecoaching Teachers
+     * # Display a list of all Teachers
+     */
+    Route::get('/ecoaching/live_session/create', [App\Http\Controllers\EContentController::class, 'SuperAdminCreateLiveSession'])
+    ->name('superadmin.live_session.create');
+    Route::post('/ecoaching/live_session/create', [App\Http\Controllers\EContentController::class, 'SuperAdminCreateLiveSession'])
+    ->name('superadmin.live_session.create');
+    /**
+     * Route Admin / View Ecoaching Teachers
+     * # Display a list of all Teachers
+     */
+    Route::get('/ecoaching/notes/view', [App\Http\Controllers\EContentController::class, 'SuperAdminViewNotes'])
+    ->name('superadmin.notes.view');
+    /**
+     * Route Admin / View Ecoaching Teachers
+     * # Display a list of all Teachers
+     */
+    Route::get('/ecoaching/notes/create', [App\Http\Controllers\EContentController::class, 'SuperAdminCreateNotes'])
+    ->name('superadmin.notes.create');
+    Route::post('/ecoaching/notes/create', [App\Http\Controllers\EContentController::class, 'SuperAdminCreateNotes'])
+    ->name('superadmin.notes.create');
 });
