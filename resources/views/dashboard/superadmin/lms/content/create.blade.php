@@ -48,10 +48,17 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="txtUserName">Content File </label>
-                            <input accept=".png, .jpg, .jpeg, .gif, .pdf, .mp4, .zip, .rar, .swf, .ppt, .pptx" class="form-control"
-                                name="content_link" type="file" onchange="validateFileSize(this)" value="">
+                            <input type="text" name="content_link" id="content_link" hidden>
+                            <input type="button" id="browseFile" class="btn btn-primary" value="Select file">
+                            <div style="display: none" class="progress mt-3" style="height: 25px">
+                                <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar"
+                                    aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"
+                                    style="width: 75%; height: 100%">75%</div>
+                            </div>
                             <span id="txtUserName_Error" class="error invalid-feedback hide"></span>
                         </div>
+
+
                     </div>
                     <div class="col-md-4">
                         <div class="form-group">
@@ -113,7 +120,7 @@
                     <div class="col-md-4">
                         <div class="form-group">
                             <label for="txtUserName">Title <span class="text-danger">*</span></label>
-                            <input type="text" name="content_title" class="form-control" >
+                            <input type="text" name="content_title" class="form-control">
                             <span id="txtUserName_Error" class="error invalid-feedback hide"></span>
                         </div>
                     </div>
@@ -233,5 +240,62 @@
                 }
             });
         });
+    </script>
+    <script type="text/javascript">
+        let browseFile = $('#browseFile');
+        let resumable = new Resumable({
+            target: '{{ route('upload.large.file') }}',
+            query: {
+                _token: '{{ csrf_token() }}'
+            }, // CSRF token
+            fileType: ["png", "jpg", "jpeg", "gif", "pdf", "mp4", "zip", "rar", "swf", "ppt", "pptx"],
+            chunkSize: 5 * 1024 * 1024, // default is 1*1024*1024, this should be less than your maximum limit in php.ini
+            headers: {
+                'Accept': 'application/json'
+            },
+            testChunks: false,
+            throttleProgressCallbacks: 1,
+        });
+
+        resumable.assignBrowse(browseFile[0]);
+
+        resumable.on('fileAdded', function(file) {
+            showProgress();
+            resumable.upload()
+        });
+
+        resumable.on('fileProgress', function(file) { // trigger when file progress update
+            updateProgress(Math.floor(file.progress() * 100));
+        });
+
+        resumable.on('fileSuccess', function(file, response) { // trigger when file upload complete
+            response = JSON.parse(response)
+            console.log(response)
+            $('#content_link').val(response.filename)
+            $('.card-footer').show();
+        });
+
+        resumable.on('fileError', function(file, response) { // trigger when there is any error
+            alert('file uploading error.')
+        });
+
+
+        let progress = $('.progress');
+
+        function showProgress() {
+            progress.find('.progress-bar').css('width', '0%');
+            progress.find('.progress-bar').html('0%');
+            progress.find('.progress-bar').removeClass('bg-success');
+            progress.show();
+        }
+
+        function updateProgress(value) {
+            progress.find('.progress-bar').css('width', `${value}%`)
+            progress.find('.progress-bar').html(`${value}%`)
+        }
+
+        function hideProgress() {
+            progress.hide();
+        }
     </script>
 @endsection

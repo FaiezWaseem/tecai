@@ -20,6 +20,12 @@ Route::get('/docs/api' , function(){
 });
 
 
+Route::get('/fileupload', [App\Http\Controllers\LargeFileUploadController::class, 'uploadLargeFiles'])
+    ->name('upload.large.file');
+Route::post('/fileupload', [App\Http\Controllers\LargeFileUploadController::class, 'uploadLargeFiles'])
+    ->name('upload.large.file');
+
+
 Route::get('/teacher/preview/file/{id}', [App\Http\Controllers\PreviewFileController::class, 'TeacherViewFile'])
     ->name('teacher.preview.file');
 Route::get('/preview/file/download/{id}', [App\Http\Controllers\PreviewFileController::class, 'downloadFile'])

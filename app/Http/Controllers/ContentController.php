@@ -88,11 +88,10 @@ class ContentController extends Controller
     {
         $requestMethod = $request->method();
         if ($requestMethod === 'POST') {
-            if ($request->hasFile('content_link') && $request->hasFile('thumbnail')) {
-                $file = $request->file('content_link');
+            if ($request->hasFile('thumbnail')) {
+                $content_link = $request->content_link;
                 $file2 = $request->file('thumbnail');
 
-                $fullpath = $this->saveFile($file, 'web_uploads/');
                 $thumbPath = $this->saveFile($file2, 'web_uploads/thumbnail/');
 
 
@@ -102,7 +101,7 @@ class ContentController extends Controller
                 $content->tclass_id = $request->tclass_id;
                 $content->tchapter_id = $request->tchapter_id;
                 $content->content_type = $request->content_type;
-                $content->content_link = $fullpath;
+                $content->content_link = $content_link;
                 $content->thumbnail = $thumbPath;
                 $content->content_title = $request->content_title;
                 // $content->tslo_id = $request->tslo_id;

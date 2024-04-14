@@ -32,7 +32,7 @@ class EContentController extends Controller
                 $content->content_link = $request->content_link;
                 $content->content_type = "link";
                 $content->save();
-                return redirect()->route('superadmin.live_sessions.view');
+                return redirect()->route('superadmin.live_session.view');
             }
         }
         $boards = Tboards::all();
