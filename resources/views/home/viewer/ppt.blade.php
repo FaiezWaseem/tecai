@@ -18,7 +18,7 @@
     </style>
 </head>
 <body>
-    <iframe src="https://docs.google.com/gview?url={{  route('preview.file.download',['id'=> $id]) }}&embedded=true" style="min-width:962px; height:565px;" frameborder="0"></iframe>
-    <!--<iframe src='https://view.officeapps.live.com/op/embed.aspx?src={{  route('preview.file.download',['id'=> $id]) }}' width='962px' height='565px' frameborder='0'></iframe>-->
+    {{-- <iframe src="https://docs.google.com/gview?url={{  route('preview.file.download',['id'=> $id]) }}&embedded=true" style="min-width:962px; height:565px;" frameborder="0"></iframe> --}}
+    <iframe src='https://view.officeapps.live.com/op/embed.aspx?src={{  route('preview.file.download',['id'=> $id]) }}' width='962px' height='565px' frameborder='0'></iframe>
 </body>
 </html>

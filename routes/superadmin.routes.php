@@ -364,7 +364,7 @@ Route::middleware('CheckSuperAdmin')->prefix('/superadmin')->group(function () {
      * # Display a list of all Teachers
      */
     Route::get('/ecoaching/teachers/view', [App\Http\Controllers\EPlanController::class, 'SuperAdminViewTeachers'])
-    ->name('superadmin.teachers.view');
+    ->name('superadmin.ecoaching.teachers.view');
     /**
      * Route Admin / View Ecoaching Teachers
      * # Display a list of all Teachers

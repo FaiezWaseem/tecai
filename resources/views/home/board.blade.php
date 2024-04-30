@@ -259,13 +259,16 @@
                             <a
                                 href="{{ route('home.board.classes', ['board_id' => $board_id, 'class_id' => $class->id, 'board_name' => $board_name, 'class_name' => $class->class_name]) }}">
                                 <div
-                                    class="card card-body border border-danger bg-opacity-10 text-center position-relative btn-transition p-4">
+                                    class="card card-body shadow-sm bg-white bg-opacity-10 text-center position-relative btn-transition px-2">
                                     <!-- Image -->
-                                    <div class="icon-xl bg-body mx-auto mb-3">
+                                    <div class="bg-body mx-auto mb-3">
                                         @if ($class->thumbnail)
                                         <img loading="lazy"
                                             src="{{ Storage::disk('local')->temporaryUrl($class->thumbnail, now()->addMinutes(3)) }}"
-                                            alt="thumbnail_image">
+                                            alt="thumbnail_image"
+                                            class="rounded"
+                                            style="max-height: 300px;"
+                                            >
                                     @else
                                         <img loading="lazy"
                                             src="https://placehold.co/600x400?text={{ $class->class_name }}"
@@ -276,7 +279,7 @@
                                     <h5 class="mb-2"><a
                                             href="{{ route('home.board.classes', ['board_id' => $board_id, 'class_id' => $class->id, 'board_name' => $board_name, 'class_name' => $class->class_name]) }}"
                                             class="stretched-link">{{ $class->class_name }}</a></h5>
-                                    <a href="#" class="btn btn-danger">Class</a>
+                                  
                                 </div>
                             </a>
                         </div>

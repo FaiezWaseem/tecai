@@ -1,7 +1,7 @@
 const get = ($) => document.querySelector($);
 
 
-const tabs = [ 'diagram'  , 'theme', 'backgrounds' ,'output' ] 
+const tabs = ['diagram', 'theme', 'backgrounds', 'output']
 
 let nextTab = null;
 
@@ -12,7 +12,7 @@ let previousTab = null;
 let selectedBackground = null;
 let isTheme = true;
 
-let type  = null;
+let type = null;
 
 var imageBase64 = null;
 
@@ -24,66 +24,66 @@ get('#showNext').addEventListener('click', function () {
 
   currentTab = tabs[currentIndex];
   previousTab = tabs[currentIndex - 1];
-  nextTab = (currentIndex + 1) > tabs.length ? null :  tabs[currentIndex + 1];
+  nextTab = (currentIndex + 1) > tabs.length ? null : tabs[currentIndex + 1];
 
-  if(currentTab === tabs[0]){
-     if(!imageBase64){
+  if (currentTab === tabs[0]) {
+    if (!imageBase64) {
       alert('Please Select an Image')
       return;
-     }
-     if(pinpoints.length == 0){
+    }
+    if (pinpoints.length == 0) {
       alert('Please Add Labels ')
       return;
-     }
+    }
   }
 
-  if(currentTab === tabs[1]){
-    if(!type){
+  if (currentTab === tabs[1]) {
+    if (!type) {
       alert('Please Select A Theme')
       return;
     }
   }
-  if(currentTab === tabs[2]){
-    if(!selectedBackground){
+  if (currentTab === tabs[2]) {
+    if (!selectedBackground) {
       alert('Please Select A Background')
       return;
     }
   }
 
-  if(nextTab){
+  if (nextTab) {
 
     get(`#${currentTab}`).classList.toggle('active');
     get(`#${currentTab}`).classList.toggle('show');
-    
+
     get(`#${nextTab}`).classList.toggle('active');
     get(`#${nextTab}`).classList.toggle('show');
 
-    currentIndex = currentIndex +1;
+    currentIndex = currentIndex + 1;
     previousIndex = currentIndex - 1;
-  }else{
-    console.log("No Next Tab" , nextTab , currentIndex , previousIndex)
+  } else {
+    console.log("No Next Tab", nextTab, currentIndex, previousIndex)
   }
 
 })
 get('#showPrev').addEventListener('click', function () {
 
   currentTab = tabs[currentIndex];
-  previousTab = previousIndex == -1 ? -1 :  tabs[previousIndex];
-  nextTab = (previousIndex + 1) > tabs.length ? null :  tabs[previousIndex + 1];
+  previousTab = previousIndex == -1 ? -1 : tabs[previousIndex];
+  nextTab = (previousIndex + 1) > tabs.length ? null : tabs[previousIndex + 1];
 
-  if(previousIndex !== -1){
+  if (previousIndex !== -1) {
 
     get(`#${currentTab}`).classList.toggle('active');
     get(`#${currentTab}`).classList.toggle('show');
-    
+
     get(`#${previousTab}`).classList.toggle('active');
     get(`#${previousTab}`).classList.toggle('show');
 
     currentIndex = currentIndex - 1;
     previousIndex = currentIndex - 1;
 
-  }else{
-    console.log("Cannot Go Back" ,previousIndex)
+  } else {
+    console.log("Cannot Go Back", previousIndex)
   }
 
 })
@@ -92,30 +92,30 @@ get('#showPrev').addEventListener('click', function () {
 
 
 imageEvents()
-function imageEvents(){
-// li click event
-var liElements = document.querySelectorAll('#backgrounds li');
-liElements.forEach(function (li) {
-  li.addEventListener('click', function () {
-    var isSelected = this.classList.contains('selected');
+function imageEvents() {
+  // li click event
+  var liElements = document.querySelectorAll('#backgrounds li');
+  liElements.forEach(function (li) {
+    li.addEventListener('click', function () {
+      var isSelected = this.classList.contains('selected');
 
-    // Remove 'selected' class from all li elements
-    liElements.forEach(function (li) {
-      li.classList.remove('selected');
+      // Remove 'selected' class from all li elements
+      liElements.forEach(function (li) {
+        li.classList.remove('selected');
+      });
+
+
+      // Add 'selected' class to the clicked li element if it was not already selected
+      if (!isSelected) {
+        this.classList.add('selected');
+        document.querySelector('.select')?.classList?.add('selected');
+      } else {
+        document.querySelector('.select').classList.remove('selected');
+      }
+      counter();
+      // Call the counter function
     });
-
-
-    // Add 'selected' class to the clicked li element if it was not already selected
-    if (!isSelected) {
-      this.classList.add('selected');
-      document.querySelector('.select')?.classList?.add('selected');
-    } else {
-      document.querySelector('.select').classList.remove('selected');
-    }
-    counter();
-    // Call the counter function
   });
-});
 }
 // number of selected iems
 function counter() {
@@ -136,19 +136,19 @@ function counter() {
 
 
 ThemeEvents()
-function ThemeEvents(){
+function ThemeEvents() {
   // li click event
   var liElements = document.querySelectorAll('#theme li');
   liElements.forEach(function (li) {
     li.addEventListener('click', function () {
       var isSelected = this.classList.contains('selected');
-  
+
       // Remove 'selected' class from all li elements
       liElements.forEach(function (li) {
         li.classList.remove('selected');
       });
-  
-  
+
+
       // Add 'selected' class to the clicked li element if it was not already selected
       if (!isSelected) {
         this.classList.add('selected');
@@ -160,24 +160,24 @@ function ThemeEvents(){
       // Call the counter function
     });
   });
+}
+// number of selected iems
+function Themecounter() {
+  // Get the li element with the 'selected' class
+  var selectedElement = document.querySelector('#theme li.selected');
+  var sendElement = document.querySelector('#theme .send');
+  type = selectedElement.getAttribute('type');
+  if (selectedElement) {
+    // Add the 'selected' class to the send element
+    sendElement?.classList?.add('selected');
+    sendElement?.setAttribute('data-counter', '1');
+  } else {
+    // Remove the 'selected' class from the send element
+    sendElement?.classList?.remove('selected');
+    sendElement?.setAttribute('data-counter', '0');
   }
-  // number of selected iems
-  function Themecounter() {
-    // Get the li element with the 'selected' class
-    var selectedElement = document.querySelector('#theme li.selected');
-    var sendElement = document.querySelector('#theme .send');
-    type = selectedElement.getAttribute('type');
-    if (selectedElement) {
-      // Add the 'selected' class to the send element
-      sendElement?.classList?.add('selected');
-      sendElement?.setAttribute('data-counter', '1');
-    } else {
-      // Remove the 'selected' class from the send element
-      sendElement?.classList?.remove('selected');
-      sendElement?.setAttribute('data-counter', '0');
-    }
-  }
-  
+}
+
 
 
 
@@ -198,19 +198,20 @@ function getThemeImage() { return selectedBackground }
 
 async function postData() {
 
+  try {
   const sendJSON = JSON.stringify({
-    type : 'parts',
-    theme : true,
-    typeTheme : type,
-    bg : getThemeImage(),
-    dropImage : imageBase64.toString(),
-    pinpoints : JSON.stringify(pinpoints)
+    type: 'parts',
+    theme: true,
+    typeTheme: type,
+    bg: getThemeImage(),
+    dropImage: imageBase64.toString(),
+    pinpoints: JSON.stringify(pinpoints)
   })
   console.log(sendJSON)
   var csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
   var headers = {
-      'Content-Type': 'application/json',
-      'X-CSRF-TOKEN': csrfToken
+    'Content-Type': 'application/json',
+    'X-CSRF-TOKEN': csrfToken
   };
 
   const form = new FormData();
@@ -223,19 +224,24 @@ async function postData() {
     body: JSON.stringify({
       data: sendJSON,
       type: 'parts',
-  }),
-  headers: headers,
+    }),
+    headers: headers,
   })
   const res = await req.json()
 
-  if(res.success){
-   showLoader(false)
-  var link = document.createElement("a"); // Or maybe get it from the current document
-  link.href = '../../../teacher/assignment/view/' + res.id +"?teacher=true";
-  link.target = '_blank'
-  document.body.appendChild(link);
-  link.click();
-  } 
+  if (res.success) {
+    showLoader(false)
+    var link = document.createElement("a"); // Or maybe get it from the current document
+    link.href = '../../../teacher/assignment/view/' + res.id + "?teacher=true";
+    link.target = '_blank'
+    document.body.appendChild(link);
+    link.click();
+  }
+      
+} catch (error) {
+   alert('Some Error Occured')
+   console.warn(error)   
+}
 
 }
 

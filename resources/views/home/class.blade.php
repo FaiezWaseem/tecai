@@ -260,13 +260,15 @@
                         <div class="col-sm-6 col-md-4 col-xl-3">
 
                             <div
-                                class="card card-body border border-danger bg-opacity-10 text-center position-relative btn-transition p-4">
+                                class="card card-body bg-white shadow-sm bg-opacity-10 text-center position-relative btn-transition p-2">
                                 <!-- Image -->
-                                <div class=" bg-body mx-auto rounded-circle mb-3">
+                                <div class="bg-body mx-auto rounded-circle mb-3">
                                     @if ($course->thumbnail)
                                         <img loading="lazy"
                                             src="{{ Storage::disk('local')->temporaryUrl($course->thumbnail, now()->addMinutes(3)) }}"
-                                            alt="thumbnail_image">
+                                            alt="thumbnail_image"
+                                            class="rounded"
+                                            >
                                     @else
                                         <img loading="lazy"
                                         src="https://placehold.co/600x400?text={{ $course->course_name }}"
@@ -277,7 +279,7 @@
                                 <h5 class="mb-2"><a
                                         href="{{ route('home.board.course', ['board_id' => $board_id, 'class_id' => $class_id, 'board_name' => $board_name, 'class_name' => $class_name, 'course_id' => $course->id, 'course_name' => $course->course_name]) }}"
                                         class="stretched-link">{{ $course->course_name }}</a></h5>
-                                <a href="#" class="btn btn-danger">Course &#8594;</a>
+                                
                             </div>
 
                         </div>

@@ -491,47 +491,47 @@ class TeachersController extends Controller
 
         $teacherSchoolId = HelperFunctionsController::getTeacherSchoolById($teacherId);
 
-        if($rqMethod === 'PUT'){
-            $isChecked = $request->isChecked === "true" ? true : false ;
+        if ($rqMethod === 'PUT') {
+            $isChecked = $request->isChecked === "true" ? true : false;
             $course_id = $request->courseId;
             $class_id = $request->classId;
             $board_id = $request->boardId;
 
-           $record = TeacherContentPermission::where('teacher_id', $teacherId)
-           ->where('class_id', $class_id)
-           ->where('board_id', $board_id)
-           ->where('course_id', $course_id)
-           ->first()
-           ;
+            $record = TeacherContentPermission::where('teacher_id', $teacherId)
+                ->where('class_id', $class_id)
+                ->where('board_id', $board_id)
+                ->where('course_id', $course_id)
+                ->first()
+            ;
 
-           if($record){
+            if ($record) {
 
-            if(!$isChecked){
-                $record->delete();
+                if (!$isChecked) {
+                    $record->delete();
+                    return response()->json([
+                        'status' => true
+                    ]);
+                }
+
                 return response()->json([
-                    'status' => true                
+                    'status' => true
                 ]);
+
+            } else {
+
+
+                $record = new TeacherContentPermission;
+                $record->teacher_id = $teacherId;
+                $record->class_id = $class_id;
+                $record->course_id = $course_id;
+                $record->board_id = $board_id;
+                $record->save();
+
+                return response()->json([
+                    'status' => true
+                ]);
+
             }
-
-            return response()->json([
-                'status' => true                
-            ]);
-
-           }else{
-
-
-            $record = new TeacherContentPermission;
-            $record->teacher_id = $teacherId;
-            $record->class_id = $class_id;
-            $record->course_id  = $course_id;
-            $record->board_id = $board_id;
-            $record->save();
-
-            return response()->json([
-                'status' => true                
-            ]);
-
-           }
 
         }
 
@@ -545,9 +545,9 @@ class TeachersController extends Controller
             $courses = TCourses::all();
 
             $permissions = TeacherContentPermission::where('teacher_id', $teacherId)
-            ->get();
+                ->get();
 
-            return view('dashboard.admin.teachers.permissions.view', compact('boardIds', 'boards', 'classes', 'courses','permissions'));
+            return view('dashboard.admin.teachers.permissions.view', compact('boardIds', 'boards', 'classes', 'courses', 'permissions'));
         }
     }
 
@@ -683,43 +683,49 @@ class TeachersController extends Controller
     public function TeacherCreateAssignmentType(Request $request, $type)
     {
 
-        switch ($type) {
+        try {
 
-            case 'blanks':
-            case 'match':
-            case 'crossword':
-            case 'parts':
-            case 'truefalse':
-            case 'cluegame':
-                $activity = new activity;
-                $activity->tid = session('user')['id'];
-                $activity->class_id = session('class_id');
-                $activity->course_id = session('course_id');
-                $activity->total_marks = session('total_marks');
-                $activity->deadline = session('deadline');
-                $activity->topic_id = session('topic_id');
-                $activity->section_id = 1;
-                $activity->school_id = session('user')['school_id'];
-                $activity->data = $request->input('data');
-                $activity->title = session('title');
-                $activity->type = $request->input('type');
-                $activity->save();
+            switch ($type) {
 
-                $students = teacher_classes::where('teacher_id', '=', session('user')['id'])
-                    ->join('classes', 'teacher_classes.class_id', '=', 'classes.id')
-                    ->join('students', 'classes.class_name', '=', 'students.class')
-                    ->get();
+                case 'blanks':
+                case 'match':
+                case 'crossword':
+                case 'parts':
+                case 'truefalse':
+                case 'cluegame':
+                    $activity = new activity;
+                    $activity->tid = session('user')['id'];
+                    $activity->class_id = session('class_id');
+                    $activity->course_id = session('course_id');
+                    $activity->total_marks = session('total_marks');
+                    $activity->deadline = session('deadline');
+                    $activity->topic_id = session('topic_id');
+                    $activity->section_id = 1;
+                    $activity->school_id = session('user')['school_id'];
+                    $activity->data = $request->input('data');
+                    $activity->title = session('title');
+                    $activity->type = $request->input('type');
+                    $activity->save();
 
-                foreach ($students as $key => $student) {
-                    if ($student->token) {
-                        HelperFunctionsController::sendNotification($student->token, 'New Assignment', 'Dear Student you have new Assignment Due . ' . session('title'));
+                    $students = teacher_classes::where('teacher_id', '=', session('user')['id'])
+                        ->join('classes', 'teacher_classes.class_id', '=', 'classes.id')
+                        ->join('students', 'classes.class_name', '=', 'students.class')
+                        ->get();
+
+                    foreach ($students as $key => $student) {
+                        if ($student->token) {
+                            HelperFunctionsController::sendNotification($student->token, 'New Assignment', 'Dear Student you have new Assignment Due . ' . session('title'));
+                        }
                     }
-                }
 
 
-                return response()->json(['success' => true, 'message' => 'Assignment Created Successfully', 'id' => $activity->id]);
-            default:
-                return response()->json(['success' => false, 'message' => 'Invalid Type']);
+                    return response()->json(['success' => true, 'message' => 'Assignment Created Successfully', 'id' => $activity->id]);
+                default:
+                    return response()->json(['success' => false, 'message' => 'Invalid Type']);
+            }
+          
+        } catch (\Throwable $th) {
+            return response()->json(['success' => false, 'message' => $th->getMessage()]);
         }
     }
     public function TeacherViewClasses(Request $request)

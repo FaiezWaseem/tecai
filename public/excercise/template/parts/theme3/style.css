@@ -20,10 +20,11 @@ body {
 }
 .name {
     margin: 4px;
-    background-color: orange;
+    background-color: white;
+    backdrop-filter: blur(8px);
     padding: 3px 12px;
     border-radius: 4px;
-    color: white;
+    color: black;
     font-family: "Courier New", Courier, monospace;
 }
 .container{

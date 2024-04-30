@@ -157,11 +157,13 @@ class ThemeType
         }
         .name {
             margin: 1px;
-            background-color: orange;
+            background-color: white;
+            backdrop-filter: blur(8px);
             padding: 3px 12px;
             border-radius: 4px;
-            color: white;
+            color: black;
             font-family: "Courier New", Courier, monospace;
+            border : 1px solid #ccc;
         }
         .container{
             display: flex;
@@ -420,12 +422,14 @@ class ThemeType
             flex-wrap: wrap;
         }
         .name {
-            margin: 4px;
-            background-color: orange;
+            margin: 1px;
+            background-color: white;
+            backdrop-filter: blur(8px);
             padding: 3px 12px;
             border-radius: 4px;
-            color: white;
+            color: black;
             font-family: "Courier New", Courier, monospace;
+            border : 1px solid #ccc;
         }
         .container{
             display: flex;
@@ -686,12 +690,14 @@ class ThemeType
             flex-wrap: wrap;
         }
         .name {
-            margin: 4px;
-            background-color: orange;
+            margin: 1px;
+            background-color: white;
+            backdrop-filter: blur(8px);
             padding: 3px 12px;
             border-radius: 4px;
-            color: white;
+            color: black;
             font-family: "Courier New", Courier, monospace;
+            border : 1px solid #ccc;
         }
         .container{
             display: flex;
