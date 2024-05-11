@@ -237,7 +237,14 @@ $(function () {
         display: false
       },
       maintainAspectRatio: false,
-      responsive: true
+      responsive: true,
+      scales: {
+        yAxes: [{
+          ticks: {
+            beginAtZero: true
+          }
+        }]
+      }
     }
     var studentData = {
         labels: [
@@ -264,7 +271,14 @@ $(function () {
           display: false
         },
         maintainAspectRatio: false,
-        responsive: true
+        responsive: true,
+        scales: {
+          yAxes: [{
+            ticks: {
+              beginAtZero: true
+            }
+          }]
+        }
       }
     var courseCoverageCanvase = $('#course-coverage-chart-canvas').get(0).getContext('2d')
     var studentData = {
@@ -284,6 +298,7 @@ $(function () {
       data: studentData,
       options: Options
     })
+    console.log(coverageChart)
   }
   function loadAttendanceCanvas(data = [11, 19]){
     var pieChartCanvas = $('#sales-chart-canvas').get(0).getContext('2d')

@@ -5,9 +5,11 @@ namespace App\Http\Controllers;
 use App\Models\Chapter;
 use App\Models\SchoolContentPermission;
 use App\Models\students;
+use App\Models\tasks;
 use App\Models\Tboards;
 use App\Models\TClasses;
 use App\Models\TCourses;
+use App\Models\TeacherContent;
 use App\Models\TeacherContentPermission;
 use App\Models\teachers;
 use App\Models\school;
@@ -19,6 +21,7 @@ use App\Models\activity;
 use App\Models\outline;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Storage;
 
 class TeachersController extends Controller
 {
@@ -237,6 +240,58 @@ class TeachersController extends Controller
             ->with("activities", $activities)
             ->with("classes", $classes)
             ->with("courses", $courses);
+    }
+    public function TeacherViewAssignmentGrades(Request $request)
+    {
+        try {
+            $tid = session('user')['id'];
+
+            $activities = activity::where('tid', $tid)
+                ->pluck('id')
+                ->values()
+                ->toArray()
+            ;
+
+            $marks = tasks::whereIn('activity_id', $activities)
+                ->join('students', 'students.id', '=', 'tasks.std_id')
+                ->select(
+                    'tasks.id',
+                    'tasks.points_obtained as obtained',
+                    'tasks.points_total as total',
+                    'tasks.activity_id',
+                    'tasks.added_on as attempted_date',
+                    'students.id as stdId',
+                    'students.name as stdName',
+                    'students.class as stdclass'
+                )
+                ->paginate(10);
+            return view('dashboard.teachers.assignment.grade.view')
+                ->with("marks", $marks)
+            ;
+            //code...
+        } catch (\Throwable $th) {
+            return $th->getMessage();
+        }
+    }
+    public function TeacherViewFile(Request $request , $id){
+        $content = TeacherContent::find($request->id);
+        $content_type = $content->content_type;
+        $url = Storage::disk('local')->temporaryUrl($content->content_link, now()->addMinutes(5));
+        if ($content_type == 'Flash') {
+            return view('home.viewer.flash', compact('content_type', 'id' ));
+        }
+        if ($content_type == 'Pdf') {
+            return view('home.viewer.pdf', compact('content_type', 'id'));
+        }
+        if ($content_type == 'Video') {
+            return view('home.viewer.video', compact('content_type', 'id'));
+        }
+        if ($content_type == 'GIF') {
+            return view('home.viewer.gif', compact('content_type', 'id'));
+        }
+        if ($content_type == 'Ppt') {
+            return view('home.viewer.ppt', compact('content_type', 'id'));
+        }
     }
     public function TeacherCreateAssignments(Request $request)
     {
@@ -723,7 +778,7 @@ class TeachersController extends Controller
                 default:
                     return response()->json(['success' => false, 'message' => 'Invalid Type']);
             }
-          
+
         } catch (\Throwable $th) {
             return response()->json(['success' => false, 'message' => $th->getMessage()]);
         }

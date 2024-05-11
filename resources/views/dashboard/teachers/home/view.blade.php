@@ -255,12 +255,12 @@
     @if ($stats['studentGenderCounts'])
         <script>
             const total_stds = {{ $stats['studentsCount'] }};
-            const total_male_stds = {{ $stats['studentGenderCounts'][1]['male'] }};
-            const total_female_stds = {{ $stats['studentGenderCounts'][0]['female'] }};
+            const total_male_stds = {{ $stats['studentGenderCounts'][1]['male'] ?? 0 }};
+            const total_female_stds = {{ $stats['studentGenderCounts'][0]['female'] ?? 0 }};
 
             loadStudentCanvas([total_stds, total_male_stds, total_female_stds]);
             loadAttendanceCanvas([15, 4, 2]);
-            loadCourseCoverageCanvas([5, 4]);
+            loadCourseCoverageCanvas([5.0, 4.5]);
         </script>
     @endif
 @endsection

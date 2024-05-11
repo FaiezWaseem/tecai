@@ -37,7 +37,6 @@
                     <table id="example1" class="table table-bordered table-striped">
                         <thead>
                             <tr>
-                                <th>Students</th>
                                 <th>Outline</th>
                                 <th>Grade</th>
                                 <th>Subject</th>
@@ -47,11 +46,7 @@
                             
                             @foreach ($classes as $item)
                             <tr>
-                                <td class="d-flex justify-content-between" >
-                                    <a >
-                                       Students
-                                    </a>
-                                </td>
+                               
                                 <td>
                                     <a href="{{ route('teacher.classe.outline.show', ['class_id' => $item->class_id , 'course_id' => $item->course_id]) }}">
                                         <i class="fa fa-eye"></i>   outline
@@ -64,7 +59,6 @@
                         </tbody>
                         <tfoot>
                             <tr>
-                                <th>Students</th>
                                 <th>Outline</th>
                           
                                 <th>Grade</th>

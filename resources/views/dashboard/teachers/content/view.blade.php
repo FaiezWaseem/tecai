@@ -53,15 +53,12 @@
                             @foreach ($content as $item)
                             <tr>
                                 <td>
-                                    <a href="{{ route('teacher.preview.file', ['id' => $item->id]) }}">
+                                    <a href="{{ route('teacher.content.preview.view', ['id' => $item->id]) }}">
                                         <i class="fa fa-eye text-success"  ></i>
                                     </a>
-                                    {{-- <a href="{{ Storage::disk('local')->temporaryUrl($item->content_link, now()->addMinutes(120)) }}">
-                                        <i class="fa fa-eye text-success"  ></i>
-                                    </a> --}}
-                                    <a href="{{ route('superadmin.students.edit', ['id'=> $item->id]) }}">
+                                    {{-- <a href="{{ route('superadmin.students.edit', ['id'=> $item->id]) }}">
                                         <i class="fa fa-edit text-primary"  ></i>
-                                    </a>
+                                    </a> --}}
                                     <button class="btn" data-toggle="modal" data-target="#DeleteModal" onclick="setdeleteModalId({{$item->id}})">
                                         <i class="fa fa-trash text-danger"  ></i>
                                     </button>
@@ -69,7 +66,7 @@
                                 <td>{{ $item->id }}</td>
                                 <td>
                                     @if ($item->thumbnail)
-                                    <img src="{{ Storage::disk('local')->temporaryUrl($item->thumbnail, now()->addMinutes(3)) }}" alt="thumbnail_image" loading='lazy' width="50px" height="50px"> 
+                                    <img src="{{ Storage::disk('local')->temporaryUrl($item->thumbnail, now()->addMinutes(10)) }}" alt="thumbnail_image" loading='lazy' width="50px" height="50px"> 
                                     @endif
                                 </td>
                                 <td contenteditable="true" >{{ $item->class_id }} </td>

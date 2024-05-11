@@ -237,7 +237,14 @@ $(function () {
         display: false
       },
       maintainAspectRatio: false,
-      responsive: true
+      responsive: true,
+      scales: {
+        yAxes: [{
+          ticks: {
+            beginAtZero: true
+          }
+        }]
+      }
     }
     var studentData = {
         labels: [
@@ -264,7 +271,14 @@ $(function () {
           display: false
         },
         maintainAspectRatio: false,
-        responsive: true
+        responsive: true,
+        scales: {
+          yAxes: [{
+            ticks: {
+              beginAtZero: true
+            }
+          }]
+        }
       }
     var courseCoverageCanvase = $('#course-coverage-chart-canvas').get(0).getContext('2d')
     var studentData = {
@@ -381,8 +395,3 @@ function setdeleteModalId(id) {
         afterHidden: function() {} // will be triggered after the toast has been hidden
     });
   }
-
-
-  console.log('`schooladmin` component mounted');
-
-

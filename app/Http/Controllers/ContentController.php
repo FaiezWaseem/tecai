@@ -272,6 +272,30 @@ class ContentController extends Controller
 
         return view('dashboard.teachers.content.create', compact('classes'));
     }
+    public function TeacherDeleteContent(Request $request){
+        if ($request->id) {
+            $deletedRows = TeacherContent::destroy($request->id);
+            if ($deletedRows > 0) {
+                return response()->json([
+                    'status' => 200,
+                    'deleted' => true
+                ]);
+            } else {
+                return response()->json([
+                    'status' => 200,
+                    'deleted' => false,
+                    'message' => 'Failed To Delete Record'
+                ]);
+            }
+        } else {
+            return response()->json([
+                'status' => 200,
+                'deleted' => false,
+                'message' => 'Record Id is not Provided',
+                'form' => $request->id
+            ]);
+        }
+    }
 
     public function create(Request $request)
     {

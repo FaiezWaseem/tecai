@@ -21,13 +21,17 @@ Route::get('/ecoaching/guest/courses', [App\Http\Controllers\EStudentsController
 
 Route::get('/ecoaching/plans', [App\Http\Controllers\EPlanController::class, 'EcoachingStudentPlans']);
 
+Route::get('/ecoaching/file/preview/{id}' , [App\Http\Controllers\PreviewFileController::class, 'downloadFile']);
 
 Route::middleware('verify.token')->group(function () {
     
 
     // Ecoaching
     Route::post('/ecoaching/courses', [App\Http\Controllers\EStudentsController::class, 'EcoachingStudentCourses']);
+    Route::get('/ecoaching/course/{cid}', [App\Http\Controllers\EStudentsController::class, 'EcoachingStudentViewCourse']);
     
+    Route::get('/ecoaching/live/classes', [App\Http\Controllers\EStudentsController::class, 'EcoachingStudentViewLiveClasses']);
+    Route::get('/ecoaching/notes', [App\Http\Controllers\EStudentsController::class, 'EcoachingStudentViewNotes']);
     
     
     Route::get('/user', [App\Http\Controllers\StudentsController::class, 'getStudent']);

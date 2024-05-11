@@ -44,42 +44,52 @@ class PreviewFileController extends Controller
     }
     public function downloadFile(Request $request)
     {
-        $content = TContent::find($request->id);
-        $content_type = $content->content_type;
+        try {
+            $content = TContent::find($request->id);
+            if(!isset($content)){
+                $content = TeacherContent::find($request->id);
+                $content_type = $content->content_type;
+            }
+            $content_type = $content->content_type;
 
-        if ($content_type == 'Pdf') {
-            $filePath = Storage::disk('local')->path($content->content_link);
-            $fileName = 'your-custom-filename.pdf';
-            $headers = [
-                'Content-Type' => 'application/pdf',
-            ];
-        } elseif ($content_type == 'Video') {
-            $filePath = Storage::disk('local')->path($content->content_link);
-            $fileName = 'your-custom-filename.mp4';
-            $headers = [
-                'Content-Type' => 'video/mp4',
-            ];
-        } elseif ($content_type == 'Flash') {
-            $filePath = Storage::disk('local')->path($content->content_link);
-            $fileName = 'your-custom-filename.swf';
-            $headers = [
-                'Content-Type' => 'application/x-shockwave-flash',
-            ];
-        } elseif ($content_type == 'GIF') {
-            $filePath = Storage::disk('local')->path($content->content_link);
-            $fileName = 'sample.gif';
-            $headers = [
-                'Content-Type' => 'image/gif',
-            ];
-        } elseif ($content_type == 'Ppt') {
-            $filePath = Storage::disk('local')->path($content->content_link);
-            $fileName = 'sample.pptx';
-            $headers = [
-                'Content-Type' => 'application/vnd.openxmlformats-officedocument.presentationml.presentation',
-            ];
+
+            if ($content_type == 'Pdf') {
+                $filePath = Storage::disk('local')->path($content->content_link);
+                $fileName = 'your-custom-filename.pdf';
+                $headers = [
+                    'Content-Type' => 'application/pdf',
+                ];
+            } elseif ($content_type == 'Video') {
+                $filePath = Storage::disk('local')->path($content->content_link);
+                $fileName = 'your-custom-filename.mp4';
+                $headers = [
+                    'Content-Type' => 'video/mp4',
+                ];
+            } elseif ($content_type == 'Flash') {
+                $filePath = Storage::disk('local')->path($content->content_link);
+                $fileName = 'your-custom-filename.swf';
+                $headers = [
+                    'Content-Type' => 'application/x-shockwave-flash',
+                ];
+            } elseif ($content_type == 'GIF') {
+                $filePath = Storage::disk('local')->path($content->content_link);
+                $fileName = 'sample.gif';
+                $headers = [
+                    'Content-Type' => 'image/gif',
+                ];
+            } elseif ($content_type == 'Ppt') {
+                $filePath = Storage::disk('local')->path($content->content_link);
+                $fileName = 'sample.pptx';
+                $headers = [
+                    'Content-Type' => 'application/vnd.openxmlformats-officedocument.presentationml.presentation',
+                ];
+            }
+
+            return Response::download($filePath, $fileName, $headers);
+        } catch (\Throwable $th) {
+            //throw $th;
+            return response()->json(['devErrorMessage' => $th->getMessage() , 'message' => 'File Not found' , 'content' => $content], 400);
         }
-
-        return Response::download($filePath, $fileName, $headers);
     }
     public function ApiStudentHomeWorkPreview(Request $request)
     {

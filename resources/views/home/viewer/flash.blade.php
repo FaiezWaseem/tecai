@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>FLASH PLAYER</title>
+    <title>ANIMATION</title>
     <style>
         * {
             padding: 0;
@@ -18,7 +18,7 @@
 
         ruffle-player {
             width: 100vw;
-            height: 90vh;
+            height: 100vh;
         }
 
         ruffle-player,

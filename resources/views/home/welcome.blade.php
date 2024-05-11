@@ -8,10 +8,10 @@
 
             .hero .container {
 
-                /* background-image: url('https://eduport.webestica.com/assets/images/element/05.svg');
+                background-image: url("{{ asset('images/home_bg.jpg') }}");
                 background-size: cover;
-                background-position: center; */
-                box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+                background-position: center;
+                /* box-shadow: 0 0 5px rgba(0, 0, 0, 0.1); */
      
 
                 min-height: 500px;
@@ -36,13 +36,7 @@
       <section class="hero">
         <div class="container rounded">
             <div class="row hero-child">
-                <div class="col-md-6">
-                    <h1 class="display-6">Tec - Learning Management System</h1>
-                    <p class="lead">Online learning and teaching marketplace with 5K+ courses & 10M students. Taught by experts to help you acquire new skills.</p>
-                </div>
-                <div class="col-md-6">
-                    <img src="https://eduport.webestica.com/assets/images/element/05.svg" alt="">
-                </div>
+               
             </div>
         </div>
     </section>

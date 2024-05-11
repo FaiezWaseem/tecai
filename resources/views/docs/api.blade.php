@@ -48,19 +48,22 @@
             list-style-type: square;
             margin-bottom: 5px;
         }
+
         .post {
-          background: red;
-          padding: 3px 5px;
-          color: white;
+            background: red;
+            padding: 3px 5px;
+            color: white;
         }
+
         .get {
-          background: green;
-          padding: 3px 5px;
-          color: white;
+            background: green;
+            padding: 3px 5px;
+            color: white;
         }
+
         code {
-          background-color: aliceblue;
-          padding: 5px;
+            background-color: aliceblue;
+            padding: 5px;
         }
     </style>
 </head>
@@ -74,11 +77,11 @@
         <code>URL: /api/ecoaching/register</code>
         <p>Parameters:</p>
         <ul>
-          <li>name - ex : 'student'</li>
-          <li>email -  ex : 'student@gmail.com'</li>
-          <li>password - ex : '1xxxxx'</li>
-          <li>plan_id - ex : '1'</li>
-          <li>payment_screenshot - ex : 'xyz@.com/screenshot.png'</li>
+            <li>name - ex : 'student'</li>
+            <li>email - ex : 'student@gmail.com'</li>
+            <li>password - ex : '1xxxxx'</li>
+            <li>plan_id - ex : '1'</li>
+            <li>payment_screenshot - ex : 'xyz@.com/screenshot.png'</li>
         </ul>
         <p>Example Response:</p>
         <pre>
@@ -94,7 +97,7 @@
         <code>URL: /api/ecoaching/login</code>
         <p>Parameters:</p>
         <ul>
-            <li>email -  ex : 'student@gmail.com'</li>
+            <li>email - ex : 'student@gmail.com'</li>
             <li>password - ex : '1xxxxx'</li>
         </ul>
         <p>Example Response:</p>
@@ -121,7 +124,7 @@
         <code>URL: /api/ecoaching/plans</code>
         <p>Parameters:</p>
         <ul>
-            
+
         </ul>
         <p>Example Response:</p>
         <pre>
@@ -164,19 +167,19 @@
           }
     </pre>
     </div>
-   {{-- Student Courses --}}
+    {{-- Student Courses --}}
     <div class="endpoint">
-      <h3>Ecoaching Student Courses</h3>
-      <p>HTTP Method: <span class="post">POST</span> </p>
-      <code>URL: /api/ecoaching/courses</code>
-      <p>Headers</p>
-      <ul>
-        <li>Authorization : "Bearer <i>student_token_here</i>"</li>
-      </ul>
-      <p>Parameters:</p>
-      
-      <p>Example Response:</p>
-      <pre>
+        <h3>Ecoaching Student Courses</h3>
+        <p>HTTP Method: <span class="post">POST</span> </p>
+        <code>URL: /api/ecoaching/courses</code>
+        <p>Headers</p>
+        <ul>
+            <li>Authorization : "Bearer <i>student_token_here</i>"</li>
+        </ul>
+        <p>Parameters:</p>
+
+        <p>Example Response:</p>
+        <pre>
         {
           "courses": [
             {
@@ -189,7 +192,124 @@
           ],
           "status": true
         }
-  </pre>
+      </pre>
+    </div>
+    {{-- Student Preview A Course content --}}
+    <div class="endpoint">
+        <h3>Ecoaching Student View Courses Content</h3>
+        <p>HTTP Method: <span class="get">GET</span> </p>
+        <code>URL: /api/ecoaching/course/{cid}</code>
+        <p>Headers</p>
+        <ul>
+            <li>Authorization : "Bearer <i>student_token_here</i>"</li>
+        </ul>
+        <p>Parameters:</p>
+        <p>cid : ex 1</p>
+
+        <p>Example Response:</p>
+        <pre>
+        {
+          "courses": [
+            {
+              "id": 29,
+              "content_type": "Pdf",
+              "content_link": "web_uploads/65fc22bfa884c-Document.pdf.pdf",
+              "tcourse_id": 1,
+              "tclass_id": 1,
+              "tboard_id": 1,
+              "tchapter_id": 1,
+              "updated_at": "2024-03-21T12:23:06.000000Z",
+              "created_at": "2024-03-21T12:06:23.000000Z",
+              "tslo_id": null,
+              "thumbnail": "web_uploads/thumbnail/65fc22bfac7b2-About Atom.gif.gif",
+              "content_title": "MCQs",
+              "topic_title": "MCQs",
+              "chapter_title": "Introduction to biology"
+            },
+          ],
+          "status": true
+        }
+      </pre>
+    </div>
+    {{-- Student Content Download --}}
+    <div class="endpoint">
+        <h3>Ecoaching Student View Courses Content</h3>
+        <p>HTTP Method: <span class="get">GET</span> </p>
+        <code>URL: /api/ecoaching/file/preview/{id}</code>
+        <p>Headers</p>
+        <ul>
+            <li>Authorization : "Bearer <i>student_token_here</i>"</li>
+        </ul>
+        <p>Parameters:</p>
+        <p>id : ex 1</p>
+
+        <p>Example Response:</p>
+        <pre>
+          file ::buffer::
+      </pre>
+    </div>
+    {{-- Student View Ecoaching Live CLass --}}
+    <div class="endpoint">
+        <h3>Ecoaching Student View Live Sessions</h3>
+        <p>HTTP Method: <span class="get">GET</span> </p>
+        <code>URL: /api/ecoaching/live/classes</code>
+        <p>Headers</p>
+        <ul>
+            <li>Authorization : "Bearer <i>student_token_here</i>"</li>
+        </ul>
+        <p>Parameters:</p>
+
+        <p>Example Response:</p>
+        <pre>
+          {
+            "live_sessions": [
+              {
+                "id": 1,
+                "board_id": 1,
+                "course_id": 1,
+                "type": "live_session",
+                "thumbnail": "web_uploads/ecoaching/thumbnails/66134e9802384-tempelate_literal.png.png",
+                "content_link": "https://player.vimeo.com/external/video.hd.mp4?s=31c5cb6239&profile_id=175",
+                "content_type": "link",
+                "updated_at": "2024-04-08T06:56:18.000000Z",
+                "created_at": "2024-04-08T01:55:36.000000Z"
+              },
+            ],
+            "status": true
+          }
+      </pre>
+    </div>
+    {{-- Student View Ecoaching Notes --}}
+    <div class="endpoint">
+        <h3>Ecoaching Student View Notes</h3>
+        <p>HTTP Method: <span class="get">GET</span> </p>
+        <code>URL: /api/ecoaching/notes</code>
+        <p>Headers</p>
+        <ul>
+            <li>Authorization : "Bearer <i>student_token_here</i>"</li>
+        </ul>
+        <p>Parameters:</p>
+
+        <p>Example Response:</p>
+        <pre>
+          {
+            "notes": [
+              {
+                "id": 2,
+                "board_id": 1,
+                "course_id": 1,
+                "type": "notes",
+                "thumbnail": "web_uploads/ecoaching/thumbnails/661351578c05a-Capture.PNG.PNG",
+                "content_link": "web_uploads/ecoaching/notes/6613515793926-45655.pdf.pdf",
+                "content_type": "pdf",
+                "updated_at": "2024-04-08T07:08:03.000000Z",
+                "created_at": "2024-04-08T02:07:19.000000Z"
+              },
+            ],
+            "status": true
+          }
+      </pre>
+    </div>
 
 
 </body>

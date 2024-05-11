@@ -19,6 +19,12 @@ Route::middleware('CheckTeacher')->prefix('/teacher')->group(function () {
     Route::delete('/assignments/view/{id}', [App\Http\Controllers\TeachersController::class, 'TeacherDeleteAssignments'])
         ->name('teacher.assignment.delete');
     /**
+     *  Route : Teacher / View All Assignments Grades
+     *  # Display list of all Assignment 
+     */
+    Route::get('/assignments/grade/view', [App\Http\Controllers\TeachersController::class, 'TeacherViewAssignmentGrades'])
+        ->name('teacher.assignments.grade.view');
+    /**
      *  Route : Teacher / View All filtered Assignment
      *  # Display list of all filtered Assignments 
      */
@@ -78,6 +84,9 @@ Route::middleware('CheckTeacher')->prefix('/teacher')->group(function () {
      */
     Route::get('/content/view', [App\Http\Controllers\ContentController::class, 'TeacherViewContent'])
         ->name('teacher.content.view');
+        // Teacher Delete Content
+    Route::delete('/content/view/{id}', [App\Http\Controllers\ContentController::class, 'TeacherDeleteContent'])
+        ->name('teacher.content.delete');
 
     Route::get('/content/create', [App\Http\Controllers\ContentController::class, 'TeacherCreateContent'])
         ->name('teacher.content.create');
@@ -90,13 +99,20 @@ Route::middleware('CheckTeacher')->prefix('/teacher')->group(function () {
      *  # Display List
      */
     Route::get('/homework/view', [App\Http\Controllers\HomeWorkController::class, 'TeacherViewHomeWork'])
-        ->name('teacher.homework.view'); 
+        ->name('teacher.homework.view');
     Route::delete('/homework/view/{id}', [App\Http\Controllers\HomeWorkController::class, 'TeacherDeleteHomeWork'])
-        ->name('teacher.homework.delete'); 
+        ->name('teacher.homework.delete');
 
     Route::get('/homework/create', [App\Http\Controllers\HomeWorkController::class, 'TeacherCreateHomeWork'])
-        ->name('teacher.homework.create');    
+        ->name('teacher.homework.create');
     Route::post('/homework/create', [App\Http\Controllers\HomeWorkController::class, 'TeacherCreateHomeWork'])
-        ->name('teacher.homework.create');    
+        ->name('teacher.homework.create');
+
+    /**
+     *  Route : Teacher / View A Single Assignment
+     *  # Display Preview of Assignment 
+     */
+    Route::get('/content/preview/{id}', [App\Http\Controllers\TeachersController::class, 'TeacherViewFile'])
+        ->name('teacher.content.preview.view');
 
 });
