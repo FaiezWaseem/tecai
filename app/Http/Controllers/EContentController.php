@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\EContent;
 use App\Models\Tboards;
 use App\Models\TCourses;
+use App\Models\TLiveSessions;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -13,26 +14,30 @@ class EContentController extends Controller
 
     public function SuperAdminViewLiveSession()
     {
-        $contents = EContent::where('type', 'live_session')
-        ->get();
+        $contents = TLiveSessions::get();
         return view('dashboard.superadmin.ecoaching.livesessions.view' , compact('contents'));
     }
     public function SuperAdminCreateLiveSession(Request $request)
     {
         $rqMethod = $request->method();
         if ($rqMethod == 'POST') {
-            if ($request->hasFile('thumbnail')) {
-                $file = $request->file('thumbnail');
+            if ($request->hasFile('live_thumbnail')) {
+                $file = $request->file('live_thumbnail');
                 $fullpath = $this->saveFile($file, 'web_uploads/ecoaching/thumbnails/');
-                $content = new EContent;
+                $content = new TLiveSessions();
                 $content->board_id = $request->board_id;
                 $content->course_id = $request->course_id;
-                $content->type = "live_session";
-                $content->thumbnail = $fullpath;
-                $content->content_link = $request->content_link;
-                $content->content_type = "link";
+                $content->live_thumbnail = $fullpath;
+                $content->live_link = $request->live_link;
+                $content->live_title = $request->live_title;
+                $content->live_subtitle = $request->live_subtitle;
                 $content->save();
                 return redirect()->route('superadmin.live_session.view');
+            }else{
+                $boards = Tboards::all();
+                $courses = TCourses::all();
+                return redirect()->route('superadmin.live_session.create', compact('boards', 'courses'))->with('error', 'Please Upload Thumbnail');
+                ;
             }
         }
         $boards = Tboards::all();

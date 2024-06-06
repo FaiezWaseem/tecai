@@ -22,6 +22,9 @@ Route::get('/ecoaching/guest/courses', [App\Http\Controllers\EStudentsController
 Route::get('/ecoaching/plans', [App\Http\Controllers\EPlanController::class, 'EcoachingStudentPlans']);
 
 Route::get('/ecoaching/file/preview/{id}' , [App\Http\Controllers\PreviewFileController::class, 'downloadFile']);
+Route::get('/ecoaching/thumbnail/preview/' , [App\Http\Controllers\EStudentsController::class, 'EcoachingViewthumbnail']);
+Route::post('/ecoaching/thumbnail/preview/' , [App\Http\Controllers\EStudentsController::class, 'EcoachingViewthumbnail']);
+Route::get('/ecoaching/pdf/preview/' , [App\Http\Controllers\EStudentsController::class, 'EcoachingViewPdf']);
 
 Route::middleware('verify.token')->group(function () {
     

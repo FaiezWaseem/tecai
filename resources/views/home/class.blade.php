@@ -258,11 +258,11 @@
                 <div class="row g-4">
                     @foreach ($courses as $course)
                         <div class="col-sm-6 col-md-4 col-xl-3">
-
+                            <a   href="{{ route('home.board.course', ['board_id' => $board_id, 'class_id' => $class_id, 'board_name' => $board_name, 'class_name' => $class_name, 'course_id' => $course->id, 'course_name' => $course->course_name]) }}">
                             <div
-                                class="card card-body bg-white shadow-sm bg-opacity-10 text-center position-relative btn-transition p-2">
+                                class="card card-body bg-white shadow-sm bg-opacity-10 text-center position-relative btn-transition">
                                 <!-- Image -->
-                                <div class="bg-body mx-auto rounded-circle mb-3">
+                                <div class="bg-body mx-auto rounded-circle">
                                     @if ($course->thumbnail)
                                         <img loading="lazy"
                                             src="{{ Storage::disk('local')->temporaryUrl($course->thumbnail, now()->addMinutes(3)) }}"
@@ -276,12 +276,12 @@
                                     @endif
                                 </div>
                                 <!-- Title -->
-                                <h5 class="mb-2"><a
-                                        href="{{ route('home.board.course', ['board_id' => $board_id, 'class_id' => $class_id, 'board_name' => $board_name, 'class_name' => $class_name, 'course_id' => $course->id, 'course_name' => $course->course_name]) }}"
-                                        class="stretched-link">{{ $course->course_name }}</a></h5>
+                                {{-- <h5 class="mb-2"><a
+                                      
+                                        class="stretched-link">{{ $course->course_name }}</a></h5> --}}
                                 
                             </div>
-
+                        </a>
                         </div>
                     @endforeach
 

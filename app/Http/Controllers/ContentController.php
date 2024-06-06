@@ -95,6 +95,14 @@ class ContentController extends Controller
                 $thumbPath = $this->saveFile($file2, 'web_uploads/thumbnail/');
 
 
+                $course = TCourses::find($request->tcourse_id);
+                Storage::disk('public')->makeDirectory('web_uploads/'. $course->course_name);
+                Storage::disk('public')->move($content_link, 'web_uploads/'. $course->course_name. '/'. basename($content_link));
+
+                $content_link = 'web_uploads/'. $course->course_name. '/'. basename($content_link); 
+
+
+
                 $content = new TContent;
                 $content->tboard_id = $request->tboard_id;
                 $content->tcourse_id = $request->tcourse_id;

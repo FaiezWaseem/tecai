@@ -40,8 +40,7 @@
                             <tr>
                                 <th>Actions</th>
                                 <th>Thumbnail</th>
-                                <th>Type</th>
-                                <th>Content Type</th>
+                                <th>Content Title</th>
                                 <th>Content Link</th>
                                 <th>Created At</th>
                                 <th>Updated At</th>
@@ -61,14 +60,13 @@
                                 </td>
 
                                 <td>
-                                    @if ($item->thumbnail)
-                                    <img src="{{ Storage::disk('local')->temporaryUrl($item->thumbnail, now()->addMinutes(3)) }}"
+                                    @if ($item->live_thumbnail)
+                                    <img src="{{ Storage::disk('local')->temporaryUrl($item->live_thumbnail, now()->addMinutes(3)) }}"
                                         alt="thumbnail_image" loading='lazy' width="50px" height="50px">
                                 @endif
                                 </td>
-                                <td>{{ $item->type }}</td>
-                                <td>{{ $item->content_type }}</td>
-                                <td>{{ $item->content_link }}</td>
+                                <td>{{ $item->live_title }}</td>
+                                <td>{{ $item->live_link }}</td>
                                 <td>{{ $item->created_at }}</td>
                                 <td>{{ $item->updated_at }}</td>
                             </tr>
@@ -78,8 +76,7 @@
                             <tr>
                                 <th>Actions</th>
                                 <th>Thumbnail</th>
-                                <th>Type</th>
-                                <th>Content Type</th>
+                                <th>Content Title</th>
                                 <th>Content Link</th>
                                 <th>Created At</th>
                                 <th>Updated At</th>

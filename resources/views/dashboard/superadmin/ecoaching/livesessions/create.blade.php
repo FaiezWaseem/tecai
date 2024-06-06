@@ -33,9 +33,27 @@
                 <div class="row">
                     <div class="col-md-4">
                         <div class="form-group">
-                            <label for="txtUserName">Content Link<span class="text-danger">*</span></label>
-                            <input type="text" name="content_link" class="form-control" id="txtUserName" 
-                            placeholder="Enter Student Name"
+                            <label for="txtUserName">Session Link<span class="text-danger">*</span></label>
+                            <input type="text" name="live_link" class="form-control" id="txtUserName" 
+                            placeholder="Enter Live Session Link"
+                                maxlength="255">
+                            <span id="txtUserName_Error" class="error invalid-feedback hide"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="txtUserName">Session Title<span class="text-danger">*</span></label>
+                            <input type="text" name="live_title" class="form-control" id="txtUserName" 
+                            placeholder="Enter Session Title"
+                                maxlength="255">
+                            <span id="txtUserName_Error" class="error invalid-feedback hide"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="txtUserName">Session Course<span class="text-danger">*</span></label>
+                            <input type="text" name="live_subtitle" class="form-control" id="txtUserName" 
+                            placeholder="Enter Live Session Link"
                                 maxlength="255">
                             <span id="txtUserName_Error" class="error invalid-feedback hide"></span>
                         </div>
@@ -70,7 +88,7 @@
                     <div class="col-md-4">
                         <div class="form-group">
                             <label for="txtUserName">Thumbnail </label>
-                            <input accept=".png, .jpg, .jpeg, .gif" class="form-control" name="thumbnail" type="file"
+                            <input accept=".png, .jpg, .jpeg, .gif" class="form-control" name="live_thumbnail" type="file"
                                 value="">
                             <span id="txtUserName_Error" class="error invalid-feedback hide"></span>
                         </div>

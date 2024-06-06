@@ -9,6 +9,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Response;
 
+
+use App\Http\Controllers\VideoStream;
+
 class PreviewFileController extends Controller
 {
     public function index(Request $request)
@@ -24,6 +27,7 @@ class PreviewFileController extends Controller
             return view('home.viewer.pdf', compact('content_type', 'id'));
         }
         if ($content_type == 'Video') {
+          
             return view('home.viewer.video', compact('content_type', 'id'));
         }
         if ($content_type == 'GIF') {
@@ -60,11 +64,17 @@ class PreviewFileController extends Controller
                     'Content-Type' => 'application/pdf',
                 ];
             } elseif ($content_type == 'Video') {
-                $filePath = Storage::disk('local')->path($content->content_link);
-                $fileName = 'your-custom-filename.mp4';
-                $headers = [
-                    'Content-Type' => 'video/mp4',
-                ];
+               
+                $path = Storage::disk('local')->path($content->content_link);
+                $stream = new VideoStream($path);
+                $stream->start();
+                
+                // $filePath = Storage::disk('local')->path($content->content_link);
+                // $fileName = 'your-custom-filename.mp4';
+                // $headers = [
+                //     'Content-Type' => 'video/mp4',
+                //     'Accept-Ranges' => 'bytes',
+                // ];
             } elseif ($content_type == 'Flash') {
                 $filePath = Storage::disk('local')->path($content->content_link);
                 $fileName = 'your-custom-filename.swf';

@@ -8,9 +8,11 @@ use App\Models\EPlanPayment;
 use App\Models\EStudents;
 use App\Models\TContent;
 use App\Models\TCourses;
+use App\Models\TLiveSessions;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
 use Firebase\JWT\JWT;
+use Response;
 
 
 
@@ -165,25 +167,24 @@ class EStudentsController extends Controller
         try {
             $stdId = $request->id;
             $courses = EPlanPayment::where('student_id', '=', $stdId)
-            ->where('isApproved', 1)
-            ->join('e_plan', 'e_plan.id', '=', 'e_payment_plan.plan_id')
-            ->join('e_plan_course', 'e_plan_course.id', '=', 'e_plan.id')
-            ->join('tcourse', 'tcourse.id', '=', 'e_plan_course.course_id')
-            ->select('tcourse.id')
-            ->get();
+                ->where('isApproved', 1)
+                ->join('e_plan', 'e_plan.id', '=', 'e_payment_plan.plan_id')
+                ->join('e_plan_course', 'e_plan_course.id', '=', 'e_plan.id')
+                ->join('tcourse', 'tcourse.id', '=', 'e_plan_course.course_id')
+                ->select('tcourse.id')
+                ->get();
 
-            $live_sessions = EContent::where('type', 'live_session')
-            ->whereIn('course_id', $courses)
-            ->get()
+            $live_sessions = TLiveSessions::whereIn('course_id', $courses)
+                ->get()
             ;
-           return response()->json([
-                'live_sessions' => $live_sessions ,
+            return response()->json([
+                'live_sessions' => $live_sessions,
                 'status' => true,
             ], 200);
 
         } catch (\Throwable $th) {
-          return  response()->json([
-                'message' => $th->getMessage() ,
+            return response()->json([
+                'message' => $th->getMessage(),
                 'status' => false,
             ], 400);
         }
@@ -194,25 +195,25 @@ class EStudentsController extends Controller
         try {
             $stdId = $request->id;
             $courses = EPlanPayment::where('student_id', '=', $stdId)
-            ->where('isApproved', 1)
-            ->join('e_plan', 'e_plan.id', '=', 'e_payment_plan.plan_id')
-            ->join('e_plan_course', 'e_plan_course.id', '=', 'e_plan.id')
-            ->join('tcourse', 'tcourse.id', '=', 'e_plan_course.course_id')
-            ->select('tcourse.id')
-            ->get();
+                ->where('isApproved', 1)
+                ->join('e_plan', 'e_plan.id', '=', 'e_payment_plan.plan_id')
+                ->join('e_plan_course', 'e_plan_course.id', '=', 'e_plan.id')
+                ->join('tcourse', 'tcourse.id', '=', 'e_plan_course.course_id')
+                ->select('tcourse.id')
+                ->get();
 
             $live_sessions = EContent::where('type', 'notes')
-            ->whereIn('course_id', $courses)
-            ->get()
+                ->whereIn('course_id', $courses)
+                ->get()
             ;
-           return response()->json([
-                'notes' => $live_sessions ,
+            return response()->json([
+                'notes' => $live_sessions,
                 'status' => true,
             ], 200);
 
         } catch (\Throwable $th) {
-          return  response()->json([
-                'message' => $th->getMessage() ,
+            return response()->json([
+                'message' => $th->getMessage(),
                 'status' => false,
             ], 400);
         }
@@ -225,6 +226,50 @@ class EStudentsController extends Controller
             'courses' => $courses,
             'status' => true
         ], 200);
+    }
+
+    public function EcoachingViewthumbnail(Request $request)
+    {
+
+        $rqMethod = $request->method();
+
+        if ($rqMethod == 'POST') {
+
+            return response()->json([
+                'thumbnail' => Storage::disk('local')->temporaryUrl($request->path, now()->addMinutes(10)),
+                'status' => true
+            ], 200);
+        }else{
+            $path = $request->query('path');
+            $filePath = Storage::disk('local')->path($path);
+            $fileName = 'out.png';
+            $headers = [
+                'Content-Type' => 'image/png',
+            ];
+           return Response::download($filePath, $fileName, $headers);
+           
+        }
+    }
+    public function EcoachingViewPdf(Request $request)
+    {
+
+        $rqMethod = $request->method();
+
+        if ($rqMethod == 'POST') {
+
+            return response()->json([
+                'thumbnail' => Storage::disk('local')->temporaryUrl($request->path, now()->addMinutes(10)),
+                'status' => true
+            ], 200);
+        }else{
+            $path = $request->query('path');
+            $filePath = Storage::disk('local')->path($path);
+            $fileName = 'out.pdf';
+            $headers = [
+                'Content-Type' => 'image/png',
+            ];
+           return Response::download($filePath, $fileName, $headers);
+        }
     }
     private function saveFile($file, $path)
     {

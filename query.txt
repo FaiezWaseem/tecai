@@ -514,3 +514,13 @@ CREATE TABLE `e_content` (
   `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+
+
+
+
+
+
+ALTER TABLE `tlive_sessions`
+ADD COLUMN course_id INT ;
+ALTER TABLE `tlive_sessions`
+ADD COLUMN board_id INT ;
