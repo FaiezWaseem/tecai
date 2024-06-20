@@ -1,0 +1,1 @@
+var wordsJSON = [{"word":"pakistan","hintType":"text","hint":"test"},{"word":"apple","hintType":"text","hint":"tets"}]

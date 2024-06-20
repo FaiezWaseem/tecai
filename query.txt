@@ -524,3 +524,10 @@ ALTER TABLE `tlive_sessions`
 ADD COLUMN course_id INT ;
 ALTER TABLE `tlive_sessions`
 ADD COLUMN board_id INT ;
+
+
+
+
+ALTER TABLE e_plan
+ADD COLUMN course_id int REFERENCES tcourse(id),
+ADD COLUMN tboard_id int REFERENCES tboards(id);

@@ -52,7 +52,7 @@
                             @foreach ($students as $item)
                             <tr>
                                 <td>
-                                    <a href="{{ route('superadmin.schools.edit', ['id'=> $item->id]) }}">
+                                    <a href="{{ route('superadmin.ecoaching.student.edit', ['id'=> $item->id]) }}">
                                         <i class="fa fa-edit text-primary"  ></i>
                                     </a>
                                     <button class="btn" data-toggle="modal" data-target="#DeleteModal" onclick="setdeleteModalId({{$item->id}})">

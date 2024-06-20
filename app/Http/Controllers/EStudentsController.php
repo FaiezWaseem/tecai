@@ -68,6 +68,39 @@ class EStudentsController extends Controller
             return view('dashboard.superadmin.ecoaching.students.create', compact('Eplans'));
         }
     }
+    /**
+     * Show the Edit form for Student
+     */
+    public function SuperAdminEditStudent(Request $request)
+    {
+        $rqMethod = $request->method();
+        if ($rqMethod == 'PUT') {
+            $isApprove = $request->input('isApprove') === 'on' ? 1 : 0;
+            $name = $request->name;
+            $email = $request->email;
+
+
+            $epayment_plan = EPlanPayment::where('student_id' , $request->id)->first();
+
+            $epayment_plan->isApproved = $isApprove;
+
+            $epayment_plan->save();
+
+            return redirect()->route('superadmin.ecoaching.students.view');
+
+        } else {
+
+            $student =  EStudents::leftJoin('e_payment_plan', 'e_payment_plan.student_id', '=', 'e_students.id')
+            ->leftJoin('e_plan', 'e_plan.id', '=', 'e_payment_plan.plan_id')
+            ->where('e_students.id', '=', $request->id)
+            ->select('e_students.*', 'e_plan.plan_name', 'e_payment_plan.isApproved')
+            ->first();
+
+            return view('dashboard.superadmin.ecoaching.students.edit' , compact('student'));
+        }
+    }
+
+    
 
     public function EcoachingStudentLogin(Request $request)
     {

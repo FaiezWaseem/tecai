@@ -99,20 +99,7 @@
                                                     }
                                                 }
 
-                                                $ChaptersTopics = [];
-
-                                                foreach ($slos as $item) {
-                                                    $chapterName = $item['chapter_title'];
-                                                    $topicTitle = $item['topic_title'];
-
-                                                    if (!isset($ChaptersTopics[$chapterName])) {
-                                                        $ChaptersTopics[$chapterName] = [];
-                                                    }
-
-                                                    if (!in_array($topicTitle, $ChaptersTopics[$chapterName])) {
-                                                        $ChaptersTopics[$chapterName][] = $topicTitle;
-                                                    }
-                                                }
+                                  
                                             @endphp
                                             @foreach ($transformedResponse as $item)
                                                 <div class="accordion-item mb-3">
@@ -191,12 +178,15 @@
                                             <div class="card-body p-0 pt-3">
                                         
 
-                                                @foreach ($ChaptersTopics as $chapterName => $topicTitles)
-                                                    <h4>{{ $chapterName }}</h4>
+                                         
+                                                @foreach ($transformedResponse as $item)
+                                                    <h4>  {{ isset($item['chapterName']) ? $item['chapterName'] : '' }}</h4>
                                                     <ul>
-                                                        @foreach ($topicTitles as $topicTitle)
-                                                            <li>{{ $topicTitle }}</li>
-                                                        @endforeach
+                                                        @if (isset($item['content']))
+                                                                @foreach ($item['content'] as $content)
+                                                                     <li>{{ isset($content['topic_title']) ? $content['topic_title'] : '' }}</li>
+                                                                @endforeach
+                                                        @endif
                                                     </ul>
                                                 @endforeach
 

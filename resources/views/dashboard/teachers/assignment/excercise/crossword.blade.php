@@ -389,7 +389,7 @@
 
                             showLoader(false)
                             var link = document.createElement("a"); // Or maybe get it from the current document
-                            link.href = '../../../api/assignments/' + res.id;
+                            link.href = '../../../teacher/assignment/view/' + res.id;
                             link.target = '_blank'
                             document.body.appendChild(link);
                             link.click();

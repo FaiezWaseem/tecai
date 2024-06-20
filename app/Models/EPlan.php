@@ -14,5 +14,7 @@ class EPlan extends Model
         'plan_name',
         'plan_details',
         'plan_price',
+        'course_id',
+        'board_id'
     ];
 }

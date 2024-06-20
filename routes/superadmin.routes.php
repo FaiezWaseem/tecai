@@ -360,6 +360,14 @@ Route::middleware('CheckSuperAdmin')->prefix('/superadmin')->group(function () {
     Route::post('/ecoaching/students/create', [App\Http\Controllers\EStudentsController::class, 'SuperAdminCreateStudents'])
     ->name('superadmin.ecoaching.students.create');
     /**
+     * Route Admin / View Ecoaching Plans
+     * # Display a list of all Ecoaching Students
+     */
+    Route::get('/ecoaching/student/{id}/edit', [App\Http\Controllers\EStudentsController::class, 'SuperAdminEditStudent'])
+    ->name('superadmin.ecoaching.student.edit');
+    Route::put('/ecoaching/student/{id}/edit', [App\Http\Controllers\EStudentsController::class, 'SuperAdminEditStudent'])
+    ->name('superadmin.ecoaching.student.edit');
+    /**
      * Route Admin / View Ecoaching Teachers
      * # Display a list of all Teachers
      */

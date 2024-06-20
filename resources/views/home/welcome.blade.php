@@ -7,7 +7,7 @@
 
 
         <div style="width: 100%; height: 0; padding-bottom: 40%; position: relative;">
-            <img src="{{ asset('images/hero.jpg') }}"
+            <img src="{{ asset('bg.jpg') }}"
             style="position: absolute; width: 100%; height: 100%; object-fit: contain;"
             usemap="#image-map">
 

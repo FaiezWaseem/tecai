@@ -102,9 +102,12 @@
                                 <div class="col col-md-4">
                                     <div data-toggle="modal" data-target="#ShowModal" 
                                       to="{{ route('teacher.assignment.create.blanks',['type' => 'cluegame']) }}"
-                                        class="card m-2 bg-image hover-zoom" style="width: 18rem;">
+                                        class="card m-2 bg-image hover-zoom" style="width: 18rem;max-height: 203px;">
                                         <img src="{{ asset('images/clue.gif') }}" class="card-img-top object-fit-contain"
-                                            alt="...">
+                                            alt="..." 
+                                            style="max-height: 203px;"
+                                            
+                                            >
                                     </div>
                                 </div>
                             </div>
