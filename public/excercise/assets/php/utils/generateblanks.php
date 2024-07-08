@@ -59,6 +59,8 @@ class GenerateBlanks{
             <body>
                 <div class='main-container'>
                     <div class='paragraphcontainer'>
+                    <input type='range' min='8' max='48' value='16' id='font-size-slider' oninput='changeFontSize()'>
+                          <span id='font-size-value'>16px</span>
                         <span>
                         $this->dragHtml
                       
@@ -73,6 +75,39 @@ class GenerateBlanks{
                 <script src='https://code.jquery.com/jquery-1.12.4.min.js'></script>
                 <script src='draganddrop.js'></script>
                 <script src='script.js'></script>
+                <script>
+                
+                    function changeFontSize() {
+                    var textContainers = document.getElementsByClassName('paragraphcontainer');
+                    var itemContainers = document.getElementsByClassName('item');
+                    var dropContainers = document.getElementsByClassName('drop');
+                    var slider = document.getElementById('font-size-slider');
+                    var fontSizeValue = document.getElementById('font-size-value');
+                    var newFontSize = slider.value + 'px';
+
+                    for (var i = 0; i < textContainers.length; i++) {
+                        textContainers[i].style.fontSize = newFontSize;
+                    }
+
+                    for (var j = 0; j < itemContainers.length; j++) {
+                        itemContainers[j].style.fontSize = newFontSize;
+                        itemContainers[j].style.width = 'auto';
+                        itemContainers[j].style.height = 'auto';
+                        itemContainers[j].style.padding = 'calc(' + slider.value / 4 + 'px)';
+                    }
+
+                    for (var k = 0; k < dropContainers.length; k++) {
+                        dropContainers[k].style.fontSize = newFontSize;
+                        dropContainers[k].style.width = 'auto'; // Set a minimum width
+                        dropContainers[k].style.height = 'auto'; // Set a minimum height
+                            dropContainers[k].style.minWidth = '150px'; // Set a minimum width
+                        dropContainers[k].style.minHeight = '30px'; // Set a minimum height
+                        dropContainers[k].style.padding = 'calc(' + slider.value / 4 + 'px)';
+                    }
+
+                    fontSizeValue.textContent = newFontSize;
+                    }
+                </script>
             </body>
             </html>
         

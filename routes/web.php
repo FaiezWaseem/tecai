@@ -84,6 +84,14 @@ Route::middleware('auth')->prefix('/dashboard')->group(function () {
     require_once __DIR__ . '/teachers.routes.php';
 
 
+    /**
+     *  ###################################################
+     *                  STUDENT  ROUTES
+     *  ###################################################
+     */
+    require_once __DIR__ . '/students.routes.php';
+
+
 
     Route::get('/logout', [App\Http\Controllers\AuthController::class, 'logout'])
         ->name('auth.logout');

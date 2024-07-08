@@ -130,7 +130,7 @@
     <script src="{{ asset('dist/js/demo.js') }}"></script>
     @if (request()->is('dashboard/school_admin'))
         <script src="{{ asset('dist/js/pages/schooladmin.js') }}"></script>
-    @elseif(request()->is('dashboard/teacher'))
+    @elseif(request()->is('dashboard/teacher') || request()->is('dashboard/students'))
         <script src="{{ asset('dist/js/pages/teacher.js') }}"></script>
     @else
         <script src="{{ asset('dist/js/pages/dashboard.js') }}"></script>

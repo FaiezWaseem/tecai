@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\admin;
+use App\Models\students;
 use App\Models\teachers;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
@@ -22,7 +23,11 @@ class AuthController extends Controller
             return redirect()->route('schooladmin.home.view');
         }elseif(UserPermission::isTeacher()){
             return redirect()->route('teacher.home.view');
-        } else {
+    
+        }elseif(UserPermission::isStudent()){
+            return redirect()->route('student.home.view');
+        } 
+        else {
             return view('auth.login');
         }
       
@@ -43,25 +48,37 @@ class AuthController extends Controller
         $user = admin::where('name', $request->name)->first();
         $isAdmin = true;
         $isTeacher = false;
+        $isStudent = false;
         if (!$user || !\Hash::check($request->password, $user->password)) {
             $user = teachers::where('name', $request->name)->first();
              $isAdmin = false;
              $isTeacher = true;
-            if (!$user || !\Hash::check($request->password, $user->password)) {
-                return back()->withErrors([
-                    'email' => 'The provided credentials do not match our records.',
-                ]);
+             if (!$user || !\Hash::check($request->password, $user->password)) {
+                 $isAdmin = false;
+                $isTeacher = false;
+                $isStudent = true;
+                $user = students::where('email', $request->name)->first();
+                if (!$user || !\Hash::check($request->password, $user->password)) {
+                    return back()->withErrors([
+                        'email' => "The provided  credentials do not match our records.",
+                    ]);
+                }
             }
+          
         }
         
-        session(['user' => $user, 'admin' => $isAdmin, 'isTeacher' => $isTeacher]);
+        session(['user' => $user, 'admin' => $isAdmin, 'isTeacher' => $isTeacher , 'isStudent' => $isStudent]);
 
         if(UserPermission::isSuperAdmin()){
             return redirect()->route('superadmin.home.view');
         }else if(UserPermission::isAdmin()){
             return redirect()->route('schooladmin.home.view');
-        }else{
+        }else if(UserPermission::isTeacher()){
             return redirect()->route('teacher.home.view');
+        }else if (UserPermission::isStudent()){
+            return redirect()->route('student.home.view');
+        }else{
+            return redirect()->route('auth.login');
         }
         
 

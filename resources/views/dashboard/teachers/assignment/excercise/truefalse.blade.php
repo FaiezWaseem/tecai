@@ -69,12 +69,12 @@
   <div class="container d-flex flex-column justify-content-center">
     <h1>Create New True/False Questions</h1>
     <ul class="nav nav-tabs" id="myTab" role="tablist">
-      <li class="nav-item" role="presentation">
+      {{-- <li class="nav-item" role="presentation">
         <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#background" type="button"
           role="tab" aria-controls="background" aria-selected="true">Theme</button>
-      </li>
+      </li> --}}
       <li class="nav-item" role="presentation">
-        <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile" type="button"
+        <button class="nav-link active" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile" type="button"
           role="tab" aria-controls="profile" aria-selected="false">Content</button>
       </li>
       <li class="nav-item" role="presentation">
@@ -83,7 +83,7 @@
       </li>
     </ul>
     <div class="tab-content" id="myTabContent">
-      <div class="tab-pane fade show active" id="background" role="tabpanel" aria-labelledby="home-tab">
+      {{-- <div class="tab-pane fade show active" id="background" role="tabpanel" aria-labelledby="home-tab">
         <div class="d-flex justify-content-center align-items-center">
           <div class="input-group mt-5" style="width: 300px;">
             <div class="form-outline" data-mdb-input-init>
@@ -113,8 +113,8 @@
      
         </ul>
 
-      </div>
-      <div class="tab-pane fade p-2" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+      </div> --}}
+      <div class="tab-pane fade p-2 show active" id="profile" role="tabpanel" aria-labelledby="profile-tab">
         <div id="section2 w-100">
 
           <div class="d-flex justify-content-center align-items-center mt-3 flex-column">

@@ -303,6 +303,139 @@ class StudentsController extends Controller
 
 
 
+    public function StudentViewHome(Request $request)
+    {
+
+        $studentId = session('user')['id'];
+        $marks = tasks::where('std_id', $studentId)
+            ->join('activity', 'activity.id', '=', 'tasks.activity_id')
+            ->join('classes', 'classes.id', '=', 'activity.class_id')
+            ->join('course', 'course.id', '=', 'activity.course_id')
+            ->select(
+                'tasks.id',
+                'tasks.points_obtained as obtained',
+                'tasks.points_total as total',
+                'activity.title',
+                'tasks.added_on as attempted_date',
+                'classes.class_name',
+                'course.course_name'
+            )
+            ->get();
+
+        $startDate = now()->startOfMonth();
+        $endDate = now()->endOfMonth();
+
+        $attendance = Attendance::where('student_id', $studentId)
+            ->whereBetween('date', [$startDate, $endDate])
+            ->join('students', 'attendance.student_id', '=', 'students.id')
+            ->select('attendance.*', 'students.name')
+            ->get();
+
+        $present = $attendance->where('status', 'present')->count();
+        $absent = $attendance->where('status', 'absent')->count();
+        $late = $attendance->where('status', 'late')->count();
+
+
+        $student = students::where('students.id', $studentId)
+            ->join('school', 'students.school', '=', 'school.id')
+            ->first();
+        $class = classes::where('class_name', $student->class)->first();
+        $query = Activity::where('class_id', $class->id)
+            ->join('course', 'activity.course_id', '=', 'course.id')
+            ->join('teachers', 'activity.tid', '=', 'teachers.id')
+            ->select(
+                'activity.id',
+                'activity.added_on',
+                'activity.title',
+                'activity.type',
+                'activity.updated_at',
+                'activity.created_at',
+                'activity.deadline',
+                'activity.total_marks',
+                'teachers.name as teacher_name'
+            )
+            ->whereNotIn('activity.id', function ($subquery) use ($studentId) {
+                $subquery->select('activity_id')
+                    ->from('tasks')
+                    ->where('std_id', $studentId);
+            });
+
+        $assignments = $query->count();
+
+
+        return view('dashboard.students.home.view', compact('marks', 'attendance', 'present', 'absent', 'late', 'assignments'));
+    }
+
+    public function StudentViewAssignments(Request $request)
+    {
+
+        $student = students::where('students.id', session('user')['id'])
+            ->join('school', 'students.school', '=', 'school.id')
+            ->first();
+        $studentId = $request->id;
+        $class = classes::where('class_name', $student->class)->first();
+        $query = Activity::where('class_id', $class->id)
+            ->join('course', 'activity.course_id', '=', 'course.id')
+            ->join('teachers', 'activity.tid', '=', 'teachers.id')
+            ->select(
+                'activity.id',
+                'activity.added_on',
+                'activity.title',
+                'activity.type',
+                'activity.updated_at',
+                'activity.created_at',
+                'activity.deadline',
+                'activity.total_marks',
+                'teachers.name as teacher_name'
+            )
+            ->whereNotIn('activity.id', function ($subquery) use ($studentId) {
+                $subquery->select('activity_id')
+                    ->from('tasks')
+                    ->where('std_id', $studentId);
+            });
+
+        $activities = $query->paginate(5);
+        return view('dashboard.students.assignment.view', compact('activities'));
+    }
+
+    public function StudentViewAssignmentGrades(Request $request)
+    {
+        $studentId = session('user')['id'];
+        $marks = tasks::where('std_id', $studentId)
+            ->join('activity', 'activity.id', '=', 'tasks.activity_id')
+            ->join('classes', 'classes.id', '=', 'activity.class_id')
+            ->join('course', 'course.id', '=', 'activity.course_id')
+            ->select(
+                'tasks.id',
+                'tasks.points_obtained as obtained',
+                'tasks.points_total as total',
+                'activity.title',
+                'tasks.added_on as attempted_date',
+                'classes.class_name',
+                'course.course_name'
+            )
+            ->get();
+
+
+        return view('dashboard.students.assignment.grade.view', compact('marks'));
+    }
+
+    public function StudentViewHomeWork(Request $request)
+    {
+
+        $student = students::where('students.id',  session('user')['id'])
+            ->join('school', 'students.school', '=', 'school.id')
+            ->first();
+        $class = classes::where('class_name', $student->class)->first();
+
+        $content = HomeWork::where('school_id', '=', $student->school)
+            ->where('class_id', '=', $class->id)
+            ->get()
+        ;
+
+        return view('dashboard.students.homework.view' , compact('content'));
+    }
+
     public function login(Request $request)
     {
         $user = students::where('email', $request->input('email'))->first();
@@ -434,14 +567,25 @@ class StudentsController extends Controller
 
         $std = HelperFunctionsController::getCurrentStudent($request->id);
 
+        $exist = tasks::where('activity_id' , '==' , $id)
+        ->where('std_id' , '==' , $request->id)
+        ->firstOrFail();
+
+        if($exist){
+            return response()->json([
+                'success' => true,
+                'message' => 'Already Graded This Assignment'
+            ]);
+        }
 
 
-        $tasks = new tasks();
-        $tasks->std_id = $request->id;
-        $tasks->activity_id = $id;
-        $tasks->points_obtained = $request->points_obtained;
-        $tasks->points_total = $request->points_total;
-        $tasks->save();
+
+        $task = new tasks();
+        $task->std_id = $request->id;
+        $task->activity_id = $id;
+        $task->points_obtained = $request->points_obtained;
+        $task->points_total = $request->points_total;
+        $task->save();
 
 
         if ($std->token) {
@@ -450,7 +594,7 @@ class StudentsController extends Controller
 
         return response()->json([
             'success' => true,
-            'task' => $tasks
+            'task' => $task
         ]);
     }
 

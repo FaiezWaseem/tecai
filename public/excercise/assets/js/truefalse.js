@@ -11,11 +11,11 @@ let selectedBackground = null;
 let isTheme = true;
 
 
-get('#addLink').addEventListener('click', function () {
-  isTheme = false;
-  selectedBackground = get('#link').value;
-  get('#theme_links').insertAdjacentHTML('afterbegin', `<li theme="theme1.jpg" class="selected" ><img src="${selectedBackground}" /></li>`)
-})
+// get('#addLink').addEventListener('click', function () {
+//   isTheme = false;
+//   selectedBackground = get('#link').value;
+//   get('#theme_links').insertAdjacentHTML('afterbegin', `<li theme="theme1.jpg" class="selected" ><img src="${selectedBackground}" /></li>`)
+// })
 
 
 

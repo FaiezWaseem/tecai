@@ -1,4 +1,5 @@
 <?php
+use App\Models\students;
 include_once('./utils/generateblanks.php');
 include_once('./utils/generatetruefalse.php');
 include_once('./utils/generateParts.php');
@@ -53,7 +54,7 @@ if (isset($_GET['id'])) {
     }
     if ($dt->type === 'truefalse') {
       $ex = new GenerateTrueFalse();
-      $ex->setBg($dt->bg);
+      $ex->setBg("Background_true_false.svg");
       $ex->setTheme($dt->theme);
       $ex->setQuestions(json_decode($dt->questions));
       header('location: ' . $ex->generate(false));
@@ -151,10 +152,12 @@ if (isset($_GET['id'])) {
 function redirectToActivity($outPath){
   if(isset($_GET['teacher'])){
     header('location: ' . $outPath."?teacher=true");
+  }else if(isset($_GET['student'])){
+    header('location: ' . $outPath."?student=true"."&id=".$_GET['id']);
   }else if(isset($_GET['token'])){
     header('location: ' . $outPath."?token=". $_GET["token"] ."&id=".$_GET['id']);
   }else{
-    echo json_encode(['message' => 'Invlaid Request, Why are u Here :> ']);
+    echo json_encode(['message' => 'Invlaid Request, Why are u Here :> ' , 'get' => $_GET['student'] ]);
   }
 }
 

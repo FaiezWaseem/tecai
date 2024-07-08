@@ -1,443 +1,56 @@
-<!DOCTYPE html>
-<html lang="en">
 
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="user-scalable=0,maximum-scale=1;">
-  <link rel="icon" type="image/png" href="./resources/images/favicon-32x32.png" sizes="32x32">
-  <link rel="icon" type="image/png" href="./resources/images/favicon-16x16.png" sizes="16x16">
-  <title>Super Crossword</title>
-  <link rel="preload" href="resources/fonts/museosans-700.woff" as="font" crossorigin="anonymous">
-  <link rel="stylesheet" type="text/css" href="./css/style.css">
-  <link rel="stylesheet" type="text/css" href="./css/engine.css">
-  <style>
-    @font-face {
-      font-family: "Museo Sans 700";
-      src: url("./resources/fonts/museosans-700.woff") format("woff");
-      font-weight: normal;
-      font-style: normal;
-    }
+        <html>
 
-    #root {
-      margin: 0 auto;
-      position: relative;
-      width: 854px !important;
-      height: 480px !important;
-      transform-origin: left top;
-      transform: scale(1);
-      overflow: hidden;
-    }
+            <head>
 
-    .iPhone-body {
-      -webkit-overflow-scrolling: touch;
-      -webkit-transform: translate3d(0, 0, 0);
-      position: fixed;
-      top: 0;
-      left: 0;
-    }
-  </style>
-  <script src="./libs/loader.js"></script>
-  <script type="text/javascript" language="javascript" src="./libs/lz-string.min.js"></script>
-</head>
+                <!-- Content Type Meta tag -->
+                <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+                <!--Responsive Viewport Meta tag-->
+                <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
 
 
+                <title>True False</title>
+
+                <!-- FONT -->
+                <link href="https://fonts.googleapis.com/css?family=Bungee+Shade" rel="stylesheet">
+                <link href="https://fonts.googleapis.com/css?family=Coda" rel="stylesheet">
+
+                <!-- Stylesheets -->
+                <link rel="stylesheet" type="text/css" href="./style.css">
+
+            </head>
+
+            <body>
+
+                <header>
 
 
-<body onload="init();" style="margin: 0px; background-color: black">
-  <div id="root" style="background-color: #5F0F40; width: 854px; height: 480px">
-    <div class="crossword-title" style="
-    width: 550px;
-    text-align: center;
-    color: white;
-">
-      <h1>CROSS WORD</h1>
-    </div>
-
-    <div style="position: absolute; left: 18px; top: 20px; width: 100%">
-      <img id="homeBt" class="btn" src="./resources/images/home.svg">
-      <div id="soundBt" class="btn" style="display: inline">
-        <img id="soundBt1" class="btn" src="./resources/images/sound.svg" style="margin-left: 5px">
-        <img id="soundBt2" class="btn" src="./resources/images/sound2.svg" style="margin-left: 5px; display: none">
-      </div>
-      <div id="hintBt" class="btn" style="position: absolute; right: 36px; top: 0px; opacity: 1">
-        <img src="./resources/images/hint.svg">
-        <div id="hintText" class="hint"></div>
-      </div>
-    </div>
-    <div style="
-          position: absolute;
-          left: 18px;
-          top: 80px;
-          width: 100%;
-          display: flex;
-          flex-direction: row;
-        " id="gridContainer"></div>
-
-    <div id="hintContainer">
-      <div id="fireworks" style="display: none">
-        <div class="pyro">
-          <div class="before"></div>
-          <div class="after"></div>
-        </div>
-      </div>
-
-      <div id="textHint" class="text-hint" style="display: none"></div>
-
-      <div id="imageHint" class="image-container" style="display: none">
-        <div id="imageLoader" style="position: absolute; display: none">
-          <div class="lds-spinner">
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-          </div>
-        </div>
-
-        <img id="imageHintImg" class="image-hint" src="">
-      </div>
-
-      <div id="audioHint" class="text-hint" style="display: none">
-        <div style="
-              display: flex;
-              flex-flow: column;
-              justify-content: center;
-              align-items: center;
-            ">
-          <img id="audioHintBt" class="btn" src="./resources/images/audio_bt.png" width="100">
-          <div style="margin-top: 15px">
-            Listen to the hint and guess the word
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div style="position: absolute; right: 12px; top: 315px; width: 432px" id="keyboardContainer"></div>
-  </div>
-
-  <div id="loaderDiv" class="container_full_screen loader_hidden">
-    <div class="container_full_screen splashBG" style="background: #5F0F40"></div>
-    <div id="loaderCont" class="wrapper-logo">
-      <img id="loaderImg" src="./resources/images/splash.png" class="splashLogo margin_bottom_10">
-      <div class="loadingText margin_bottom_10">
-        <span id="loaderPercent">0</span> %
-      </div>
-      <div id="loaderBar">
-        <div id="loaderBarFG" style="background: #E36414"></div>
-      </div>
-      <div class="margin_top_10 creditText" style="color: #FB8B24">
-        Powered by Tec
-      </div>
-    </div>
-  </div>
-
-  <!-- api Popup -->
-  <div id="apiLoaderContainer" class="popUpContainer">
-    <div id="apiLoader" class="_loader" style="display: none">
-      <div class="_dot _bounce1"></div>
-      <div class="_dot _bounce2"></div>
-      <div class="_dot _bounce3"></div>
-    </div>
-    <div id="apiLoaderPercentage" class="apiLoaderPercentage">
-      0% content loaded
-    </div>
-    <div id="apiRetryPopup" class="modal" style="display: flex">
-      <img 2000="" id="internetIcon" src="data:image/svg+xml;charset=UTF-8,  <svg xmlns=" http:="" www.w3.org="" svg"=""
-        version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" preserveaspectratio="none" x="0px" y="0px" width="68px"
-        height="49px" viewbox="0 0 68 49">
-      <defs>
-        <g id="Layer0_0_FILL">
-          <path fill="%23BBBBBB" stroke="none"
-            d=" M 237.5 335.85 Q 230.6 334.9 224.3 337.1 218.2 339.15 213.5 343.8 208.8 348.4 206.7 354.4 205 359.2 205.1 364.35 205.2 369.5 207.1 374.2 209.3 379.6 213.65 383.85 217.95 388 223.45 390.05 228.6 392 234.15 391.85 239.75 391.75 244.75 389.55 249.5 387.55 253.35 383.85 257.1 380.15 259.35 375.45 252.3 358.5 249.8 340.65 244.3 336.85 237.5 335.85 M 153.1 265.2 Q 136.8 278 125.55 294.95 124.2 297.15 123.75 299.75 123.25 302.3 123.7 304.8 124.3 308.75 127.05 311.9 129.8 315 133.65 316.15 137.05 317.2 140.7 316.4 144.3 315.6 147 313.25 148 312.4 149.05 311 149.25 310.7 150.85 308.5 159.15 296.7 170.7 287.7 182.25 278.7 195.7 273.4 210.4 267.6 226.4 266.5 242.4 265.4 257.75 269.15 263.05 255.4 270.95 243.05 250.8 237.1 229.55 237.7 208.2 238.35 188.6 245.55 169.4 252.45 153.1 265.2 M 188.05 191.55 Q 214 185.1 240.7 186.15 258.7 186.75 276.35 190.9 294 195 310.4 202.45 324.75 192.55 341.3 186.25 324.05 176.25 306.25 169.9 266.8 155.7 224.1 157.55 181.2 159.4 143.3 177.05 121.3 187.2 101.95 202.3 82.7 217.35 67.5 236.35 64.45 240.25 64.65 245.55 64.85 250.85 68.2 254.5 71.2 258 76 259 80.8 259.95 84.9 257.9 86.8 257.1 88.65 255.3 89.8 254.15 91.65 251.85 101.7 239.8 113.65 229.7 125.6 219.45 139.05 211.55 161.8 198.05 188.05 191.55 M 435.3 214.6 Q 421.05 208.65 405.9 206.75 389.05 204.65 372.1 207.5 355.1 210.4 340 218.05 327.35 224.35 316.55 233.75 305.7 243.1 297.6 254.7 288.8 267.2 283.6 281.75 278.4 296.35 277.25 311.55 275.9 328.5 279.65 345.3 283.4 362.1 291.8 376.85 299.45 390.35 310.55 401.45 321.7 412.55 335.2 420.15 348.8 427.85 364.25 431.6 379.6 435.35 395.3 434.85 416.05 434.25 435.7 426.05 455.25 417.8 470.25 403.4 485.5 389.05 494.7 369.9 503.95 350.65 505.55 329.85 505.7 328.5 506 322 L 506 319.45 Q 505.85 306.35 502.8 293.6 499.7 280.65 493.85 269.05 488.15 257.65 479.9 247.65 471.75 237.7 461.6 229.9 449.6 220.5 435.3 214.6 M 455.85 248.2 Q 459 248.35 460.95 250.45 463.05 252.55 463 255.65 463 258.8 460.9 260.9 L 401.95 320.05 Q 420.9 339.1 458.8 377.1 459.55 377.85 461 379.3 462.2 380.65 462.6 381.95 463.5 384.4 462.55 387 461.6 389.6 459.35 390.85 457.2 392.15 454.6 391.8 452 391.5 450.25 389.75 L 391.2 330.55 332.05 389.75 Q 329.95 391.9 326.65 391.85 323.35 391.8 321.35 389.55 319.3 387.45 319.35 384.3 319.4 381.15 321.5 379.15 L 380.5 320.05 Q 341.1 280.6 321.5 260.85 319.55 258.95 319.4 256.05 319.25 253.2 320.95 251.05 322.45 249.05 325.05 248.45 327.65 247.8 329.9 248.85 330.85 249.25 331.85 250.15 332.2 250.45 333.55 251.75 352.75 271.05 391.2 309.5 402.2 298.65 420.95 279.85 442.5 258.15 450.65 250.1 452.7 248.05 455.85 248.2 M 418.8 179.3 Q 419.45 180.05 420.7 180.25 440.65 184.25 459.45 194.3 461.3 190.55 460.8 186.25 460.3 181.9 457.65 178.75 441.35 159.9 421.95 143.95 402.6 128.05 380.85 115.75 349.85 98.1 315.15 88.3 280.5 78.5 244.75 77.2 234.55 77.2 229.45 77.2 222.6 77.05 214.6 77.55 208.25 77.95 199.8 78.85 166.75 82.6 136.1 93.2 99.35 105.7 66.85 127.6 38.196484375 146.9224609375 15.2 171.95 12.0724609375 175.38671875 9.05 178.9 5.4 183.3 6.1 189.4 6.8 195.55 11.3 199 13.098046875 200.523046875 15.2 201.3 18.0671875 202.3673828125 21.5 202.05 27.4 201.45 30.9 197.15 46.45 179.25 65.05 164.35 83.65 149.4 104.5 138.15 137.2 120.35 173.8 112.2 209.8 104.1 247 105.95 284.25 107.8 319.2 119.5 347.05 128.7 372.35 143.9 397.7 159.1 418.8 179.3 Z">
-          </path>
-        </g>
-      </defs>
-      <g transform="matrix( 0.128021240234375, 0, 0, 0.127899169921875, 1.2,-8.2) ">
-        <use xlink:href="%23Layer0_0_FILL"> </use>
-      </g> " class="icon"&gt;
-      <div id="internetMsg" class="text">
-        Slow or no internet connection.<br>Check your internet connection or
-        try again.
-      </div>
-
-      <div id="gameProgressMsg" style="display: none" class="text">
-        Are you sure you want to start new game?<br>All saved progress will
-        be lost.
-      </div>
-
-      <div class="margin_top_10">
-        <div id="retryRequestButton" class="retryButton" onclick="UbService.onRetry()">
-          Retry
-        </div>
-        <div id="startNewGameButton" class="startNewGame" onclick="UbService.onNewGameStart()">
-          Start new game
-        </div>
-        <div id="cancelNewGame" class="retryButton" style="display: none" onclick="UbService.onNewGameCancel()">
-          Cancel
-        </div>
-        <div id="continueNewGame" class="startNewGame" style="display: none"
-          onclick="UbService.onContinueWithNewGame()">
-          Continue
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- orientation Popup -->
-  <div id="orientationContainer" class="popUpContainer">
-    <div class="modal f-v-mid">
-      <div class="orientation_popup_close_btn">
-        <button id="popup_close_btn" class="orientation_popup_close_btn">
-          <img src="./resources/images/close.svg">
-        </button>
-      </div>
-      <div class="text margin_top_10">
-        Please rotate your device to Landscape mode.
-      </div>
-    </div>
-  </div>
-
-  <!-- Browser Compatibility Popup -->
-  <div id="compatibilityContainer" class="popUpContainer">
-    <div class="modal">
-      <img 2000="" src="data:image/svg+xml;charset=UTF-8, <svg xmlns=" http:="" www.w3.org="" svg"="" version="1.1"
-        xmlns:xlink="http://www.w3.org/1999/xlink" preserveaspectratio="none" x="0px" y="0px" width="64px" height="64px"
-        viewbox="0 0 512 512">
-      <defs>
-        <g id="Layer0_0_FILL">
-          <path fill="%23BBBBBB" stroke="none"
-            d=" M 499.25 392.95 Q 497.75 389.95 489.25 375.4 L 309.5 75.35 Q 303.95 66.05 302.5 63.9 298.3 57.55 294 53.5 285.25 45 273.15 41 261 37.05 248.9 38.7 236.35 40.15 225.6 47.6 214.95 54.7 208.5 65.65 L 14.55 388.6 Q 6.75 400.75 6.05 415.7 5.4 430.65 12.15 443.45 18.75 457.3 32.75 465.65 46.35 473.75 61.95 473.6 L 447.25 473.6 Q 472.05 475.65 490.5 456.1 509.05 436.45 505.45 411.95 504.35 403.05 499.25 392.95 M 265.2 72.75 Q 273 76.4 276.75 84.1 L 467.75 402.9 Q 474.6 414.6 473.25 422.45 471.9 430.5 465.05 436.05 458.15 441.4 449.95 441.15 196.75 441.15 70.2 441.3 60.5 441.15 59.55 441 53.35 440.5 49.3 438.35 42.95 435.1 40.15 427.4 37.45 420.4 39.05 413 40.3 409.1 43.1 404.1 46.6 398.6 48.25 395.75 L 235.3 84.2 Q 241.6 73.6 249.15 71.55 257.1 68.85 265.2 72.75 M 271.4 365.85 Q 274.75 356.95 267.35 349.55 259.95 342.15 251.15 345.5 242.7 347.8 240.55 357.25 238.25 366.65 244.85 372.45 250.65 378.8 259.95 376.5 269.1 374.2 271.4 365.85 M 242 184.85 Q 239.75 189 240 193.85 L 240 304.45 Q 239.3 311.45 244.15 316.95 249.15 322.5 256.15 322.1 263.05 322.35 268 316.85 272.85 311.45 272.2 304.6 272.45 249.2 272.2 193.7 273.15 184.7 264.8 179.3 256.55 174.05 248.75 178.35 244.45 180.4 242 184.85 Z">
-          </path>
-        </g>
-      </defs>
-      <g transform="matrix( 1, 0, 0, 1, 0,0) ">
-        <use xlink:href="%23Layer0_0_FILL"> </use>
-      </g> " class="icon"&gt;
-      <div class="text compatibility">
-        Facebook browser currently doesn't support landscape mode! Press menu
-        button and tap "Open in Safari"
-      </div>
-    </div>
-  </div>
-
-  <script src="./libs/ub_service.js"></script>
-  <script>
-    function scrollPrev(e) {
-      e.preventDefault();
-      e.stopPropagation();
-    }
-    UbService.getOsProps();
-    if (UbService.IsIos()) {
-      document
-        .getElementById("orientationContainer")
-        .addEventListener("touchmove", scrollPrev);
-      document
-        .getElementById("compatibilityContainer")
-        .addEventListener("touchmove", scrollPrev);
-      document
-        .getElementById("apiLoaderContainer")
-        .addEventListener("touchmove", scrollPrev);
-      document
-        .getElementById("loaderDiv")
-        .addEventListener("touchmove", scrollPrev);
-      document
-        .getElementById("animation_container")
-        .addEventListener("touchmove", scrollPrev);
-
-      document.querySelector("body").setAttribute("class", "iPhone-body");
-    }
-  </script>
-
-  <script src="./scripts/crossword_engine.js"></script>
-  <script src="./libs/databank.js"></script>
-  <script>
-    var LOADER = new LoaderJS();
-    var AUDIOS = [];
-    var canvas,
-      stage,
-      exportRoot,
-      anim_container,
-      dom_overlay_container,
-      fnStartAnimation;
-    var itemsToLoad, itemsLoaded;
-    function preloadHintImage() {
-      for (var i in questionsJSON) {
-        if (questionsJSON[i].hint.trim().indexOf("http") == 0) {
-          lib.properties.manifest.push({
-            src: questionsJSON[i].hint,
-            id: i + "_" + questionsJSON[i].word,
-          });
-        }
-      }
-    }
-
-    function init() {
-      document
-        .getElementById("popup_close_btn")
-        .addEventListener("click", function (e) {
-          var element = document.getElementById("orientationContainer");
-          element.classList.remove("d-flex");
-        });
-      onWindowResize();
-
-      window.onresize = onWindowResize;
-
-      UbService.Init("", true, function () {
-        if (typeof UbService.initParams.is_offline_lms != "undefined") {
-          window.parent.postMessage(
-            JSON.stringify({
-              message: "offline-game-ready",
-            }),
-            "*"
-          );
-        }
-
-        window.addEventListener("message", onMessage, false);
-        function onMessage(event) {
-          try {
-            this.eventData = JSON.parse(event?.data);
-          } catch {
-            return;
-          }
-          if (this.eventData.message === "offline-game-data") {
-            const data = this.eventData.data.json_data;
-            // 1 means its coming from CMS data and 0 mean kp data
-            if (this.eventData.data.is_content_type === 1) {
-              const _data = data;
-              questionsJSON = UbService.GetCmsQuestionDataOffline(
-                JSON.parse(_data)
-              );
-            } else {
-              const _data = JSON.parse(data);
-              questionsJSON = _data;
-            }
-            LOADER.loadData("system-click", "./resources/audios/click.mp3");
-            LOADER.loadData(
-              "system-correct",
-              "./resources/audios/correct.mp3"
-            );
-            LOADER.loadData(
-              "system-selection",
-              "./resources/audios/selection.mp3"
-            );
-            LOADER.loadData("system-win", "./resources/audios/win.mp3");
-            for (var i in questionsJSON) {
-              questionsJSON[i].word = questionsJSON[i].word
-                .trim()
-                .toLowerCase();
-              LOADER.loadData(
-                questionsJSON[i].word.toLowerCase(),
-                questionsJSON[i].hint
-              );
-            }
-
-            itemsToLoad = LOADER.resCount;
-            console.log(LOADER.resCount);
-            LOADER.whileLoading = function () {
-              itemsLoaded = itemsToLoad - LOADER.resCount;
-              if (itemsLoaded <= itemsToLoad) {
-                var percent = Math.round((itemsLoaded / itemsToLoad) * 100);
-                if (typeof RunPlatformCommand !== "undefined")
-                  RunPlatformCommand(CHALLENGE_GLOBAL.LOADING, percent);
-                document.getElementById("loaderBarFG").style.width =
-                  percent + "%";
-                document.getElementById("loaderPercent").innerHTML = percent;
-              }
-            };
-
-            LOADER.whenReady = function () {
-              document.getElementById("loaderDiv").style.display = "none";
-              initCrossword(window);
-            };
-          }
-          removeMessageEvent();
-        }
-        function removeMessageEvent() {
-          window.removeEventListener("message", onMessage);
-        }
-
-        if (RunPlatformCommand(CHALLENGE_GLOBAL.ON_LOAD)) {
-          questionsJSON = JSON.parse(platformQuestionString);
-        } else {
-          if (
-            typeof questionsJSON !== "undefined" &&
-            questionsJSON.length < 1
-          ) {
-            questionsJSON = wordsJSON;
-          }
-        }
-        if (typeof UbService.initParams.is_offline_lms == "undefined") {
-          LOADER.loadData("system-click", "./resources/audios/click.mp3");
-          LOADER.loadData("system-correct", "./resources/audios/correct.mp3");
-          LOADER.loadData(
-            "system-selection",
-            "./resources/audios/selection.mp3"
-          );
-          LOADER.loadData("system-win", "./resources/audios/win.mp3");
-          for (var i in questionsJSON) {
-            questionsJSON[i].word = questionsJSON[i].word
-              .trim()
-              .toLowerCase();
-            LOADER.loadData(
-              questionsJSON[i].word.toLowerCase(),
-              questionsJSON[i].hint
-            );
-          }
-
-          itemsToLoad = LOADER.resCount;
-          console.log(LOADER.resCount);
-          LOADER.whileLoading = function () {
-            itemsLoaded = itemsToLoad - LOADER.resCount;
-            if (itemsLoaded <= itemsToLoad) {
-              var percent = Math.round((itemsLoaded / itemsToLoad) * 100);
-              if (typeof RunPlatformCommand !== "undefined")
-                RunPlatformCommand(CHALLENGE_GLOBAL.LOADING, percent);
-              document.getElementById("loaderBarFG").style.width =
-                percent + "%";
-              document.getElementById("loaderPercent").innerHTML = percent;
-            }
-          };
-
-          LOADER.whenReady = function () {
-            document.getElementById("loaderDiv").style.display = "none";
-            initCrossword(window);
-          };
-        }
-      });
-    }
-
-    function stopAllSounds() {
-      for (var i = 0; i < AUDIOS.length; i++) {
-        AUDIOS[i].pause();
-        delete AUDIOS[i];
-      }
-      AUDIOS = [];
-      window.isPlay = false;
-    }
-
-    function playSound(id, loop) {
-      id = id.toLowerCase();
-      if (!window.soundBool && id.indexOf("system-") > -1) return;
-      console.log("id", id, LOADER.assets[id]);
-
-      var audio = new Audio(LOADER.assets[id]);
-      audio.play();
-      window.isPlay = true;
-      if (id.indexOf("system-") == -1) {
-        AUDIOS.push(audio);
-      }
-    }
-  </script>
-  <link rel="stylesheet" type="text/css" href="./css/firework.css">
+                    <button onclick="catAndQuest()" id="start"> START </button>
+                </header>
 
 
-</body>
+                <div class="container">
+                    <div id="questions" style="display: none;">
+                        <div id="count"></div>
+                        <div id="category"></span> </div>
+                        <div id="quest"> </div>
+                        <button onclick="answer(true)" style="display:none;" id="answerT"> TRUE</button>
+                        <button onclick="answer(false)" style="display:none;" id="answerF"> FALSE</button>
 
-</html>
+                    </div>
+                    <div id="gameOver" style="display: none;" >
+                        <div id="looser" style="display:none;">Sorry, no more questions</div>
+                        <div id="points" style="display:none;">0</div>
+                        <button onclick="restart()" style="display:none;" id="reset"> PLAY AGAIN? </button>
+                    </div>
+                </div>
+                </div>
+
+
+                <!-- JavaScript -->
+                <script src="./main.js"></script>
+            </body>
+
+            </html>
+        

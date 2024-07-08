@@ -8,6 +8,7 @@ body {
     background-size: cover;
     font-family: Lato;
     -webkit-font-smoothing: antialiased;
+    min-height: 100vh;
 }
 
 .container {

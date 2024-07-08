@@ -19,6 +19,7 @@ use App\Models\teacher_course;
 use App\Models\teacher_classes;
 use App\Models\activity;
 use App\Models\outline;
+use Firebase\JWT\JWT;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Storage;
@@ -196,6 +197,15 @@ class TeachersController extends Controller
     {
         $currentUrl = url('/') . '/excercise/assets/php/create.php?id=' . $id;
 
+        if ($request->has('student')) {
+            $payload = [
+                'id' => session('user')['id'],
+                'email' => session('user')['email'],
+            ];
+
+            $jwt = JWT::encode($payload, 'tecai', 'HS256');
+            $currentUrl = url('/') . '/excercise/assets/php/create.php?id=' . $id . '&token='.$jwt;
+        }
         if ($request->has('teacher')) {
             $currentUrl = url('/') . '/excercise/assets/php/create.php?id=' . $id . '&teacher=true';
         }
@@ -273,12 +283,13 @@ class TeachersController extends Controller
             return $th->getMessage();
         }
     }
-    public function TeacherViewFile(Request $request , $id){
+    public function TeacherViewFile(Request $request, $id)
+    {
         $content = TeacherContent::find($request->id);
         $content_type = $content->content_type;
         $url = Storage::disk('local')->temporaryUrl($content->content_link, now()->addMinutes(5));
         if ($content_type == 'Flash') {
-            return view('home.viewer.flash', compact('content_type', 'id' ));
+            return view('home.viewer.flash', compact('content_type', 'id'));
         }
         if ($content_type == 'Pdf') {
             return view('home.viewer.pdf', compact('content_type', 'id'));

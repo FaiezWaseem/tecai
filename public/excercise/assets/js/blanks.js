@@ -35,8 +35,8 @@ get('#showNext').addEventListener('click', function () {
       return;
     }
 
-    if (paragraph.length > 300) {
-      showToast('Paragraph Cannot Be More the 300 Characters, Currently : ' + paragraph.length, 'bg-danger')
+    if (paragraph.length > 600) {
+      showToast('Paragraph Cannot Be More the 600 Characters, Currently : ' + paragraph.length, 'bg-danger')
       return;
     }
 
@@ -108,8 +108,8 @@ function GetSelectedText() {
     showToast('Please Enter a Paragraph First', 'bg-danger')
     return;
   }
-  if (paragraph.length > 300) {
-    showToast('Paragraph Cannot Be More the 300 Characters, Currently : ' + paragraph.length, 'bg-danger')
+  if (paragraph.length > 600) {
+    showToast('Paragraph Cannot Be More the 600 Characters, Currently : ' + paragraph.length, 'bg-danger')
     return;
   }
 
@@ -214,8 +214,8 @@ function counter() {
 function generateDropHTML() {
   const paragraph = get('#blank_paragraph').value;
 
-  if (paragraph.length > 300) {
-    showToast('Paragraph Cannot Be More the 300 Characters, Currently : ' + paragraph.length, 'bg-danger')
+  if (paragraph.length > 600) {
+    showToast('Paragraph Cannot Be More the 600 Characters, Currently : ' + paragraph.length, 'bg-danger')
     return;
   }
 
@@ -282,6 +282,9 @@ async function postData() {
     document.body.appendChild(link);
     link.click();
 
+
+    window.location.href = '../../../teacher/assignments/view/'
+
   }
 }
 
@@ -307,5 +310,10 @@ function showToast(message, color) {
     toast.hide();
   }, 5000);
 }
+
+
+
+
+
 
 

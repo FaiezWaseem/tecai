@@ -156,14 +156,18 @@ class ThemeType
             flex-wrap: wrap;
         }
         .name {
-            margin: 1px;
-            background-color: white;
+           margin: 1px;
+            background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGAAAABgCAYAAADimHc4AAAACXBIWXMAAAsTAAALEwEAmpwYAAAB8klEQVR4nO3csUtbURTH8WuXpsZiLRTBUXBxUHj3P0hoMGAgIBKhsyZQp3ZRHPpuUyw0UKHN4JDBSQp1cLNDtcM73UT/GYNuR146FP8A34Hc7wd+++V33j13iToHAAAAAAAAAAAAAAAAAMD40Q9PvIROkoVrL+mdl6AkPEIH6V2SpVdJ9nHLqU78Lz8LPyg8FPrRJRKOR0PwWdqm/GBy4xNJN11+JRhAMFq56aVj5wez9y6RcOv4+oNpGIAwALUugRsg9kWwgiTO8AYIA1DrErgBYl8EK0jiDG+AMAC1LoEbIPZFsIIkzvAGCANQ6xK4AWJfBCtI4gxvgDAAtS6BGyD2RbCCJM7wBggDUOsSuAFiXwQrSOIMb4AwALUugRsgEa+g/Aei1ofwMf84d/nPnvlBfKRZvthTt3C6bX4QH2kWTt+qmzt6o4u/3psfxkeWxbN3mnfvZgctnR1s6PxJR5fOdzXJUvPD+TFN3u3S7x2d/9kedZ53714drilZM+vAzXxvDl/2m0qahXcw02/euOmvq39fHDSUNArvYPpgVVy5t7LxvFdXUi+8g6kvK+ujv9We3K/1y59rSmqFdTC5//rbg/9WUOpWW0+7FSl1K8NSt6qk+ggdVIZ5x88+Vf59+QAAAAAAAAAAAAAAAAAAuHFzD/7nR7PVK0RIAAAAAElFTkSuQmCC);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-position: center;
             backdrop-filter: blur(8px);
             padding: 3px 12px;
             border-radius: 4px;
-            color: black;
+            color: white;
+            font-weight: bold;
             font-family: "Courier New", Courier, monospace;
-            border : 1px solid #ccc;
         }
         .container{
             display: flex;
@@ -422,14 +426,18 @@ class ThemeType
             flex-wrap: wrap;
         }
         .name {
-            margin: 1px;
-            background-color: white;
+        margin: 1px;
+            background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGAAAABgCAYAAADimHc4AAAACXBIWXMAAAsTAAALEwEAmpwYAAAB8klEQVR4nO3csUtbURTH8WuXpsZiLRTBUXBxUHj3P0hoMGAgIBKhsyZQp3ZRHPpuUyw0UKHN4JDBSQp1cLNDtcM73UT/GYNuR146FP8A34Hc7wd+++V33j13iToHAAAAAAAAAAAAAAAAAMD40Q9PvIROkoVrL+mdl6AkPEIH6V2SpVdJ9nHLqU78Lz8LPyg8FPrRJRKOR0PwWdqm/GBy4xNJN11+JRhAMFq56aVj5wez9y6RcOv4+oNpGIAwALUugRsg9kWwgiTO8AYIA1DrErgBYl8EK0jiDG+AMAC1LoEbIPZFsIIkzvAGCANQ6xK4AWJfBCtI4gxvgDAAtS6BGyD2RbCCJM7wBggDUOsSuAFiXwQrSOIMb4AwALUugRsgEa+g/Aei1ofwMf84d/nPnvlBfKRZvthTt3C6bX4QH2kWTt+qmzt6o4u/3psfxkeWxbN3mnfvZgctnR1s6PxJR5fOdzXJUvPD+TFN3u3S7x2d/9kedZ53714drilZM+vAzXxvDl/2m0qahXcw02/euOmvq39fHDSUNArvYPpgVVy5t7LxvFdXUi+8g6kvK+ujv9We3K/1y59rSmqFdTC5//rbg/9WUOpWW0+7FSl1K8NSt6qk+ggdVIZ5x88+Vf59+QAAAAAAAAAAAAAAAAAAuHFzD/7nR7PVK0RIAAAAAElFTkSuQmCC);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-position: center;
             backdrop-filter: blur(8px);
             padding: 3px 12px;
             border-radius: 4px;
-            color: black;
+            color: white;
+            font-weight: bold;
             font-family: "Courier New", Courier, monospace;
-            border : 1px solid #ccc;
         }
         .container{
             display: flex;
@@ -680,14 +688,18 @@ class ThemeType
             justify-content: center;
         }
         #names {
-            margin-left: 1rem;
-            width: 15vw;
-            height: 80%;
+          margin: 1px;
+            background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGAAAABgCAYAAADimHc4AAAACXBIWXMAAAsTAAALEwEAmpwYAAAB8klEQVR4nO3csUtbURTH8WuXpsZiLRTBUXBxUHj3P0hoMGAgIBKhsyZQp3ZRHPpuUyw0UKHN4JDBSQp1cLNDtcM73UT/GYNuR146FP8A34Hc7wd+++V33j13iToHAAAAAAAAAAAAAAAAAMD40Q9PvIROkoVrL+mdl6AkPEIH6V2SpVdJ9nHLqU78Lz8LPyg8FPrRJRKOR0PwWdqm/GBy4xNJN11+JRhAMFq56aVj5wez9y6RcOv4+oNpGIAwALUugRsg9kWwgiTO8AYIA1DrErgBYl8EK0jiDG+AMAC1LoEbIPZFsIIkzvAGCANQ6xK4AWJfBCtI4gxvgDAAtS6BGyD2RbCCJM7wBggDUOsSuAFiXwQrSOIMb4AwALUugRsgEa+g/Aei1ofwMf84d/nPnvlBfKRZvthTt3C6bX4QH2kWTt+qmzt6o4u/3psfxkeWxbN3mnfvZgctnR1s6PxJR5fOdzXJUvPD+TFN3u3S7x2d/9kedZ53714drilZM+vAzXxvDl/2m0qahXcw02/euOmvq39fHDSUNArvYPpgVVy5t7LxvFdXUi+8g6kvK+ujv9We3K/1y59rSmqFdTC5//rbg/9WUOpWW0+7FSl1K8NSt6qk+ggdVIZ5x88+Vf59+QAAAAAAAAAAAAAAAAAAuHFzD/7nR7PVK0RIAAAAAElFTkSuQmCC);
             display: flex;
-            justify-content: start;
+            justify-content: center;
             align-items: center;
-            cursor: pointer;
-            flex-wrap: wrap;
+            background-position: center;
+            backdrop-filter: blur(8px);
+            padding: 3px 12px;
+            border-radius: 4px;
+            color: white;
+            font-weight: bold;
+            font-family: "Courier New", Courier, monospace;
         }
         .name {
             margin: 1px;

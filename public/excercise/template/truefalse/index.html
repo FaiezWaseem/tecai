@@ -23,24 +23,26 @@
 <body>
 
     <header>
-        <h1> True False Quiz Game </h1>
+
 
         <button onclick="catAndQuest()" id="start"> START </button>
     </header>
 
 
     <div class="container">
-        <div id="questions">
+        <div id="questions" style="display: none;">
             <div id="count"></div>
             <div id="category"></span> </div>
             <div id="quest"> </div>
             <button onclick="answer(true)" style="display:none;" id="answerT"> TRUE</button>
             <button onclick="answer(false)" style="display:none;" id="answerF"> FALSE</button>
-            <div id="points"></div>
+
         </div>
-        <div id="winner" style="display:none;">YOU WIN! <br>Congrats</div>
-        <div id="looser" style="display:none;">Sorry, no more questions</div>
-        <button onclick="restart()" style="display:none;" id="reset"> PLAY AGAIN? </button>
+        <div id="gameOver" style="display: none;" >
+            <div id="looser" style="display:none;">Sorry, no more questions</div>
+            <div id="points" style="display:none;">0</div>
+            <button onclick="restart()" style="display:none;" id="reset"> PLAY AGAIN? </button>
+        </div>
     </div>
     </div>
 
