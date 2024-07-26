@@ -79,12 +79,28 @@ Route::middleware('CheckTeacher')->prefix('/teacher')->group(function () {
         ->name('teacher.classe.outline.remove');
 
     /**
+     *  Route : Teacher / View Students Of A class
+     *  # Display List
+     */
+    Route::get('/{class_id}/{course_id}/students', [App\Http\Controllers\TeachersController::class, 'TeacherViewClassStudents'])
+        ->name('teacher.classe.students.view');
+    Route::post('/{class_id}/{course_id}/students', [App\Http\Controllers\TeachersController::class, 'TeacherAddstudentGrade'])
+        ->name('teacher.classe.students.view');
+    /**
+     *  Route : Teacher / View Students Of A class
+     *  # Display List
+     */
+    Route::get('/{class_id}/{course_id}/{student_id}/grades', [App\Http\Controllers\TeachersController::class, 'TeacherViewStudentsGrades'])
+        ->name('teacher.class.students.grades.view');
+
+
+    /**
      *  Route : Teacher /Custom Content
      *  # Display List
      */
     Route::get('/content/view', [App\Http\Controllers\ContentController::class, 'TeacherViewContent'])
         ->name('teacher.content.view');
-        // Teacher Delete Content
+    // Teacher Delete Content
     Route::delete('/content/view/{id}', [App\Http\Controllers\ContentController::class, 'TeacherDeleteContent'])
         ->name('teacher.content.delete');
 

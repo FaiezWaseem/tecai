@@ -37,7 +37,8 @@
                     <table id="example1" class="table table-bordered table-striped">
                         <thead>
                             <tr>
-                                <th>Outline</th>
+                                <th>View Course Outline</th>
+                                <th>View Students</th>
                                 <th>Grade</th>
                                 <th>Subject</th>
                             </tr>
@@ -51,6 +52,12 @@
                                     <a href="{{ route('teacher.classe.outline.show', ['class_id' => $item->class_id , 'course_id' => $item->course_id]) }}">
                                         <i class="fa fa-eye"></i>   outline
                                     </a>
+                                  
+                                </td>
+                                <td>
+                                    <a href="{{ route('teacher.classe.students.view', ['class_id' => $item->class_id , 'course_id' => $item->course_id]) }}">
+                                        <i class="fa fa-eye"></i> View  Students
+                                    </a>
                                 </td>
                                 <td>{{ $item->class_name }}</td>
                                 <td>{{ $item->course_name }}</td>
@@ -59,7 +66,8 @@
                         </tbody>
                         <tfoot>
                             <tr>
-                                <th>Outline</th>
+                                <th>View Course Outline</th>
+                                <th>View Students</th>
                           
                                 <th>Grade</th>
                                 <th>Subject</th>

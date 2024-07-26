@@ -86,6 +86,31 @@ Route::middleware('CheckSchoolAdmin')->prefix('/school_admin')->group(function (
     Route::put('/students/{id}/edit', [App\Http\Controllers\StudentsController::class, 'SchoolAdminEditStudent'])
         ->name('schooladmin.students.edit');
 
+
+    /**
+     *  Route : SchoolAdmin / View Accademic Years
+     *  # Display list of all Accademic Years
+     */
+    Route::get('/academic/year/view', [App\Http\Controllers\AcademicController::class, 'SchoolAdminViewAcademicYear'])
+        ->name('schooladmin.academic.view');
+    /**
+     *  Route : SchoolAdmin / Create Accademic Year
+     *  # Create Academic Year Form
+     */
+    Route::get('/academic/year/create', [App\Http\Controllers\AcademicController::class, 'SchoolAdminCreateAcademicYear'])
+        ->name('schooladmin.academic.create');
+    Route::post('/academic/year/create', [App\Http\Controllers\AcademicController::class, 'SchoolAdminCreateAcademicYear'])
+        ->name('schooladmin.academic.create');
+
+
+    Route::get('/academic/term/view', [App\Http\Controllers\AcademicController::class, 'SchoolAdminViewAcademicTerm'])
+        ->name('schooladmin.academic.term.view');
+
+    Route::get('/academic/term/create', [App\Http\Controllers\AcademicController::class, 'SchoolAdminCreateAcademicTerm'])
+        ->name('schooladmin.academic.term.create');
+    Route::post('/academic/term/create', [App\Http\Controllers\AcademicController::class, 'SchoolAdminCreateAcademicTerm'])
+        ->name('schooladmin.academic.term.create');
+
     /**
      *  Route : SchoolAdmin / View All Courses
      *  # Display list of all Courses

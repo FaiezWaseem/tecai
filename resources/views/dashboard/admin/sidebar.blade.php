@@ -171,6 +171,42 @@
       <!-- Sidebar Menu -->
       <nav class="mt-2">
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">   
+          <li class="nav-item {{ request()->is('dashboard/school_admin/academic*') ? 'menu-open' : '' }}">
+            <a href="#" class="nav-link {{ request()->is('dashboard/school_admin/academic*') ? 'active' : '' }}" >
+              <i class="nav-icon fas fa-user-graduate"></i>
+              <p>
+                Academic
+                <i class="fas fa-angle-left right"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="{{ route('schooladmin.academic.view') }}" class="nav-link {{ request()->is('dashboard/school_admin/academic/year/view') ? 'active' : '' }}">
+                  <i class="far fa fa-eye nav-icon"></i>
+                  <p>View Academic Year</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="{{ route('schooladmin.academic.create') }}" class="nav-link {{ request()->is('dashboard/school_admin/academic/year/create') ? 'active' : '' }}">
+                  <i class="far fa fa-plus-square nav-icon"></i>
+                  <p>Add Academic Year</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="{{ route('schooladmin.academic.term.view') }}" class="nav-link {{ request()->is('dashboard/school_admin/academic/term/create') ? 'active' : '' }}">
+                  <i class="far fa fa-eye nav-icon"></i>
+                  <p>View Term</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="{{ route('schooladmin.academic.term.create') }}" class="nav-link {{ request()->is('dashboard/school_admin/academic/term/create') ? 'active' : '' }}">
+                  <i class="far fa fa-plus-square nav-icon"></i>
+                  <p>Add Term</p>
+                </a>
+              </li>
+        
+            </ul>
+          </li>
           <li class="nav-item {{ request()->is('dashboard/school_admin/students*') ? 'menu-open' : '' }}">
             <a href="#" class="nav-link {{ request()->is('dashboard/school_admin/students*') ? 'active' : '' }}" >
               <i class="nav-icon fas fa-user-graduate"></i>

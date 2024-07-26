@@ -12,17 +12,17 @@
         }
 
         .title {
-            /* Estilos de título h1 */
+          
             text-align: center;
             padding: 20px;
             font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
         }
 
         .pdfview {
-            /* Centrado */
+          
             margin: auto;
             display: block;
-            /* Tamaño */
+         
             width: 80vw;
             height: 100vh;
             /* Mejorar aspecto */

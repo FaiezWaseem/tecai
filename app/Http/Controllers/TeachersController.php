@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Chapter;
 use App\Models\SchoolContentPermission;
+use App\Models\studentGrade;
 use App\Models\students;
 use App\Models\tasks;
 use App\Models\Tboards;
@@ -19,9 +20,11 @@ use App\Models\teacher_course;
 use App\Models\teacher_classes;
 use App\Models\activity;
 use App\Models\outline;
+use App\Models\Term;
 use Firebase\JWT\JWT;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Response;
 use Storage;
 
 class TeachersController extends Controller
@@ -204,7 +207,7 @@ class TeachersController extends Controller
             ];
 
             $jwt = JWT::encode($payload, 'tecai', 'HS256');
-            $currentUrl = url('/') . '/excercise/assets/php/create.php?id=' . $id . '&token='.$jwt;
+            $currentUrl = url('/') . '/excercise/assets/php/create.php?id=' . $id . '&token=' . $jwt;
         }
         if ($request->has('teacher')) {
             $currentUrl = url('/') . '/excercise/assets/php/create.php?id=' . $id . '&teacher=true';
@@ -891,5 +894,113 @@ class TeachersController extends Controller
         return response()->json([
             'deleted' => true
         ]);
+    }
+
+    public function TeacherViewClassStudents(Request $request)
+    {
+
+        $class_id = $request->route('class_id');
+        $course_id = $request->route('course_id');
+        $school_id = session('user')['school_id'];
+        $academic = HelperFunctionsController::getcurrentAcademicYear($school_id);
+
+        $class = classes::where('id', '=', $class_id)->first();
+        $course = course::where('id', '=', $course_id)->first();
+
+        $students = students::where('class', $class->class_name)
+            ->where('school', '=', $school_id)
+            ->get();
+
+        $terms = Term::where('class_id', '=', $class_id)
+            ->where('course_id', '=', $course_id)
+            ->get();
+
+
+        $studentGrades = studentGrade::where('course_id', '=', $course_id)
+            ->where('academic_id', '=', $academic->id)
+            ->get();
+
+        return view(
+            'dashboard.teachers.classes.students.view',
+            compact('students', 'class', 'course', 'terms', 'studentGrades')
+        );
+    }
+    public function TeacherAddstudentGrade(Request $request)
+    {
+        $class_id = $request->route('class_id');
+        $course_id = $request->route('course_id');
+        $school_id = session('user')['school_id'];
+        $academic = HelperFunctionsController::getcurrentAcademicYear($school_id);
+
+
+        $validatedData = $request->all();
+
+        // Loop through the validated data and extract the student ID, term ID, and marks
+        $marks = [];
+        foreach ($validatedData as $key => $value) {
+            // Split the key into student ID and term ID
+            $parts = explode('_', $key);
+            if (isset($parts[2])) {
+
+                $studentId = $parts[3];
+                $termId = $parts[2];
+
+                // Add the mark to the $marks array
+                $marks[$studentId][$termId] = $value;
+            }
+        }
+
+
+        foreach ($marks as $studentId => $termMarks) {
+            foreach ($termMarks as $termId => $mark) {
+
+                $record = studentGrade::where([
+                    'student_id' => $studentId,
+                    'course_id' => $course_id,
+                    'term_id' => $termId,
+                    'academic_id' => $academic->id
+                ])->first();
+
+                if ($record) {
+                    // Update the existing record
+                    $record->total = $mark;
+                    $record->save();
+                } else {
+                    // Create a new record
+                    studentGrade::create([
+                        'student_id' => $studentId,
+                        'course_id' => $course_id,
+                        'term_id' => $termId,
+                        'total' => $mark,
+                        'academic_id' => $academic->id
+                    ]);
+                }
+            }
+        }
+
+        return redirect()->back();
+
+    }
+
+    public function TeacherViewStudentsGrades(Request $request)
+    {
+        $class_id = $request->route('class_id');
+        $course_id = $request->route('course_id');
+        $student_id = $request->route('student_id');
+        $school_id = session('user')['school_id'];
+
+        $class = classes::where('id', '=', $class_id)->first();
+        $course = course::where('id', '=', $course_id)->first();
+        $student = students::where('id', '=', $student_id)->first();
+
+
+        $terms = Term::where('class_id', '=', $class_id)
+            ->where('course_id', '=', $course_id)
+            ->get();
+
+        return view(
+            'dashboard.teachers.classes.students.grade.view',
+            compact('class', 'course', 'student', 'terms')
+        );
     }
 }

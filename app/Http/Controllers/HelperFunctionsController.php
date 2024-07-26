@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\AcademicYear;
 use App\Models\SchoolsAdmin;
 use App\Models\students;
 use App\Models\teachers;
@@ -56,5 +57,8 @@ class HelperFunctionsController extends Controller
     public static function getCurrentStudent($id)
     {
         return students::where('id', '=', $id)->first();
+    }
+    public static function getcurrentAcademicYear($school_id){
+        return AcademicYear::where('school_id', '=', $school_id)->where('active', '=', 1)->first();
     }
 }
