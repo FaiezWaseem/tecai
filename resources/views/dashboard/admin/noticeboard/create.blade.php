@@ -10,14 +10,14 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1 class="m-0">CREATE COURSE</h1>
+                    <h1 class="m-0">CREATE NOTICE MESSAGE</h1>
                 </div><!-- /.col -->
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item">
                             <a href="{{ route('schooladmin.home.view') }}">Home</a>
                         </li>
-                        <li class="breadcrumb-item">Course</li>
+                        <li class="breadcrumb-item">Notice Board</li>
                         <li class="breadcrumb-item active">Create</li>
                     </ol>
                 </div><!-- /.col -->
@@ -33,7 +33,14 @@
                 @method('POST')
                 @csrf
                 <div class="row">
-                
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="txtUserName">Enter Notice  Board Message <span class="text-danger">*</span></label>
+                            <textarea name="message" class="form-control"  cols="30" rows="10"></textarea>
+                            
+                            <span id="txtUserName_Error" class="error invalid-feedback hide"></span>
+                        </div>
+                    </div>
                     <div class="col-md-3">
                         <div class="form-group">
                             <label for="txtUserName">School <span class="text-danger">*</span></label>
@@ -47,14 +54,7 @@
                             <span id="txtUserName_Error" class="error invalid-feedback hide"></span>
                         </div>
                     </div>
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label for="txtUserName">Course Name <span class="text-danger">*</span></label>
-                            <input type="text" name="course_name" class="form-control" id="txtUserName" placeholder="Enter Course Name"
-                                maxlength="255">
-                            <span id="txtUserName_Error" class="error invalid-feedback hide"></span>
-                        </div>
-                    </div>
+            
                 </div>
                 <div class="row">
                     <div class="col-md-11">

@@ -20,8 +20,13 @@
                     </ol>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-md-6"></div>
+            <form method="POST">
+            <div class="row mt-3">
+                <div class="col-md-3">
+                    <label for="">Select Date :</label>
+                    <input type="date" class="form-control" name="currentDate" >
+                </div>
+                <div class="col-md-3"></div>
                 <div class="col-md-4">
                     <select id="attendance-status" class="form-control">
                         <option value="present">Present</option>
@@ -59,7 +64,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <form method="POST">
+                        
                                 @foreach ($students as $item)
                                     <tr>
                                         <td>

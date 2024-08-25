@@ -51,10 +51,12 @@
                             @foreach ($academicYear as $item)
                             <tr>
                                 <td>
-                                    <i class="fa fa-edit text-primary"  ></i>
-                                    {{-- <button class="btn" data-toggle="modal" data-target="#DeleteModal" onclick="setdeleteModalId({{$item->id}})">
+                                    <a href="{{  route('schooladmin.academic.edit', ['id' => $item->id]) }}" class="btn" >
+                                        <i class="fa fa-edit text-primary"  ></i>
+                                    </a>
+                                    <button class="btn" data-toggle="modal" data-target="#DeleteModal" onclick="setdeleteModalId({{$item->id}})">
                                         <i class="fa fa-trash text-danger"  ></i>
-                                    </button> --}}
+                                    </button>
                                 </td>
                                 <td>{{ $item->school_name }}</td>
                                 <td>{{ $item->start_date }}</td>

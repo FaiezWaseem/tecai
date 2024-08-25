@@ -911,8 +911,7 @@ class TeachersController extends Controller
             ->where('school', '=', $school_id)
             ->get();
 
-        $terms = Term::where('class_id', '=', $class_id)
-            ->where('course_id', '=', $course_id)
+        $terms = Term::where('school_id', '=', $school_id)
             ->get();
 
 
@@ -994,8 +993,7 @@ class TeachersController extends Controller
         $student = students::where('id', '=', $student_id)->first();
 
 
-        $terms = Term::where('class_id', '=', $class_id)
-            ->where('course_id', '=', $course_id)
+        $terms = Term::where('school_id', '=', $school_id)
             ->get();
 
         return view(

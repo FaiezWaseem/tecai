@@ -4,15 +4,7 @@ use App\Http\Controllers\HelperFunctionsController;
 use Illuminate\Support\Facades\Route;
 
 
-// Route::get('/test', function(){
-//   return view('dashboard.examples.datatable');
-// });
-// Route::get('/user', function(){
-//   return response()->json([
-//     'schools'=> HelperFunctionsController::getUserSchoolsIds(),
-//     'user'=> session('user')
-//   ]);
-// });
+
 
 
 Route::get('/docs/api' , function(){

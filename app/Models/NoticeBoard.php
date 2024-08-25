@@ -5,15 +5,14 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Term extends Model
+class NoticeBoard extends Model
 {
     use HasFactory;
 
-    protected $table = 'term';
+    protected $table = 'notice_board';
 
     protected $fillable = [
         'school_id',
-        'title',
-        'total',
+        'message'
     ];
 }

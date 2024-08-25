@@ -17,6 +17,56 @@ class EContentController extends Controller
         $contents = TLiveSessions::get();
         return view('dashboard.superadmin.ecoaching.livesessions.view' , compact('contents'));
     }
+    public function SuperAdminDeleteLiveSession(Request $request)
+    {
+        if ($request->id) {
+            $deletedRows = TLiveSessions::destroy($request->id);
+            if ($deletedRows > 0) {
+                return response()->json([
+                    'status' => 200,
+                    'deleted' => true
+                ]);
+            } else {
+                return response()->json([
+                    'status' => 200,
+                    'deleted' => false,
+                    'message' => 'Failed To Delete Record'
+                ]);
+            }
+        } else {
+            return response()->json([
+                'status' => 200,
+                'deleted' => false,
+                'message' => 'Record Id is not Provided',
+                'form' => $request->id
+            ]);
+        }
+    }
+    public function SuperAdminDeleteNotes(Request $request)
+    {
+        if ($request->id) {
+            $deletedRows = EContent::destroy($request->id);
+            if ($deletedRows > 0) {
+                return response()->json([
+                    'status' => 200,
+                    'deleted' => true
+                ]);
+            } else {
+                return response()->json([
+                    'status' => 200,
+                    'deleted' => false,
+                    'message' => 'Failed To Delete Record'
+                ]);
+            }
+        } else {
+            return response()->json([
+                'status' => 200,
+                'deleted' => false,
+                'message' => 'Record Id is not Provided',
+                'form' => $request->id
+            ]);
+        }
+    }
     public function SuperAdminCreateLiveSession(Request $request)
     {
         $rqMethod = $request->method();

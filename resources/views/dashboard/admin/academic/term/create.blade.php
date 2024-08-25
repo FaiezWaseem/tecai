@@ -67,28 +67,6 @@
 
                         <div class="col-md-3">
                             <div class="form-group">
-                                <label for="txtUserName">Class <span class="text-danger">*</span></label>
-                                <select name="class_id" class="form-control">
-                                    @foreach ($classes as $item)
-                                        <option value="{{ $item->id }}">{{ $item->class_name }}</option>
-                                    @endforeach
-                                </select>
-                                <span id="txtUserName_Error" class="error invalid-feedback hide"></span>
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="form-group">
-                                <label for="txtUserName">Course <span class="text-danger">*</span></label>
-                                <select name="course_id" class="form-control">
-                                    @foreach ($courses as $item)
-                                        <option value="{{ $item->id }}">{{ $item->course_name }}</option>
-                                    @endforeach
-                                </select>
-                                <span id="txtUserName_Error" class="error invalid-feedback hide"></span>
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="form-group">
                                 <label for="txtUserName">Title <span class="text-danger">*</span></label>
                                 <input type="text" name="title" class="form-control" id="txtUserName"
                                     placeholder="Enter Head ex : Final Term" maxlength="255">

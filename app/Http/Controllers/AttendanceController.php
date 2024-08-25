@@ -124,9 +124,7 @@ class AttendanceController extends Controller
         $attendance = Attendance::whereIn('attendance.school_id', $schoolsId)
             ->whereDate('date', '=', $date)
             ->join('students', 'attendance.student_id', '=', 'students.id')
-            ->join('classes', 'attendance.class_id', '=', 'classes.id')
-            ->join('course', 'attendance.course_id', '=', 'course.id')
-            ->select('attendance.*', 'students.name', 'classes.class_name', 'course.course_name')
+            ->select('attendance.*', 'students.name')
             ->get();
 
         return view('dashboard.admin.students.attendance.view', compact('attendance'));
@@ -150,12 +148,17 @@ class AttendanceController extends Controller
     {
         $attendanceData = $request->input('attendance');
 
+        $date = now();
+        if ($request->currentDate) {
+            $date = $request->currentDate;
+        }
+
         foreach ($attendanceData as $studentId => $status) {
 
             $std = students::find($studentId);
 
             $existingAttendance = Attendance::where('student_id', $studentId)
-                ->whereDate('date','=', now())
+                ->whereDate('date','=', $date)
                 ->count();
 
             if ($existingAttendance > 0) {
@@ -165,12 +168,12 @@ class AttendanceController extends Controller
             Attendance::create([
                 'student_id' => $studentId,
                 'status' => $status,
-                'date' => now(),
+                'date' => $date,
                 'school_id' => $std->school,
             ]);
         }
 
-        return redirect()->route('schooladmin.attendance.create');
+        return redirect()->route('schooladmin.attendance.view');
     }
 
 }

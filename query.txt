@@ -574,3 +574,24 @@ CREATE TABLE `student_grade` (
 
 ALTER TABLE academic_year
 ADD COLUMN school_id int REFERENCES school(id)
+
+
+ALTER TABLE term
+ADD COLUMN school_id bigint REFERENCES school(id)
+
+
+ALTER TABLE term
+DROP COLUMN class_id;
+ALTER TABLE term
+DROP COLUMN course_id;
+
+
+
+
+CREATE TABLE `notice_board` (
+  `id` BIGINT PRIMARY KEY AUTO_INCREMENT NOT NULL,
+  `school_id` bigint NOT NULL,
+  `message` text  NOT NULL,
+  `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);

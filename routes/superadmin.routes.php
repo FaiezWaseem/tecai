@@ -379,6 +379,8 @@ Route::middleware('CheckSuperAdmin')->prefix('/superadmin')->group(function () {
      */
     Route::get('/ecoaching/live_session/view', [App\Http\Controllers\EContentController::class, 'SuperAdminViewLiveSession'])
     ->name('superadmin.live_session.view');
+    Route::delete('/ecoaching/live_session/view/{id}', [App\Http\Controllers\EContentController::class, 'SuperAdminDeleteLiveSession'])
+    ->name('superadmin.live_session.delete');
     /**
      * Route Admin / View Ecoaching Teachers
      * # Display a list of all Teachers
@@ -393,6 +395,8 @@ Route::middleware('CheckSuperAdmin')->prefix('/superadmin')->group(function () {
      */
     Route::get('/ecoaching/notes/view', [App\Http\Controllers\EContentController::class, 'SuperAdminViewNotes'])
     ->name('superadmin.notes.view');
+    Route::delete('/ecoaching/notes/view/{id}', [App\Http\Controllers\EContentController::class, 'SuperAdminDeleteNotes'])
+    ->name('superadmin.notes.delete');
     /**
      * Route Admin / View Ecoaching Teachers
      * # Display a list of all Teachers

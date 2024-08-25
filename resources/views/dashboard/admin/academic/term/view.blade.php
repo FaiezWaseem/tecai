@@ -43,42 +43,7 @@
                     </div>
                 @endforeach
             </div>
-        @elseif(isset($classes))
-            <div>
-                <h1>Select A Class</h1>
-            </div>
-            <div class="container-fluid d-flex flex-wrap">
-
-                @foreach ($classes as $item)
-                    <div class="card m-2 bg-image hover-zoom" style="width: 18rem;">
-                        <div class="card-body">
-                            <h5 class="card-title">{{ $item->class_name }}</h5>
-                            <br>
-                            <a href="{{ route('schooladmin.academic.term.view', ['class_id' => $item->id]) }}"
-                                class="btn btn-primary">
-                                Select</a>
-                        </div>
-                    </div>
-                @endforeach
-            </div>
-        @elseif(isset($courses))
-            <div>
-                <h1>Select A Course</h1>
-            </div>
-            <div class="container-fluid d-flex flex-wrap">
-
-                @foreach ($courses as $item)
-                    <div class="card m-2 bg-image hover-zoom" style="width: 18rem;">
-                        <div class="card-body">
-                            <h5 class="card-title">{{ $item->course_name }}</h5>
-                            <br>
-                            <a href="{{ route('schooladmin.academic.term.view', ['course_id' => $item->id]) }}"
-                                class="btn btn-primary">
-                                Select</a>
-                        </div>
-                    </div>
-                @endforeach
-            </div>
+       
         @else
             <div class="container-fluid">
                 <!-- Small boxes (Stat box) -->
@@ -92,8 +57,7 @@
                             <thead>
                                 <tr>
                                     <th>Actions</th>
-                                    <th>Class</th>
-                                    <th>Course </th>
+                                
                                     <th>Title</th>
                                     <th>Total Grade</th>
 
@@ -109,8 +73,7 @@
                                         <i class="fa fa-trash text-danger"  ></i>
                                     </button> --}}
                                         </td>
-                                        <td>{{ $class->class_name }}</td>
-                                        <td>{{ $course->course_name }}</td>
+                                       
                                         <td>{{ $item->title }}</td>
                                         <td>
                                             {{$item->total }}
@@ -122,8 +85,7 @@
                             <tfoot>
                                 <tr>
                                     <th>Actions</th>
-                                    <th>Class</th>
-                                    <th>Course </th>
+                                   
                                     <th>Title</th>
                                     <th>Total Grade</th>
 
