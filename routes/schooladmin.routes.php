@@ -73,6 +73,12 @@ Route::middleware('CheckSchoolAdmin')->prefix('/school_admin')->group(function (
         ->name('schooladmin.students.create');
     Route::post('/students/create', [App\Http\Controllers\StudentsController::class, 'SchoolAdminCreateStudent'])
         ->name('schooladmin.students.create');
+
+    /**
+     * Fetch Classes Record of A School For Student create
+     */
+    Route::post('/school/classes/', [App\Http\Controllers\StudentsController::class, 'SchoolAdminViewSchoolClasses'])
+        ->name('schooladmin.school.classes.list');
     /**
      * Route SchoolAdmin / Delete Student
      */
@@ -173,16 +179,16 @@ Route::middleware('CheckSchoolAdmin')->prefix('/school_admin')->group(function (
         ->name('schooladmin.attendance.create');
     Route::post('/attendance/create', [App\Http\Controllers\AttendanceController::class, 'SchoolAdminStoreAttendance'])
         ->name('schooladmin.attendance.create');
-        
-        
-        
-        Route::get('/notice-board/view', [App\Http\Controllers\NoticeBoardController::class, 'SchoolAdminViewNoticeBoard'])
+
+
+
+    Route::get('/notice-board/view', [App\Http\Controllers\NoticeBoardController::class, 'SchoolAdminViewNoticeBoard'])
         ->name('schooladmin.notice.board.view');
-        Route::delete('/notice-board/view/{id}', [App\Http\Controllers\NoticeBoardController::class, 'SchoolAdminDeleteNoticeBoard'])
+    Route::delete('/notice-board/view/{id}', [App\Http\Controllers\NoticeBoardController::class, 'SchoolAdminDeleteNoticeBoard'])
         ->name('schooladmin.notice.board.delete');
-        
-        Route::get('/notice-board/create', [App\Http\Controllers\NoticeBoardController::class, 'SchoolAdminCreateNoticeBoard'])
-            ->name('schooladmin.notice.board.create');
-        Route::post('/notice-board/create', [App\Http\Controllers\NoticeBoardController::class, 'SchoolAdminCreateNoticeBoard'])
-            ->name('schooladmin.notice.board.create');
+
+    Route::get('/notice-board/create', [App\Http\Controllers\NoticeBoardController::class, 'SchoolAdminCreateNoticeBoard'])
+        ->name('schooladmin.notice.board.create');
+    Route::post('/notice-board/create', [App\Http\Controllers\NoticeBoardController::class, 'SchoolAdminCreateNoticeBoard'])
+        ->name('schooladmin.notice.board.create');
 });

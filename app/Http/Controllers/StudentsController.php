@@ -299,6 +299,13 @@ class StudentsController extends Controller
             return null;
         }
     }
+
+    public function SchoolAdminViewSchoolClasses(Request $request){
+        $schoolId = $request->input('school_id');
+        $classes = classes::where('school_id', $schoolId)->get();
+        return response()->json($classes);
+    }
+
     // ==================== SCHOOL ADMIN
 
 

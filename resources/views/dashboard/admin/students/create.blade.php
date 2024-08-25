@@ -36,58 +36,63 @@
                     <div class="col-md-4">
                         <div class="form-group">
                             <label for="txtUserName">Student Name <span class="text-danger">*</span></label>
-                            <input type="text" name="name" class="form-control" id="txtUserName" placeholder="Enter Student Name"
-                                maxlength="50">
+                            <input type="text" name="name" class="form-control" id="txtUserName"
+                                placeholder="Enter Student Name" maxlength="50">
                             <span id="txtUserName_Error" class="error invalid-feedback hide"></span>
                         </div>
                     </div>
                     <div class="col-md-4">
                         <div class="form-group">
                             <label for="txtUserName">Father Name <span class="text-danger">*</span></label>
-                            <input type="text" name="father_name" class="form-control" id="txtUserName" placeholder="Enter Father Name"
-                                maxlength="50">
+                            <input type="text" name="father_name" class="form-control" id="txtUserName"
+                                placeholder="Enter Father Name" maxlength="50">
                             <span id="txtUserName_Error" class="error invalid-feedback hide"></span>
                         </div>
                     </div>
                     <div class="col-md-4">
                         <div class="form-group">
                             <label for="txtUserName">Admission No <span class="text-danger">*</span></label>
-                            <input type="number" name="admission_no" class="form-control" id="txtUserName" placeholder="Enter Admission No">
+                            <input type="number" name="admission_no" class="form-control" id="txtUserName"
+                                placeholder="Enter Admission No">
                             <span id="txtUserName_Error" class="error invalid-feedback hide"></span>
                         </div>
                     </div>
                     <div class="col-md-4">
                         <div class="form-group">
                             <label for="txtUserName">Group </label>
-                            <input type="text" name="group" class="form-control" id="txtUserName" placeholder="Enter Group Name">
+                            <input type="text" name="group" class="form-control" id="txtUserName"
+                                placeholder="Enter Group Name">
                             <span id="txtUserName_Error" class="error invalid-feedback hide"></span>
                         </div>
                     </div>
                     <div class="col-md-4">
                         <div class="form-group">
-                            <label for="txtUserName">DOB  <span class="text-danger">*</span></label>
-                            <input type="date" name="dob" class="form-control" id="txtUserName" placeholder="Select Date of Birth">
+                            <label for="txtUserName">DOB <span class="text-danger">*</span></label>
+                            <input type="date" name="dob" class="form-control" id="txtUserName"
+                                placeholder="Select Date of Birth">
                             <span id="txtUserName_Error" class="error invalid-feedback hide"></span>
                         </div>
                     </div>
                     <div class="col-md-4">
                         <div class="form-group">
-                            <label for="txtUserName">Contact  <span class="text-danger">* (+92311-xxxxx)</span></label>
-                            <input type="text" name="contact" class="form-control" id="txtUserName" placeholder="Enter Contact details">
+                            <label for="txtUserName">Contact <span class="text-danger">* (+92311-xxxxx)</span></label>
+                            <input type="text" name="contact" class="form-control" id="txtUserName"
+                                placeholder="Enter Contact details">
                             <span id="txtUserName_Error" class="error invalid-feedback hide"></span>
                         </div>
                     </div>
                     <div class="col-md-4">
                         <div class="form-group">
-                            <label for="txtUserName">Email  <span class="text-danger">*</span></label>
-                            <input type="email" name="email" class="form-control" id="txtUserName" placeholder="Enter Email">
+                            <label for="txtUserName">Email <span class="text-danger">*</span></label>
+                            <input type="email" name="email" class="form-control" id="txtUserName"
+                                placeholder="Enter Email">
                             <span id="txtUserName_Error" class="error invalid-feedback hide"></span>
                         </div>
                     </div>
                     <div class="col-md-4">
                         <div class="form-group">
                             <label for="txtUserName">Gender <span class="text-danger">*</span></label>
-                            <select class="form-control" name="gender" >
+                            <select class="form-control" name="gender">
                                 <option value="male">MALE</option>
                                 <option value="female">FEMALE</option>
                             </select>
@@ -95,12 +100,12 @@
                             <span id="txtUserName_Error" class="error invalid-feedback hide"></span>
                         </div>
                     </div>
-       
+
                     <div class="col-md-4">
                         <div class="form-group">
                             <label for="txtPassword">New Password <span class="text-danger">*</span></label>
-                            <input type="text" name="password" class="form-control" id="txtPassword" placeholder="Enter new Password"
-                                maxlength="50">
+                            <input type="text" name="password" class="form-control" id="txtPassword"
+                                placeholder="Enter new Password" maxlength="50">
                             <span id="txtPassword_Error" class="error invalid-feedback hide"></span>
                         </div>
                     </div>
@@ -109,10 +114,10 @@
                     <div class="col-md-3">
                         <div class="form-group">
                             <label for="txtUserName">School <span class="text-danger">*</span></label>
-                            <select class="form-control" name="school_id" >
+                            <select class="form-control" name="school_id">
+                                <option value="-1">--Select School--</option>
                                 @foreach ($schools as $item)
-                                <option value="{{ $item->id }}">{{  $item->school_name }}</option>
-                                    
+                                    <option value="{{ $item->id }}">{{ $item->school_name }}</option>
                                 @endforeach
                             </select>
 
@@ -121,9 +126,10 @@
                     </div>
                     <div class="col-md-3">
                         <div class="form-group">
-                            <label for="txtUserName">Class <span class="text-danger">*</span></label>
-                            <input type="text" name="class" class="form-control" id="txtPassword" placeholder="Enter Class"
-                            maxlength="100">
+                            <label for="txtUserName">School <span class="text-danger">*</span></label>
+                            <select class="form-control" name="class">
+
+                            </select>
 
                             <span id="txtUserName_Error" class="error invalid-feedback hide"></span>
                         </div>
@@ -131,8 +137,8 @@
                     <div class="col-md-3">
                         <div class="form-group">
                             <label for="txtUserName">Sec <span class="text-danger">*</span></label>
-                            <input type="text" name="section" class="form-control" id="txtPassword" placeholder="Enter Section"
-                            maxlength="100">
+                            <input type="text" name="section" class="form-control" id="txtPassword"
+                                placeholder="Enter Section" maxlength="100">
 
                             <span id="txtUserName_Error" class="error invalid-feedback hide"></span>
                         </div>
@@ -141,11 +147,45 @@
                 <div class="row">
                     <div class="col-md-11">
                         <input type="submit" value="CREATE" class="btn btn-success">
-                    </form>
-                </div>
-                <button class="btn btn-danger" onclick="window.location.back()" >CANCEL</button>
-                </div>
+            </form>
+        </div>
+        <button class="btn btn-danger" onclick="window.location.back()">CANCEL</button>
+        </div>
         </div><!-- /.container-fluid -->
     </section>
     <!-- /.content -->
+@endsection
+
+
+
+@section('footer')
+    <script>
+        $(document).ready(function() {
+            $('select[name="school_id"]').on('change', function() {
+                var schoolId = $(this).val();
+                $.ajax({
+                    url: "{{ route('schooladmin.school.classes.list') }}",
+                    type: 'POST',
+                    data: {
+                        school_id: schoolId
+                    },
+                    success: function(response) {
+                        // Populate the class dropdown or perform any other necessary actions
+                        console.log(response);
+
+                        var classDropdown = $('select[name="class"]');
+                        classDropdown.empty(); // Remove existing options
+
+                        $.each(response, function(index, cls) {
+                            classDropdown.append('<option value="' + cls.class_name + '">' + cls
+                                .class_name + '</option>');
+                        });
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('Error fetching classes:', error);
+                    }
+                });
+            });
+        });
+    </script>
 @endsection
