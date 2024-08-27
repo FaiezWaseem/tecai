@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ClassCourses;
 use App\Models\classes;
+use App\Models\course;
 use Illuminate\Http\Request;
 
 class ClassesController extends Controller
@@ -67,6 +69,18 @@ class ClassesController extends Controller
         $class->school_id = session('user')['school_id'];
         $class->save();
         return redirect()->route('classes.show');
+    }
+
+    public function SchoolAdminEditClass(Request $request){
+
+        $class_id = $request->id;
+        $class = classes::find($class_id);
+
+        $courses = course::where('school_id' , $class->school_id)->get();
+
+        $selectedCourses = ClassCourses::where('class_id', $class_id)->get();
+
+        return view('dashboard.admin.classes.edit' , compact('courses' , 'class' ,'selectedCourses'));
     }
 
 

@@ -4,14 +4,7 @@
     @include('dashboard.admin.sidebar')
 @endsection
 
-/**
-* Renders the teacher permissions view page.
-*
-* Loops through boards, classes, and courses to display a checkbox for each course.
-* The checkbox is checked if the teacher has permission for that course.
-* Uses Blade template inheritance and includes.
-* Handles form submission to update permissions via JavaScript.
-*/
+
 @section('content')
     <!-- Content Header (Page header) -->
     <div class="content-header">

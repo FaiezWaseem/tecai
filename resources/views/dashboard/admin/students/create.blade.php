@@ -126,7 +126,7 @@
                     </div>
                     <div class="col-md-3">
                         <div class="form-group">
-                            <label for="txtUserName">School <span class="text-danger">*</span></label>
+                            <label for="txtUserName">Class <span class="text-danger">*</span></label>
                             <select class="form-control" name="class">
 
                             </select>

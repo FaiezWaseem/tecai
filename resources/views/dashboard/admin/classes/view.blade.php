@@ -49,7 +49,9 @@
                             @foreach ($classes as $item)
                             <tr>
                                 <td>
-                                    <i class="fa fa-edit text-primary"  ></i>
+                                    <a href="{{ route('schooladmin.classes.edit' , [ 'id' => $item->id ]) }}">
+                                        <i class="fa fa-edit text-primary"  ></i>
+                                    </a>
                                     <button class="btn" data-toggle="modal" data-target="#DeleteModal" onclick="setdeleteModalId({{$item->id}})">
                                         <i class="fa fa-trash text-danger"  ></i>
                                     </button>

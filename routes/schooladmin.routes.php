@@ -28,6 +28,17 @@ Route::middleware('CheckSchoolAdmin')->prefix('/school_admin')->group(function (
     Route::post('/classes/create', [App\Http\Controllers\ClassesController::class, 'SchoolAdminCreateClasses'])
         ->name('schooladmin.classes.create');
     /**
+     *  Route : SchoolAdmin / Create Edit
+     *  # Display Create Form
+     */
+    Route::get('/classes/{id}/edit', [App\Http\Controllers\ClassesController::class, 'SchoolAdminEditClass'])
+        ->name('schooladmin.classes.edit');
+    Route::post('/classes/{id}/edit', [App\Http\Controllers\ClassesController::class, 'SchoolAdminEditClass'])
+        ->name('schooladmin.classes.edit');
+
+    Route::put('/classes/{id}/edit', [App\Http\Controllers\ClassCoursesController::class, 'create'])
+        ->name('schooladmin.classes.put');
+    /**
      * Route SchoolAdmin / Delete Class
      */
     Route::delete('/classes/view/{id}', [App\Http\Controllers\ClassesController::class, 'SchoolAdminDeleteClass'])
