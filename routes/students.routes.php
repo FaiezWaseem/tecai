@@ -42,6 +42,13 @@ Route::middleware('CheckStudent')->prefix('/students')->group(function () {
         ->name('student.homework.view');
 
     /**
+     *  Route : student / homework
+     *  # Display List
+     */
+    Route::get('/reportcard/view', [App\Http\Controllers\StudentsController::class, 'StudentViewReportCard'])
+        ->name('student.reportcard.view');
+
+    /**
      *  Route : Teacher / View A Single Assignment
      *  # Display Preview of Assignment 
      */

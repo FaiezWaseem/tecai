@@ -132,6 +132,24 @@
        
             </ul>
           </li>
+          <li class="nav-item {{ request()->is('dashboard/students/reportcard*') ? 'menu-open' : '' }}">
+            <a href="#" class="nav-link {{ request()->is('dashboard/students/reportcard/view') ? 'active' : '' }}">
+              <i class="nav-icon fas fa-folder-open"></i>
+              <p>
+                Report Card
+                <i class="fas fa-angle-left right"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="{{ route('student.reportcard.view') }}" class="nav-link {{ request()->is('dashboard/students/homework/view') ? 'active' : '' }}">
+                  <i class="far fa fa-eye nav-icon"></i>
+                  <p>View Report Card</p>
+                </a>
+              </li>
+       
+            </ul>
+          </li>
 
         </ul>
       </nav>

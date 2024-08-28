@@ -35,10 +35,8 @@
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label for="txtUserName">Enter Notice  Board Message <span class="text-danger">*</span></label>
+                            <label for="txtUserName">Enter Notice  Board Message (HTML supported) <span class="text-danger">*</span></label>
                             <textarea name="message" class="form-control"  cols="30" rows="10"></textarea>
-                            
-                            <span id="txtUserName_Error" class="error invalid-feedback hide"></span>
                         </div>
                     </div>
                     <div class="col-md-3">

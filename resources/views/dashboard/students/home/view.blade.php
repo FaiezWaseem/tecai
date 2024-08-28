@@ -5,13 +5,38 @@
 @endsection
 
 @section('content')
+    <style>
+        .card-notice {
+
+            text-decoration: none;
+            color: #000;
+            background: #ffc;
+            display: block;
+            height: auto;
+            padding: 0.7em;
+            -moz-box-shadow: 5px 5px 7px rgba(33, 33, 33, 1);
+            -webkit-box-shadow: 5px 5px 7px rgba(33, 33, 33, .7);
+            box-shadow: 5px 5px 7px rgba(33, 33, 33, .7);
+            -moz-transition: -moz-transform .15s linear;
+            -o-transition: -o-transform .15s linear;
+            -webkit-transition: -webkit-transform .15s linear;
+            word-wrap: break-word;
+
+        }
+
+        .card-notice:hover {
+            transform: rotate(-10deg);
+            cursor: pointer;
+        }
+    </style>
+
     <!-- Content Header (Page header) -->
     <div class="content-header">
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
                     <h1 class="m-0">Dashboard</h1>
-       
+
                 </div><!-- /.col -->
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
@@ -70,7 +95,7 @@
                         <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
                     </div>
                 </div>
-      
+
 
             </div>
 
@@ -79,8 +104,38 @@
                 <!-- Left col -->
                 <section class="col-lg-7 connectedSortable">
 
-       
 
+
+                    {{-- Student MARKS --}}
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">
+                                <i class="fas fa-chart-pie mr-1"></i>
+                                Notice Board
+                            </h3>
+                            <div class="card-tools">
+                                <ul class="nav nav-pills ml-auto">
+
+
+                                </ul>
+                            </div>
+                        </div><!-- /.card-header -->
+                        <div class="card-body">
+                            <div class="tab-content p-0">
+                                <div class="row">
+
+                                    @foreach ($notices as $item)
+                                        <a class="card-notice .col-md-2 my-3">
+                                            <p></p>
+                                            <p>{!! $item->message !!}</p>
+                                            <p></p>
+                                            <h6>{{ $item->created_at }}</h6>
+                                        </a>
+                                    @endforeach
+                                </div>
+                            </div>
+                        </div><!-- /.card-body -->
+                    </div>
                     {{-- Student MARKS --}}
                     <div class="card">
                         <div class="card-header">
@@ -160,7 +215,7 @@
                             </div>
                         </div><!-- /.card-body -->
                     </div>
-          
+
 
                 </section>
                 <!-- right col -->
@@ -173,9 +228,21 @@
 @endsection
 
 @section('footer')
-  <script>
-    let json = @json($attendance);
-      loadAttendanceCanvas([{{$present}}, {{$absent}}, {{$late}}]);
-  </script>
-@endsection
+    <script>
+        let json = @json($attendance);
+        loadAttendanceCanvas([{{ $present }}, {{ $absent }}, {{ $late }}]);
+    </script>
+    <script>
+        var colors = ['#ffc', '#cfc', '#ccf', '#b54bff'];
+        document.addEventListener('DOMContentLoaded', function() {
+            // Get all the card-notice elements
+            var cardNotices = document.querySelectorAll('.card-notice');
 
+            // Loop through the card-notice elements and set a random background color
+            cardNotices.forEach(function(cardNotice) {
+                var randomColor = colors[Math.floor(Math.random() * colors.length)];
+                cardNotice.style.backgroundColor = randomColor;
+            });
+        });
+    </script>
+@endsection

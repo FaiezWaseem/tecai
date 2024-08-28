@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ClassCourses;
 use App\Models\EStudents;
 use App\Models\HomeWork;
+use App\Models\NoticeBoard;
 use App\Models\students;
 use App\Models\activity;
 use App\Models\tasks;
@@ -12,6 +14,8 @@ use App\Models\classes;
 use App\Models\Attendance;
 
 
+use App\Models\Term;
+use DB;
 use Illuminate\Http\Request;
 use Firebase\JWT\JWT;
 use Redirect;
@@ -300,7 +304,8 @@ class StudentsController extends Controller
         }
     }
 
-    public function SchoolAdminViewSchoolClasses(Request $request){
+    public function SchoolAdminViewSchoolClasses(Request $request)
+    {
         $schoolId = $request->input('school_id');
         $classes = classes::where('school_id', $schoolId)->get();
         return response()->json($classes);
@@ -369,8 +374,11 @@ class StudentsController extends Controller
 
         $assignments = $query->count();
 
+        $notices = NoticeBoard::where('school_id' , $student->school)
+        ->get();
 
-        return view('dashboard.students.home.view', compact('marks', 'attendance', 'present', 'absent', 'late', 'assignments'));
+
+        return view('dashboard.students.home.view', compact('notices','marks', 'attendance', 'present', 'absent', 'late', 'assignments'));
     }
 
     public function StudentViewAssignments(Request $request)
@@ -430,7 +438,7 @@ class StudentsController extends Controller
     public function StudentViewHomeWork(Request $request)
     {
 
-        $student = students::where('students.id',  session('user')['id'])
+        $student = students::where('students.id', session('user')['id'])
             ->join('school', 'students.school', '=', 'school.id')
             ->first();
         $class = classes::where('class_name', $student->class)->first();
@@ -440,8 +448,28 @@ class StudentsController extends Controller
             ->get()
         ;
 
-        return view('dashboard.students.homework.view' , compact('content'));
+        return view('dashboard.students.homework.view', compact('content'));
     }
+    public function StudentViewReportCard(Request $request)
+    {
+
+
+        $student = students::where('students.id', session('user')['id'])
+            ->join('school', 'students.school', '=', 'school.id')
+            ->first();
+
+        $class = classes::where('class_name', $student->class)->first();
+        $courses = ClassCourses::where('class_id', $class->id)
+            ->join('course', 'course.id', '=', 'class_courses.course_id')
+            ->get();
+
+
+        $terms = Term::where('school_id', '=', $student->school)
+            ->get();
+
+        return view('dashboard.students.reportcard.view', compact('terms', 'courses'));
+    }
+
 
     public function login(Request $request)
     {
@@ -574,11 +602,11 @@ class StudentsController extends Controller
 
         $std = HelperFunctionsController::getCurrentStudent($request->id);
 
-        $exist = tasks::where('activity_id' , '==' , $id)
-        ->where('std_id' , '==' , $request->id)
-        ->firstOrFail();
+        $exist = tasks::where('activity_id', '==', $id)
+            ->where('std_id', '==', $request->id)
+            ->firstOrFail();
 
-        if($exist){
+        if ($exist) {
             return response()->json([
                 'success' => true,
                 'message' => 'Already Graded This Assignment'
