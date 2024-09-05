@@ -151,7 +151,7 @@
                                     </button>
                     `);
                 const cell0 = $('<td>').text(student.id);
-                const cell1 = $('<td>').text('');
+                const cell1 = $('<td>').html(`<img src="/ecoaching/thumbnail/preview/?path=${student.photo}" width="80px" height="80px" />`);
                 const cell2 = $('<td>').text(student.name);
                 const cell3 = $('<td>').text(student.father_name);
                 const cell4 = $('<td>').text(student.email);

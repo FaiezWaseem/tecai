@@ -100,7 +100,7 @@ Route::middleware('CheckSchoolAdmin')->prefix('/school_admin')->group(function (
      */
     Route::get('/students/{id}/edit', [App\Http\Controllers\StudentsController::class, 'SchoolAdminEditStudent'])
         ->name('schooladmin.students.edit');
-    Route::put('/students/{id}/edit', [App\Http\Controllers\StudentsController::class, 'SchoolAdminEditStudent'])
+    Route::post('/students/{id}/edit', [App\Http\Controllers\StudentsController::class, 'SchoolAdminEditStudent'])
         ->name('schooladmin.students.edit');
 
 

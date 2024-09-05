@@ -29,10 +29,18 @@
     <!-- Main content -->
     <section class="content">
         <div class="container-fluid">
-            <form method="POST">
+            <form method="POST" enctype="multipart/form-data">
                 @method('POST')
                 @csrf
                 <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="txtUserName">Student Image </label>
+                            <input accept=".png, .jpg, .jpeg, .gif" class="form-control" name="thumbnail" type="file"
+                                value="">
+                            <span id="txtUserName_Error" class="error invalid-feedback hide"></span>
+                        </div>
+                    </div>
                     <div class="col-md-4">
                         <div class="form-group">
                             <label for="txtUserName">Student Name <span class="text-danger">*</span></label>
@@ -177,7 +185,8 @@
                         classDropdown.empty(); // Remove existing options
 
                         $.each(response, function(index, cls) {
-                            classDropdown.append('<option value="' + cls.class_name + '">' + cls
+                            classDropdown.append('<option value="' + cls.class_name +
+                                '">' + cls
                                 .class_name + '</option>');
                         });
                     },

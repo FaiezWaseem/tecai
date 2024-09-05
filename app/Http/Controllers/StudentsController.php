@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\ClassCourses;
-use App\Models\EStudents;
 use App\Models\HomeWork;
 use App\Models\NoticeBoard;
 use App\Models\students;
@@ -12,12 +11,13 @@ use App\Models\tasks;
 use App\Models\school;
 use App\Models\classes;
 use App\Models\Attendance;
-
+use Illuminate\Support\Facades\Storage;
 
 use App\Models\Term;
 use DB;
 use Illuminate\Http\Request;
 use Firebase\JWT\JWT;
+use Log;
 use Redirect;
 
 class StudentsController extends Controller
@@ -235,6 +235,8 @@ class StudentsController extends Controller
     {
         if ($request->father_name && $request->name && $request->dob && $request->email && $request->password) {
 
+
+
             $student = new students();
             $student->name = $request->name;
             $student->father_name = $request->father_name;
@@ -248,6 +250,12 @@ class StudentsController extends Controller
             $student->section = $request->section;
             $student->gender = $request->gender;
             $student->contact = $request->contact;
+            if ($request->hasFile('thumbnail')) {
+                $file2 = $request->file('thumbnail');
+                $thumbPath = $this->saveFile($file2, 'web_uploads/students/profile/');
+                $student->photo = $thumbPath;
+            }
+
             $student->save();
 
             return redirect()->route('schooladmin.students.view');
@@ -262,7 +270,8 @@ class StudentsController extends Controller
     {
         $requestMethod = $request->method();
 
-        if ($requestMethod === 'PUT') {
+        if ($requestMethod === 'POST') {
+
             $student = students::find($request->id);
             $student->name = $request->name;
             $student->father_name = $request->father_name;
@@ -288,6 +297,12 @@ class StudentsController extends Controller
             }
             if ($request->contact) {
                 $student->contact = $request->contact;
+            }
+
+            if ($request->hasFile('thumbnail')) {
+                $file2 = $request->file('thumbnail');
+                $thumbPath = $this->saveFile($file2, 'web_uploads/students/profile/');
+                $student->photo = $thumbPath;
             }
 
             $student->save();
@@ -374,11 +389,11 @@ class StudentsController extends Controller
 
         $assignments = $query->count();
 
-        $notices = NoticeBoard::where('school_id' , $student->school)
-        ->get();
+        $notices = NoticeBoard::where('school_id', $student->school)
+            ->get();
 
 
-        return view('dashboard.students.home.view', compact('notices','marks', 'attendance', 'present', 'absent', 'late', 'assignments'));
+        return view('dashboard.students.home.view', compact('notices', 'marks', 'attendance', 'present', 'absent', 'late', 'assignments'));
     }
 
     public function StudentViewAssignments(Request $request)
@@ -726,5 +741,24 @@ class StudentsController extends Controller
             'marks' => $marks,
             'status' => true
         ]);
+    }
+
+
+
+
+    private function saveFile($file, $path)
+    {
+        $filename = '';
+        if ($file) {
+            // Get the original filename
+            $originalFilename = $file->getClientOriginalName();
+            // Generate a unique filename
+            $filename = uniqid() . '-' . $originalFilename . '.' . $file->getClientOriginalExtension();
+
+            $fullPath = $path . $filename;
+            Storage::disk('public')->put($fullPath, file_get_contents($file));
+            return $fullPath;
+        }
+        return false;
     }
 }

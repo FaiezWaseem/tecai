@@ -26,6 +26,8 @@ Route::get('/preview/file/download/{id}', [App\Http\Controllers\PreviewFileContr
     Route::get('/preview/file/{id}', [App\Http\Controllers\PreviewFileController::class, 'index'])
         ->name('preview.file');
 
+Route::get('/ecoaching/thumbnail/preview/' , [App\Http\Controllers\EStudentsController::class, 'EcoachingViewthumbnail']);
+
 
 require_once __DIR__ . '/home.routes.php';
 
