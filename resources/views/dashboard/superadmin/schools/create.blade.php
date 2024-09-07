@@ -29,10 +29,26 @@
     <!-- Main content -->
     <section class="content">
         <div class="container-fluid">
-            <form method="POST">
+            <form method="POST" enctype="multipart/form-data">
                 @method('POST')
                 @csrf
                 <div class="row">
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label for="txtUserName">Logo </label>
+                            <input accept=".png, .jpg, .jpeg, .gif" class="form-control" name="logo" type="file"
+                                value="">
+                            <span id="txtUserName_Error" class="error invalid-feedback hide"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label for="txtUserName">Dashboard Banner </label>
+                            <input accept=".png, .jpg, .jpeg, .gif" class="form-control" name="banner" type="file"
+                                value="">
+                            <span id="txtUserName_Error" class="error invalid-feedback hide"></span>
+                        </div>
+                    </div>
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="txtUserName">School Name <span class="text-danger">*</span></label>

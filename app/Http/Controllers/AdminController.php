@@ -17,7 +17,7 @@ use App\Models\Attendance;
 use App\Models\activity;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-
+use Illuminate\Support\Facades\Storage;
 
 
 class AdminController extends Controller
@@ -482,5 +482,10 @@ class AdminController extends Controller
             ->with("admins", $admins)
             ->with("schools", $schools);
     }
+
+
+
+
+  
 
 }

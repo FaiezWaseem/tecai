@@ -8,6 +8,8 @@ class school extends Model
 {
     protected $table = 'school';
     protected $fillable = [
-        'school_name'
+        'school_name',
+        'logo',
+        'banner',
     ];
 }

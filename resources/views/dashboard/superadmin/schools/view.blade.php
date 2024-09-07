@@ -22,7 +22,7 @@
             </div><!-- /.row -->
         </div><!-- /.container-fluid -->
     </div>
- 
+
     <!-- /.content-header -->
     <!-- Main content -->
     <section class="content">
@@ -39,53 +39,65 @@
                             <tr>
                                 <th>Actions</th>
                                 <th>LMS Permissions</th>
+                                <th>School Logo</th>
+                                <th>School Banner</th>
                                 <th>School Name</th>
                                 <th>Created At</th>
-                                <th>Updated At</th>
                             </tr>
                         </thead>
                         <tbody>
-                            
+
                             @foreach ($schools as $item)
-                            <tr>
-                                <td>
-                                    <a href="{{ route('superadmin.schools.edit', ['id'=> $item->id]) }}">
-                                        <i class="fa fa-edit text-primary"  ></i>
-                                    </a>
-                                    <button class="btn" data-toggle="modal" data-target="#DeleteModal" onclick="setdeleteModalId({{$item->id}})">
-                                        <i class="fa fa-trash text-danger"  ></i>
-                                    </button>
-                                </td>
-                                <td>
-                                    <a href="{{ route('superadmin.school.permissions.view', ['id'=> $item->id]) }}">
-                                        <i class="fa fa-edit text-primary"  ></i>
-                                        Permissions
-                                    </a>
-                                </td>
-                                <td>{{ $item->school_name }}</td>
-                                <td>{{ $item->created_at }}</td>
-                                <td>{{ $item->updated_at }}</td>
-                            </tr>
+                                <tr>
+                                    <td>
+                                        <a href="{{ route('superadmin.schools.edit', ['id' => $item->id]) }}">
+                                            <i class="fa fa-edit text-primary"></i>
+                                        </a>
+                                        <button class="btn" data-toggle="modal" data-target="#DeleteModal"
+                                            onclick="setdeleteModalId({{ $item->id }})">
+                                            <i class="fa fa-trash text-danger"></i>
+                                        </button>
+                                    </td>
+                                    <td>
+                                        <a href="{{ route('superadmin.school.permissions.view', ['id' => $item->id]) }}">
+                                            <i class="fa fa-edit text-primary"></i>
+                                            Permissions
+                                        </a>
+                                    </td>
+                                    <td>
+                                        @if ($item->logo)
+                                            <img src="{{ Storage::disk('local')->temporaryUrl($item->logo, now()->addMinutes(3)) }}"
+                                                alt="thumbnail_image" loading='lazy' width="50px" height="50px">
+                                        @endif
+                                    </td>
+                                    <td>
+                                        @if ($item->banner)
+                                            <img src="{{ Storage::disk('local')->temporaryUrl($item->banner, now()->addMinutes(3)) }}"
+                                                alt="thumbnail_image" loading='lazy' width="50px" height="50px">
+                                        @endif
+                                    </td>
+                                    <td>{{ $item->school_name }}</td>
+                                    <td>{{ $item->created_at }}</td>
+                                
+                                </tr>
                             @endforeach
                         </tbody>
                         <tfoot>
                             <tr>
                                 <th>Actions</th>
                                 <th>LMS Permissions</th>
+                                <th>School Logo</th>
+                                <th>School Banner</th>
                                 <th>School Name</th>
                                 <th>Created At</th>
-                                <th>Updated At</th>
+                      
                             </tr>
                         </tfoot>
                     </table>
                 </div>
                 <!-- /.card-body -->
             </div>
-            <!-- /.row -->
-            <!-- Main row -->
-
-            <!-- /.row (main row) -->
-        </div><!-- /.container-fluid -->
+        </div>
     </section>
     <!-- /.content -->
 @endsection

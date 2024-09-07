@@ -29,10 +29,26 @@
     <!-- Main content -->
     <section class="content">
         <div class="container-fluid">
-            <form method="POST">
+            <form method="POST" enctype="multipart/form-data">
                 @method('PUT')
                 @csrf
                 <div class="row">
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label for="txtUserName">Logo </label>
+                            <input accept=".png, .jpg, .jpeg, .gif" class="form-control" name="logo" type="file"
+                                value="">
+                            <span id="txtUserName_Error" class="error invalid-feedback hide"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label for="txtUserName">Dashboard Banner </label>
+                            <input accept=".png, .jpg, .jpeg, .gif" class="form-control" name="banner" type="file"
+                                value="">
+                            <span id="txtUserName_Error" class="error invalid-feedback hide"></span>
+                        </div>
+                    </div>
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="txtUserName">School Name</label>
@@ -41,13 +57,13 @@
                             <span id="txtUserName_Error" class="error invalid-feedback hide"></span>
                         </div>
                     </div>
-                    <div class="col-md-6">
+                    {{-- <div class="col-md-6">
                         <div class="form-group">
-                            <label for="txtUserName">Allow Ecoaching} </label>
+                            <label for="txtUserName">Allow Ecoaching</label>
                             <input type="checkbox" name="ecoaching" class="form-control" {{ $isActive == 1 ? 'checked' : '' }}>
                             <span id="txtUserName_Error" class="error invalid-feedback hide"></span>
                         </div>
-                    </div>
+                    </div> --}}
          
                 </div>
                 <div class="row">

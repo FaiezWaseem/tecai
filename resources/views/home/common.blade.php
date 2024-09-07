@@ -103,7 +103,7 @@
             <div class="container-fluid px-3 px-xl-5">
                 <!-- Logo START -->
                 <a class="navbar-brand" href="{{ route('home') }}">
-                    <img class="light-mode-item" src="https://tecdigital.live/logo.png" alt="logo" width="120px">
+                    <img class="light-mode-item" src="{{ route('school.logo') }}" alt="logo" width="60px">
                 </a>
                 <!-- Logo END -->
 
@@ -253,10 +253,10 @@
 
     @yield('content')
 
-    <div style="width: 100%; height: 0; padding-bottom: 36.25%; position: relative;">
+    {{-- <div style="width: 100%; height: 0; padding-bottom: 36.25%; position: relative;">
         <img src="{{ asset('/images/footer.jpg') }}"
             style="position: absolute; width: 100%; height: 100%; object-fit: contain;">
-    </div>
+    </div> --}}
 
 
     <!-- Back to top -->

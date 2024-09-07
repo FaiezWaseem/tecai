@@ -5,8 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\admin;
 use App\Models\students;
 use App\Models\teachers;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
+use Response;
+use Illuminate\Support\Facades\Storage;
 
 class AuthController extends Controller
 {
@@ -17,20 +18,19 @@ class AuthController extends Controller
      */
     public function index()
     {
-        if(UserPermission::isSuperAdmin()){
+        if (UserPermission::isSuperAdmin()) {
             return redirect()->route('superadmin.home.view');
-        }else if(UserPermission::isAdmin()){
+        } else if (UserPermission::isAdmin()) {
             return redirect()->route('schooladmin.home.view');
-        }elseif(UserPermission::isTeacher()){
+        } elseif (UserPermission::isTeacher()) {
             return redirect()->route('teacher.home.view');
-    
-        }elseif(UserPermission::isStudent()){
+
+        } elseif (UserPermission::isStudent()) {
             return redirect()->route('student.home.view');
-        } 
-        else {
+        } else {
             return view('auth.login');
         }
-      
+
     }
 
 
@@ -51,10 +51,10 @@ class AuthController extends Controller
         $isStudent = false;
         if (!$user || !\Hash::check($request->password, $user->password)) {
             $user = teachers::where('name', $request->name)->first();
-             $isAdmin = false;
-             $isTeacher = true;
-             if (!$user || !\Hash::check($request->password, $user->password)) {
-                 $isAdmin = false;
+            $isAdmin = false;
+            $isTeacher = true;
+            if (!$user || !\Hash::check($request->password, $user->password)) {
+                $isAdmin = false;
                 $isTeacher = false;
                 $isStudent = true;
                 $user = students::where('email', $request->name)->first();
@@ -64,27 +64,69 @@ class AuthController extends Controller
                     ]);
                 }
             }
-          
-        }
-        
-        session(['user' => $user, 'admin' => $isAdmin, 'isTeacher' => $isTeacher , 'isStudent' => $isStudent]);
 
-        if(UserPermission::isSuperAdmin()){
+        }
+
+        session(['user' => $user, 'admin' => $isAdmin, 'isTeacher' => $isTeacher, 'isStudent' => $isStudent]);
+
+        if (UserPermission::isSuperAdmin()) {
             return redirect()->route('superadmin.home.view');
-        }else if(UserPermission::isAdmin()){
+        } else if (UserPermission::isAdmin()) {
             return redirect()->route('schooladmin.home.view');
-        }else if(UserPermission::isTeacher()){
+        } else if (UserPermission::isTeacher()) {
             return redirect()->route('teacher.home.view');
-        }else if (UserPermission::isStudent()){
+        } else if (UserPermission::isStudent()) {
             return redirect()->route('student.home.view');
-        }else{
+        } else {
             return redirect()->route('auth.login');
         }
-        
+
 
     }
 
-    public function logout(){
+    public function getSchoolLogo()
+    {
+        if (UserPermission::isAdmin()) {
+            $schoolIds = HelperFunctionsController::getUserSchoolsIds();
+            if ($schoolIds->count() > 0) {
+                $schoolId = $schoolIds[0];
+                $schoolLogo = \App\Models\school::where('id', $schoolId)->first()->logo;
+                $filePath = Storage::disk('local')->path($schoolLogo);
+                $fileName = 'out.png';
+                $headers = [
+                    'Content-Type' => 'image/png',
+                ];
+               return Response::download($filePath, $fileName, $headers);
+            }
+            return response()->json(['schoolIds' => $schoolIds]);
+        }
+        else if(UserPermission::isTeacher()){
+            $schoolId = HelperFunctionsController::getTeacherSchoolById(session('user')['id']);
+            $schoolLogo = \App\Models\school::where('id', $schoolId)->first()->logo;
+            $filePath = Storage::disk('local')->path($schoolLogo);
+            $fileName = 'out.png';
+            $headers = [
+                'Content-Type' => 'image/png',
+            ];
+           return Response::download($filePath, $fileName, $headers);
+        }
+        else if(UserPermission::isStudent()){
+            $schoolId = HelperFunctionsController::getUserSchoolsById(session('user')['id']);
+            $schoolLogo = \App\Models\school::where('id', $schoolId)->first()->logo;
+            $filePath = Storage::disk('local')->path($schoolLogo);
+            $fileName = 'out.png';
+            $headers = [
+                'Content-Type' => 'image/png',
+            ];
+           return Response::download($filePath, $fileName, $headers);
+        }
+        else{
+            return response()->json(['schoolLogo' => null]);
+        }
+    }
+
+    public function logout()
+    {
         session()->flush();
         return redirect()->route('auth.login');
     }

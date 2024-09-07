@@ -19,8 +19,29 @@
             </map>
         </div>
 
+        <section class="py-0 py-xl-5">
+            <div class="container">
+                <div class="row g-4">
+                    @foreach ($boards as $board)
+                        <div class="col-sm-6 col-xl-3">
+                            <a href="{{ route('home.board', ['id' => $board->id, 'board_name' => $board->board_name]) }}">
+                                <div
+                                    class="d-flex flex-column justify-content-center align-items-center  bg-opacity-10 rounded-3">
+                                         <img src="{{ asset('images/'.$board->board_name.'.png') }}" class="w-full" />
+                                    <div class=" h3 fw-normal mb-0">
 
-        <div style="width: 100%; height: 0; padding-bottom: 36.25%; position: relative;">
+                                        <p class="mb-0">{{ $board->board_name }}</p>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                    @endforeach
+
+                </div>
+            </div>
+        </section>
+
+        {{-- <div style="width: 100%; height: 0; padding-bottom: 36.25%; position: relative;">
             <img src="{{ asset('images/board.jpg') }}"
                 style="position: absolute; width: 100%; height: 100%; object-fit: contain;" usemap="#image-map2">
             <map name="image-map2">
@@ -33,7 +54,7 @@
                 <area target="" alt="Agha Khan" title="Agha Khan" href="/board/4/Aga%20Khan%20Board"
                     coords="1165,180,1499,535" shape="0">
             </map>
-        </div>
+        </div> --}}
 
 
 

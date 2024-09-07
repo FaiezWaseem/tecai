@@ -29,7 +29,7 @@ Route::get('/preview/file/download/{id}', [App\Http\Controllers\PreviewFileContr
 Route::get('/ecoaching/thumbnail/preview/' , [App\Http\Controllers\EStudentsController::class, 'EcoachingViewthumbnail']);
 
 
-require_once __DIR__ . '/home.routes.php';
+
 
 
 Route::get('/login', [App\Http\Controllers\AuthController::class, 'index'])
@@ -37,6 +37,14 @@ Route::get('/login', [App\Http\Controllers\AuthController::class, 'index'])
 Route::post('/login', [App\Http\Controllers\AuthController::class, 'authenticateUser']);
 
 
+Route::middleware('auth')->group(function () {
+    require_once __DIR__ . '/home.routes.php';
+
+    Route::get('/school_logo', [App\Http\Controllers\AuthController::class, 'getSchoolLogo'])
+    ->name('school.logo');
+    ;
+
+});
 
 // Auth only routes
 Route::middleware('auth')->prefix('/dashboard')->group(function () {
