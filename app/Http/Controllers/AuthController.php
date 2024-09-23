@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\admin;
+use App\Models\school;
 use App\Models\students;
 use App\Models\teachers;
 use Illuminate\Http\Request;
@@ -57,10 +58,23 @@ class AuthController extends Controller
                 $isAdmin = false;
                 $isTeacher = false;
                 $isStudent = true;
-                $user = students::where('email', $request->name)->first();
+
+                $prefix_school = $request->name;
+
+                // Split the string by underscore
+                $parts = explode('_', $prefix_school);
+                
+                // Get the first part as the prefix
+                $prefix = $parts[0];
+                $admission_no = $parts[1];
+
+                $school = school::where('prefix', $prefix)->first();
+                $user = students::where('admission_no', $admission_no)
+                ->where('school', $school->id)
+                ->first();
                 if (!$user || !\Hash::check($request->password, $user->password)) {
                     return back()->withErrors([
-                        'email' => "The provided  credentials do not match our records.",
+                        'email' => "No User Found, Please Check Your Password",
                     ]);
                 }
             }
@@ -113,6 +127,46 @@ class AuthController extends Controller
         else if(UserPermission::isStudent()){
             $schoolId = HelperFunctionsController::getUserSchoolsById(session('user')['id']);
             $schoolLogo = \App\Models\school::where('id', $schoolId)->first()->logo;
+            $filePath = Storage::disk('local')->path($schoolLogo);
+            $fileName = 'out.png';
+            $headers = [
+                'Content-Type' => 'image/png',
+            ];
+           return Response::download($filePath, $fileName, $headers);
+        }
+        else{
+            return response()->json(['schoolLogo' => null]);
+        }
+    }
+    public function getSchoolBanner()
+    {
+        if (UserPermission::isAdmin()) {
+            $schoolIds = HelperFunctionsController::getUserSchoolsIds();
+            if ($schoolIds->count() > 0) {
+                $schoolId = $schoolIds[0];
+                $schoolLogo = \App\Models\school::where('id', $schoolId)->first()->banner;
+                $filePath = Storage::disk('local')->path($schoolLogo);
+                $fileName = 'out.png';
+                $headers = [
+                    'Content-Type' => 'image/png',
+                ];
+               return Response::download($filePath, $fileName, $headers);
+            }
+            return response()->json(['schoolIds' => $schoolIds]);
+        }
+        else if(UserPermission::isTeacher()){
+            $schoolId = HelperFunctionsController::getTeacherSchoolById(session('user')['id']);
+            $schoolLogo = \App\Models\school::where('id', $schoolId)->first()->banner;
+            $filePath = Storage::disk('local')->path($schoolLogo);
+            $fileName = 'out.png';
+            $headers = [
+                'Content-Type' => 'image/png',
+            ];
+           return Response::download($filePath, $fileName, $headers);
+        }
+        else if(UserPermission::isStudent()){
+            $schoolId = HelperFunctionsController::getUserSchoolsById(session('user')['id']);
+            $schoolLogo = \App\Models\school::where('id', $schoolId)->first()->banner;
             $filePath = Storage::disk('local')->path($schoolLogo);
             $fileName = 'out.png';
             $headers = [

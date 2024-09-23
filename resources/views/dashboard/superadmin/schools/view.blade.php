@@ -42,6 +42,7 @@
                                 <th>School Logo</th>
                                 <th>School Banner</th>
                                 <th>School Name</th>
+                                <th>School Prefix</th>
                                 <th>Created At</th>
                             </tr>
                         </thead>
@@ -76,7 +77,8 @@
                                                 alt="thumbnail_image" loading='lazy' width="50px" height="50px">
                                         @endif
                                     </td>
-                                    <td>{{ $item->school_name }}</td>
+                                    <td>{{ $item->school_name }}</td> 
+                                    <td>{{ $item->prefix }}</td> 
                                     <td>{{ $item->created_at }}</td>
                                 
                                 </tr>
@@ -89,6 +91,7 @@
                                 <th>School Logo</th>
                                 <th>School Banner</th>
                                 <th>School Name</th>
+                                <th>School Prefix</th>
                                 <th>Created At</th>
                       
                             </tr>

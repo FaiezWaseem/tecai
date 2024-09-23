@@ -51,8 +51,16 @@
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label for="txtUserName">School Name</label>
+                            <label for="txtUserName">School Name (*)</label>
                             <input type="text" name="school_name" class="form-control" id="txtUserName" value="{{ $school->school_name }}" placeholder="Enter School Name"
+                                maxlength="255">
+                            <span id="txtUserName_Error" class="error invalid-feedback hide"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="txtUserName">School Prefix (*)</label>
+                            <input type="text" name="prefix" class="form-control" id="txtUserName" value="{{ $school->prefix }}" placeholder="Enter School Name"
                                 maxlength="255">
                             <span id="txtUserName_Error" class="error invalid-feedback hide"></span>
                         </div>

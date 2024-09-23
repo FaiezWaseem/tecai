@@ -611,3 +611,14 @@ ADD COLUMN logo varchar(255) default null;
 
 ALTER TABLE school
 ADD COLUMN banner varchar(255) default null;
+
+
+ALTER TABLE school
+ADD COLUMN prefix varchar(255);
+
+UPDATE school
+SET prefix = CONCAT('prefix_', id)  -- Replace 'id' with a unique identifier
+WHERE prefix IS NULL OR prefix = '';
+
+ALTER TABLE school
+MODIFY COLUMN prefix varchar(255) NOT NULL UNIQUE;

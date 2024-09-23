@@ -63,13 +63,7 @@
             <div class="col-xl-10 col-lg-12 col-md-9">
 
                 <div class="card o-hidden border-0 shadow-lg my-5">
-                    @if ($errors->has('email'))
-                        <div class="card mb-2 border-left-warning">
-                            <div class="card-body">
-                                {{ $errors->first('email') }}
-                            </div>
-                        </div>
-                    @endif
+   
 
                     @if ($errors->any())
                         <div class="card mb-2 border-left-warning">

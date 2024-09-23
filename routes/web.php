@@ -43,6 +43,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/school_logo', [App\Http\Controllers\AuthController::class, 'getSchoolLogo'])
     ->name('school.logo');
     ;
+    Route::get('/school_banner', [App\Http\Controllers\AuthController::class, 'getSchoolBanner'])
+    ->name('school.banner');
+    ;
 
 });
 

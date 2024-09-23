@@ -38,7 +38,7 @@
                         <thead>
                             <tr>
                                 <th>Actions</th>
-                                <th>Id</th>
+                                <th>regno</th>
                                 <th>Photo</th>
                                 <th>Student Name</th>
                                 <th>Father Name</th>
@@ -58,7 +58,7 @@
                         <tfoot>
                             <tr>
                                 <th>Actions</th>
-                                <th>Id</th>
+                                <th>regno</th>
                                 <th>Photo</th>
                                 <th>Student Name</th>
                                 <th>Father Name</th>
@@ -140,7 +140,7 @@
                 const student = json[i];
                 const row = $('<tr>');
                 const actions = $('<td>').text('');
-                const cell0 = $('<td>').text(student.id);
+                const cell0 = $('<td>').text(student.admission_no);
                 const cell1 = $('<td>').text('');
                 const cell2 = $('<td>').text(student.name);
                 const cell3 = $('<td>').text(student.father_name);

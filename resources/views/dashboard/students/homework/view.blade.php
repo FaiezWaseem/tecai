@@ -5,6 +5,31 @@
 @endsection
 
 @section('content')
+
+<style>
+    .card-notice {
+
+        text-decoration: none;
+        color: #000;
+        background: #ffc;
+        display: block;
+        height: auto;
+        padding: 0.7em;
+        -moz-box-shadow: 5px 5px 7px rgba(33, 33, 33, 1);
+        -webkit-box-shadow: 5px 5px 7px rgba(33, 33, 33, .7);
+        box-shadow: 5px 5px 7px rgba(33, 33, 33, .7);
+        -moz-transition: -moz-transform .15s linear;
+        -o-transition: -o-transform .15s linear;
+        -webkit-transition: -webkit-transform .15s linear;
+        word-wrap: break-word;
+
+    }
+
+    .card-notice:hover {
+        transform: rotate(-2deg);
+        cursor: pointer;
+    }
+</style>
     <!-- Content Header (Page header) -->
     <div class="content-header">
         <div class="container-fluid">
@@ -36,51 +61,50 @@
                 </div>
                 <!-- /.card-header -->
                 <div class="card-body">
-                    <table id="example1" class="table table-bordered table-striped">
-                        <thead>
-                            <tr>
-                                <th>Actions</th>
 
-                                <th>Thumbnail</th>
-                                <th>Class</th>
+                    <div class="row gap-2">
 
-                                <th>Date</th>
-                                <th>Created At</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-
-                            @foreach ($content as $item)
-                                <tr>
-
-                                    <td>{{ $item->id }}</td>
-                                    <td>
-                                        @if ($item->image)
-                                            <img src="{{ Storage::disk('local')->temporaryUrl($item->image, now()->addMinutes(3)) }}"
-                                                alt="thumbnail_image" loading='lazy' width="50px" height="50px">
-                                        @endif
-                                    </td>
-                                    <td>{{ $item->content }} </td>
-                                    <td>{{ \Carbon\Carbon::parse($item->date)->format('d-m-y') }} </td>
-                                    <td>{{ $item->created_at }}</td>
-                                </tr>
-                            @endforeach
-                        </tbody>
-                        <tfoot>
-                            <tr>
-                                <th>Actions</th>
-
-                                <th>Thumbnail</th>
-                                <th>Class</th>
-
-                                <th>Date</th>
-                                <th>Created At</th>
-                            </tr>
-                        </tfoot>
-                    </table>
+                        @foreach ($content as $item)
+                        <div class="card-notice col-md-4 mx-2 my-3" data-toggle="modal" data-target="#contentModal" 
+                             data-content="{{ $item->content }}" 
+                             data-date="{{ \Carbon\Carbon::parse($item->date)->format('d-m-y') }}" 
+                             data-image="{{ $item->image ? Storage::disk('local')->temporaryUrl($item->image, now()->addMinutes(3)) : '' }}">
+                            <p>
+                                @if ($item->image)
+                                    <img src="{{ Storage::disk('local')->temporaryUrl($item->image, now()->addMinutes(10)) }}"
+                                         alt="thumbnail_image" loading='lazy' width="100%" height="300px">
+                                @endif
+                            </p>
+                            <p>{{ $item->content }}</p>
+                            <p>Date: {{ \Carbon\Carbon::parse($item->date)->format('d-m-y') }}</p>
+                        </div>
+                    @endforeach
+                    
+              
+                    </div>
+                 
                 </div>
                 <!-- /.card-body -->
             </div>
+
+                  <!-- Modal -->
+                  <div class="modal fade" id="contentModal" tabindex="-1" role="dialog" aria-labelledby="contentModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="contentModalLabel">Homework Details</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <img id="modalImage" src="" alt="Homework Image" class="img-fluid" style="display: none;">
+                                <p id="modalContent"></p>
+                                <p id="modalDate"></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             <!-- /.row -->
             <!-- Main row -->
 
@@ -92,28 +116,22 @@
 
 
 @section('footer')
-    <script src="{{ asset('plugins/datatables/jquery.dataTables.min.js') }}"></script>
-    <script src="{{ asset('plugins/datatables-bs4/js/dataTables.bootstrap4.min.js') }}"></script>
-    <script src="{{ asset('plugins/datatables-responsive/js/dataTables.responsive.min.js') }}"></script>
-    <script src="{{ asset('plugins/datatables-responsive/js/responsive.bootstrap4.min.js') }}"></script>
-    <script src="{{ asset('plugins/datatables-buttons/js/dataTables.buttons.min.js') }}"></script>
-    <script src="{{ asset('plugins/datatables-buttons/js/buttons.bootstrap4.min.js') }}"></script>
-    <script src="{{ asset('plugins/jszip/jszip.min.js') }}"></script>
-    <script src="{{ asset('plugins/pdfmake/pdfmake.min.js') }}"></script>
-    <script src="{{ asset('plugins/pdfmake/vfs_fonts.js') }}"></script>
-    <script src="{{ asset('plugins/datatables-buttons/js/buttons.html5.min.js') }}"></script>
-    <script src="{{ asset('plugins/datatables-buttons/js/buttons.print.min.js') }}"></script>
-    <script src="{{ asset('plugins/datatables-buttons/js/buttons.colVis.min.js') }}"></script>
-    <script>
-        $(function() {
-            $("#example1").DataTable({
-                "responsive": true,
-                "info": false,
-                "autoWidth": false,
-                paging: true,
-                "buttons": ["copy", "csv", "excel", "pdf", "print"]
-            }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
 
+    <script>
+        $(document).ready(function() {
+            $('.card-notice').on('click', function() {
+                const content = $(this).data('content');
+                const date = $(this).data('date');
+                const image = $(this).data('image');
+    
+                $('#modalContent').text(content);
+                $('#modalDate').text('Date: ' + date);
+                if (image) {
+                    $('#modalImage').attr('src', image).show();
+                } else {
+                    $('#modalImage').hide();
+                }
+            });
         });
     </script>
 @endsection

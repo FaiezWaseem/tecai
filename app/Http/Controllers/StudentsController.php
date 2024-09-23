@@ -196,7 +196,7 @@ class StudentsController extends Controller
         if ($rqMethod === 'POST') {
             $students = students::whereIn('school', $schoolId)
                 ->join('school', 'school.id', 'students.school')
-                ->select('students.*', 'school.school_name')
+                ->select('students.*', 'school.school_name' , 'school.prefix')
                 ->get();
             return response()->json([
                 'students' => $students

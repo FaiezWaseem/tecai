@@ -11,5 +11,6 @@ class school extends Model
         'school_name',
         'logo',
         'banner',
+        'prefix',
     ];
 }

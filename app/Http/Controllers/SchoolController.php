@@ -84,6 +84,9 @@ class SchoolController extends Controller
             if ($request->school_name) {
                 $school->school_name = $request->input("school_name");
             }
+            if ($request->prefix) {
+                $school->prefix = $request->input("prefix");
+            }
             if ($request->hasFile('logo')) {
                 $file = $request->file('logo');
                 $school->logo = $this->saveFile($file, 'web_uploads/school/logo/');
