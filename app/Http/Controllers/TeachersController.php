@@ -173,25 +173,47 @@ class TeachersController extends Controller
     }
     public function SchoolAdminDeleteTeachers(Request $request)
     {
+        // Check if the request contains a teacher ID
         if ($request->id) {
+            // Find activities associated with the teacher
+            $activities = activity::where('tid', '=', $request->id)->get();
+    
+            // If activities exist, delete their associated tasks
+            if ($activities->isNotEmpty()) {
+                // Get the IDs of the activities
+                $activityIds = $activities->pluck('id');
+    
+                // Delete tasks associated with the activities
+                tasks::whereIn('activity_id', $activityIds)->delete();
+            }
+    
+            // Delete the activities associated with the teacher
+            activity::where('tid', '=', $request->id)->delete();
+
+            outline::where('teacher_id', '=', $request->id)->delete();
+    
+            // Delete the teacher
             $deletedRows = teachers::destroy($request->id);
+    
+            // Check if the teacher was successfully deleted
             if ($deletedRows > 0) {
                 return response()->json([
                     'status' => 200,
-                    'deleted' => true
+                    'deleted' => true,
+                    'message' => 'Teacher and associated activities and tasks deleted successfully.'
                 ]);
             } else {
                 return response()->json([
                     'status' => 200,
                     'deleted' => false,
-                    'message' => 'Failed To Delete Record'
+                    'message' => 'Failed to delete the teacher record.'
                 ]);
             }
         } else {
             return response()->json([
-                'status' => 200,
+                'status' => 400,
                 'deleted' => false,
-                'message' => 'Record Id is not Provided',
+                'message' => 'Record ID is not provided.',
                 'form' => $request->id
             ]);
         }
@@ -428,7 +450,11 @@ class TeachersController extends Controller
     public function TeacherDeleteAssignments(Request $request)
     {
         if ($request->id) {
+            
+            tasks::where('activity_id', '=', $request->id)->delete();
+            
             $deletedRows = activity::destroy($request->id);
+
             if ($deletedRows > 0) {
                 return response()->json([
                     'status' => 200,

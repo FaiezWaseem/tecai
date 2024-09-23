@@ -63,15 +63,15 @@ class AuthController extends Controller
 
                 // Split the string by underscore
                 $parts = explode('_', $prefix_school);
-                
+
                 // Get the first part as the prefix
                 $prefix = $parts[0];
                 $admission_no = $parts[1];
 
                 $school = school::where('prefix', $prefix)->first();
                 $user = students::where('admission_no', $admission_no)
-                ->where('school', $school->id)
-                ->first();
+                    ->where('school', $school->id)
+                    ->first();
                 if (!$user || !\Hash::check($request->password, $user->password)) {
                     return back()->withErrors([
                         'email' => "No User Found, Please Check Your Password",
@@ -110,11 +110,10 @@ class AuthController extends Controller
                 $headers = [
                     'Content-Type' => 'image/png',
                 ];
-               return Response::download($filePath, $fileName, $headers);
+                return Response::download($filePath, $fileName, $headers);
             }
             return response()->json(['schoolIds' => $schoolIds]);
-        }
-        else if(UserPermission::isTeacher()){
+        } else if (UserPermission::isTeacher()) {
             $schoolId = HelperFunctionsController::getTeacherSchoolById(session('user')['id']);
             $schoolLogo = \App\Models\school::where('id', $schoolId)->first()->logo;
             $filePath = Storage::disk('local')->path($schoolLogo);
@@ -122,9 +121,8 @@ class AuthController extends Controller
             $headers = [
                 'Content-Type' => 'image/png',
             ];
-           return Response::download($filePath, $fileName, $headers);
-        }
-        else if(UserPermission::isStudent()){
+            return Response::download($filePath, $fileName, $headers);
+        } else if (UserPermission::isStudent()) {
             $schoolId = HelperFunctionsController::getUserSchoolsById(session('user')['id']);
             $schoolLogo = \App\Models\school::where('id', $schoolId)->first()->logo;
             $filePath = Storage::disk('local')->path($schoolLogo);
@@ -132,10 +130,19 @@ class AuthController extends Controller
             $headers = [
                 'Content-Type' => 'image/png',
             ];
-           return Response::download($filePath, $fileName, $headers);
-        }
-        else{
-            return response()->json(['schoolLogo' => null]);
+            return Response::download($filePath, $fileName, $headers);
+        } else {
+            $filePath = public_path('images/tec.png'); // Use public_path to get the correct file path
+            $fileName = 'out.png'; // Desired name for the downloaded file
+            $headers = [
+                'Content-Type' => 'image/png',
+            ];
+        
+            if (!file_exists($filePath)) {
+                return response()->json(['error' => 'File not found'], 404);
+            }
+        
+            return Response::download($filePath, $fileName, $headers);
         }
     }
     public function getSchoolBanner()
@@ -150,11 +157,10 @@ class AuthController extends Controller
                 $headers = [
                     'Content-Type' => 'image/png',
                 ];
-               return Response::download($filePath, $fileName, $headers);
+                return Response::download($filePath, $fileName, $headers);
             }
             return response()->json(['schoolIds' => $schoolIds]);
-        }
-        else if(UserPermission::isTeacher()){
+        } else if (UserPermission::isTeacher()) {
             $schoolId = HelperFunctionsController::getTeacherSchoolById(session('user')['id']);
             $schoolLogo = \App\Models\school::where('id', $schoolId)->first()->banner;
             $filePath = Storage::disk('local')->path($schoolLogo);
@@ -162,9 +168,8 @@ class AuthController extends Controller
             $headers = [
                 'Content-Type' => 'image/png',
             ];
-           return Response::download($filePath, $fileName, $headers);
-        }
-        else if(UserPermission::isStudent()){
+            return Response::download($filePath, $fileName, $headers);
+        } else if (UserPermission::isStudent()) {
             $schoolId = HelperFunctionsController::getUserSchoolsById(session('user')['id']);
             $schoolLogo = \App\Models\school::where('id', $schoolId)->first()->banner;
             $filePath = Storage::disk('local')->path($schoolLogo);
@@ -172,10 +177,19 @@ class AuthController extends Controller
             $headers = [
                 'Content-Type' => 'image/png',
             ];
-           return Response::download($filePath, $fileName, $headers);
-        }
-        else{
-            return response()->json(['schoolLogo' => null]);
+            return Response::download($filePath, $fileName, $headers);
+        } else {
+            $filePath = public_path('bg.jpg'); // Use public_path to get the correct file path
+            $fileName = 'out.png'; // Desired name for the downloaded file
+            $headers = [
+                'Content-Type' => 'image/png',
+            ];
+        
+            if (!file_exists($filePath)) {
+                return response()->json(['error' => 'File not found'], 404);
+            }
+        
+            return Response::download($filePath, $fileName, $headers);
         }
     }
 
