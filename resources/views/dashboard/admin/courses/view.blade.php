@@ -22,11 +22,12 @@
             </div><!-- /.row -->
         </div><!-- /.container-fluid -->
     </div>
- 
+    
     <!-- /.content-header -->
     <!-- Main content -->
     <section class="content">
         <div class="container-fluid">
+            @include('dashboard.admin.quicklinks')
             <!-- Small boxes (Stat box) -->
             <div class="card">
                 <div class="card-header">

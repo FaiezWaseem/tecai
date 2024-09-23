@@ -89,7 +89,7 @@
                 <!-- ./col -->
             </div>
 
-
+            @include('dashboard.admin.quicklinks')
 
             <!-- Main row -->
             <div class="row">
