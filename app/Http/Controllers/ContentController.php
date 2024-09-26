@@ -57,7 +57,7 @@ class ContentController extends Controller
                 ->join('tchapters', 'tchapters.id', '=', 'tcontent.tchapter_id')
                 ->join('tcourse', 'tcourse.id', '=', 'tcontent.tcourse_id')
                 ->select('tcontent.*', 'tcontent.content_title as topic_title', 'tclasses.class_name', 'tchapters.chapter_title', 'tboards.board_name', 'tcourse.course_name')
-                ->paginate(10);
+                ->paginate(500);
             return view('dashboard.superadmin.lms.content.view')
                 ->with('content', $content)
                 ->with('boards', $boards)
@@ -75,7 +75,7 @@ class ContentController extends Controller
                 ->join('tchapters', 'tchapters.id', '=', 'tcontent.tchapter_id')
                 ->join('tcourse', 'tcourse.id', '=', 'tcontent.tcourse_id')
                 ->select('tcontent.*', 'tcontent.content_title as topic_title', 'tclasses.class_name', 'tchapters.chapter_title', 'tboards.board_name', 'tcourse.course_name')
-                ->paginate(50);
+                ->paginate(500);
             return view('dashboard.superadmin.lms.content.view')
                 ->with('content', $content)
                 ->with('boards', $boards)
@@ -157,6 +157,38 @@ class ContentController extends Controller
                 'deleted' => false,
                 'message' => 'Record Id is not Provided',
                 'form' => $request->id
+            ]);
+        }
+    }
+    public function SuperAdminDeleteBulkLMSContent(Request $request)
+    {
+        // Get the array of IDs from the request
+        $ids = $request->ids;
+    
+        // Check if the IDs array is provided
+        if (!empty($ids) && is_array($ids)) {
+            // Attempt to delete the records
+            $deletedRows = TContent::destroy($ids);
+    
+            // Check if any rows were deleted
+            if ($deletedRows > 0) {
+                return response()->json([
+                    'status' => 200,
+                    'deleted' => true,
+                    'message' => "{$deletedRows} records deleted successfully."
+                ]);
+            } else {
+                return response()->json([
+                    'status' => 200,
+                    'deleted' => false,
+                    'message' => 'No records were deleted. IDs might not exist.'
+                ]);
+            }
+        } else {
+            return response()->json([
+                'status' => 400,
+                'deleted' => false,
+                'message' => 'No record IDs provided or IDs are not in the correct format.',
             ]);
         }
     }

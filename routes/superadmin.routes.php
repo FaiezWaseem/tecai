@@ -176,10 +176,15 @@ Route::middleware('CheckSuperAdmin')->prefix('/superadmin')->group(function () {
     Route::put('/lms/content/{id}/edit', [App\Http\Controllers\ContentController::class, 'SuperAdminEditLMSContent'])
     ->name('superadmin.lms.content.edit');
     /**
-     * Route SuperAdmin / Delete Teacher
+     * Route SuperAdmin / Delete Content
      */
     Route::delete('/lms/content/view/{id}', [App\Http\Controllers\ContentController::class, 'SuperAdminDeleteLMSContent'])
+    /**
+     * Route SuperAdmin / Delete Content in Bulk
+     */
     ->name('superadmin.lms.content.delete');
+    Route::delete('/lms/content/delete-content', [App\Http\Controllers\ContentController::class, 'SuperAdminDeleteBulkLMSContent'])
+    ->name('superadmin.lms.content.bulk.delete');
 
     /**
      *  Route Admin / create Content
