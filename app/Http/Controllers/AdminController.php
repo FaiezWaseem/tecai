@@ -332,45 +332,44 @@ class AdminController extends Controller
             $classes = teacher_classes::where('teacher_id', '=', $tid)
                 ->count();
 
+            $classesCount = teacher_classes::where('teacher_id', '=', $tid)
+                ->distinct('class_id')
+                ->count('class_id');
+
+            $classIds = teacher_classes::where('teacher_id', '=', $tid)
+                ->distinct()
+                ->pluck('class_id');
+
+
             $students = teacher_classes::where('teacher_id', '=', $tid)
                 ->join('classes', 'teacher_classes.class_id', '=', 'classes.id')
                 ->join('students', 'classes.class_name', '=', 'students.class')
+                ->distinct('teacher_classes.class_id')
                 ->count();
 
             $activities = activity::where('tid', '=', $tid)->count();
-
-            $classesCount = teacher_classes::where('teacher_id', '=', $tid)->count();
-
 
 
             $chaptersCount = Chapter::where('teacher_id', '=', $tid)
                 ->count();
 
-            $studentsCount = $students = DB::table('teacher_classes')
-                ->join('classes', 'teacher_classes.class_id', '=', 'classes.id')
-                ->join('students', function ($join) {
-                    $join->on('classes.class_name', '=', 'students.class')
-                        ->on('teacher_classes.school_id', '=', 'students.school');
-                })
-                ->where('teacher_classes.teacher_id', '=', $tid)
-                ->select('students.*')
-                ->count();
+            $studentsCount = students::whereIn('class', function ($query) use ($classIds) {
+                $query->select('class_name')
+                    ->from('classes')
+                    ->whereIn('id', $classIds);
+            })->count();
 
-            $studentGenderCounts = DB::table('teacher_classes')
-                ->join('classes', 'teacher_classes.class_id', '=', 'classes.id')
-                ->join('students', function ($join) {
-                    $join->on('classes.class_name', '=', 'students.class')
-                        ->on('teacher_classes.school_id', '=', 'students.school');
-                })
-                ->where('teacher_classes.teacher_id', '=', $tid)
-                ->select('students.gender', DB::raw('COUNT(*) as count'))
-                ->groupBy('students.gender')
-                ->pluck('count', 'gender')
-                ->map(function ($count, $gender) {
-                    return [$gender => $count];
-                })
-                ->values()
-                ->toArray();
+            $studentGenderCounts = students::whereIn('class', function ($query) use ($classIds) {
+                $query->select('class_name')
+                    ->from('classes')
+                    ->whereIn('id', $classIds);
+            })
+            ->select('students.gender', DB::raw('COUNT(*) as count'))
+            ->groupBy('students.gender')
+            ->pluck('count', 'gender')
+            ->toArray();
+
+            
 
             $activities = activity::where('tid', $tid)
                 ->pluck('id')
@@ -378,24 +377,6 @@ class AdminController extends Controller
                 ->toArray()
             ;
 
-            // $marks = tasks::whereIn('activity_id',  $activities)
-            //     ->join('activity', 'activity.id', '=', 'tasks.activity_id')
-            //     ->join('classes', 'classes.id', '=', 'activity.class_id')
-            //     ->join('course', 'course.id', '=', 'activity.course_id')
-            //     ->join('students', 'students.class', '=', 'classes.class_name')
-            //     ->select(
-            //         'tasks.id',
-            //         'tasks.points_obtained as obtained',
-            //         'tasks.points_total as total',
-            //         'activity.title',
-            //         'tasks.added_on as attempted_date',
-            //         'classes.class_name',
-            //         'course.course_name',
-            //         'students.id as stdId',
-            //         'students.name as stdName',
-            //         'students.class as stdclass',
-            //     )
-            //     ->get();
 
             $marks = tasks::whereIn('activity_id', $activities)
                 ->join('students', 'students.id', '=', 'tasks.std_id')
@@ -486,6 +467,6 @@ class AdminController extends Controller
 
 
 
-  
+
 
 }

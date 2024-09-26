@@ -916,6 +916,14 @@ class TeachersController extends Controller
     }
     public function TeacherDeleteOutline(Request $request)
     {
+        if($request->input('chapterId')){
+            outline::where('chapter_id', '=', $request->input('chapterId'))->delete();
+            Chapter::destroy($request->input('chapterId'));
+            return response()->json([
+                'deleted' => true
+            ]);
+        }
+
         outline::destroy($request->input('id'));
         return response()->json([
             'deleted' => true

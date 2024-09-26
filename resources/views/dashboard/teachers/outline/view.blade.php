@@ -52,23 +52,35 @@
                             <tr>
                                 <th>Id</th>
                                 <th>Chapter Title</th>
+                                <th>Action</th>
                             </tr>
                         </thead>
                         <tfoot>
                             <tr>
                                 <th>Id</th>
                                 <th>Chapter Title</th>
+                                <th>Action</th>
                             </tr>
                         </tfoot>
+                        <?php
+                        $i = 1;
+                        ?>
                         <tbody id="chapters">
 
                             @foreach ($chapters as $chapter)
                                 <tr>
                                     <td>
-                                        {{ $chapter->id }}
+                                        {{ $i++ }}
                                     </td>
+                                 
                                     <td>
                                         {{ $chapter->chapter_title }}
+                                    </td>
+                                    <td>
+                                        <button id="delete" data-id="{{  $chapter->id }}"
+                                            onclick="deletechapter(this)" class="btn submit-button">
+                                            <i class="fa fa-trash-alt" style="color : red;"></i>
+                                        </button>
                                     </td>
                                 </tr>
                             @endforeach
@@ -241,6 +253,35 @@
 
                     // Optionally, you can remove the element from the DOM
                     $(e).closest('tr').remove();
+                },
+                error: function(xhr, status, error) {
+                    // Handle errors
+                    showToast('AJAX delete request error:', status, 'error');
+                }
+            });
+        };
+        function deletechapter(e) {
+            var id = $(e).attr('data-id');
+            console.log(id)
+            var csrfToken = $('meta[name="csrf-token"]').attr('content');
+            // Send AJAX delete request
+            $.ajax({
+                url: window.location.href, // Replace with your actual delete endpoint
+                method: 'DELETE',
+                data: {
+                    chapterId: id
+                },
+                headers: {
+                    'X-CSRF-TOKEN': csrfToken
+                },
+                success: function(response) {
+                    // Handle successful response
+                    showToast('Delete request', 'Delete request successful', 'success');
+
+                    // Optionally, you can remove the element from the DOM
+                    $(e).closest('tr').remove();
+
+                    window.location.reload();
                 },
                 error: function(xhr, status, error) {
                     // Handle errors

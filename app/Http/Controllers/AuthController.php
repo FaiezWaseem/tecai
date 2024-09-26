@@ -66,8 +66,15 @@ class AuthController extends Controller
 
                 // Get the first part as the prefix
                 $prefix = $parts[0];
+                
+                if(!isset($parts[1])){
+                    return back()->withErrors([
+                        'email' => "No User Found, Please Check Your Password",
+                    ]);
+                }
                 $admission_no = $parts[1];
-
+                
+                
                 $school = school::where('prefix', $prefix)->first();
                 $user = students::where('admission_no', $admission_no)
                     ->where('school', $school->id)

@@ -242,11 +242,13 @@
     @if ($stats['studentGenderCounts'])
         <script>
             const total_stds = {{ $stats['studentsCount'] }};
-            const total_male_stds = {{ $stats['studentGenderCounts'][1]['male'] ?? 0 }};
-            const total_female_stds = {{ $stats['studentGenderCounts'][0]['female'] ?? 0 }};
+            const total_male_stds = {{ $stats['studentGenderCounts']['male'] ?? 0 }};
+            const total_female_stds = {{ $stats['studentGenderCounts']['female'] ?? 0 }};
+
+            console.log(total_stds, <?php echo json_encode($stats['studentGenderCounts']); ?>);
 
             loadStudentCanvas([total_stds, total_male_stds, total_female_stds]);
-            loadAttendanceCanvas([15, 4, 2]);
+            loadAttendanceCanvas([ total_stds  , 0 , 0]);
             loadCourseCoverageCanvas([5.0, 4.5]);
         </script>
     @endif

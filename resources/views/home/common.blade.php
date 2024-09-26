@@ -190,10 +190,7 @@
                             <!-- Links -->
                             <li><a class="dropdown-item" href="{{ route('auth.login') }}"><i
                                         class="bi bi-person fa-fw me-2"></i>Dashboard</a></li>
-                            <li><a class="dropdown-item" href="#"><i class="bi bi-gear fa-fw me-2"></i>Account
-                                    Settings</a></li>
-                            <li><a class="dropdown-item" href="#"><i
-                                        class="bi bi-info-circle fa-fw me-2"></i>Help</a></li>
+                        
                             <li><a class="dropdown-item bg-danger-soft-hover" href="{{ route('auth.logout') }}"><i
                                         class="bi bi-power fa-fw me-2"></i>Sign Out</a></li>
                             <li>

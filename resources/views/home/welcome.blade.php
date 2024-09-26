@@ -7,10 +7,9 @@
 
 
         <div style="width: 100%; height: 0; padding-bottom: 40%; position: relative;">
-            
+
             <img src="{{ route('school.banner') }}"
-            style="position: absolute; width: 100%; height: 100%; object-fit: contain;"
-            usemap="#image-map">
+                style="position: absolute; width: 100%; height: 100%; object-fit: contain;" usemap="#image-map">
             {{-- <img src="{{ asset('bg.jpg') }}"
             style="position: absolute; width: 100%; height: 100%; object-fit: contain;"
             usemap="#image-map"> --}}
@@ -31,11 +30,7 @@
                             <a href="{{ route('home.board', ['id' => $board->id, 'board_name' => $board->board_name]) }}">
                                 <div
                                     class="d-flex flex-column justify-content-center align-items-center  bg-opacity-10 rounded-3">
-                                    @if ($board->board_name === 'Punjab Board')
-                                    <img src="{{ asset('images/Sindh Board.png') }}" class="w-full" />
-                                    @else
-                                    <img src="{{ asset('images/'.$board->board_name.'.png') }}" class="w-full" />
-                                    @endif
+                                    <img src="{{ asset('images/' . $board->board_name . '.png') }}" class="w-full" />
                                     <div class=" h3 fw-normal mb-0">
 
                                         {{-- <p class="mb-0">{{ $board->board_name }}</p> --}}

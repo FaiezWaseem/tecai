@@ -5,7 +5,7 @@
     <main>
 
         <!-- =======================
-                                                        Page intro START -->
+                                                            Page intro START -->
         <section class="bg-blue py-7">
             <div class="container">
                 <div class="row justify-content-lg-between">
@@ -21,10 +21,10 @@
             </div>
         </section>
         <!-- =======================
-                                                        Page intro END -->
+                                                            Page intro END -->
 
         <!-- =======================
-                                                        Page content START -->
+                                                            Page content START -->
         <section class="pt-0">
             <div class="container">
                 <div class="row">
@@ -99,7 +99,6 @@
                                                     }
                                                 }
 
-                                  
                                             @endphp
                                             @foreach ($transformedResponse as $item)
                                                 <div class="accordion-item mb-3">
@@ -118,44 +117,27 @@
                                                         class="accordion-collapse collapse" aria-labelledby="heading-2"
                                                         data-bs-parent="#accordionExample2" style="">
 
-                                                        <div class="accordion-body mt-3">
+                                                        <div class="d-flex justify-content-between flex-wrap mt-3">
                                                             @if (isset($item['content']))
                                                                 @foreach ($item['content'] as $content)
-                                                                    <div class="d-flex justify-content-between align-items-center"
-                                                                        style="height: 100px;">
-                                                                        <div
-                                                                            class="position-relative d-flex align-items-center">
-                                                                            <div class="d-flex align-items-center">
-                                                                                <!-- Video button -->
-                                                                                <a href="{{ route('preview.file', ['id' => $content['id']]) }}"
-                                                                                    class="icon-md mb-0 position-static flex-shrink-0 text-body"
-                                                                                    style="width: 100px">
-                                                                                    @if (isset($content['thumbnail']))
-                                                                                        <img class='item-icon'
-                                                                                            loading="lazy"
-                                                                                            src='{{ Storage::disk('local')->temporaryUrl($content['thumbnail'], now()->addMinutes(10)) }}' />
-                                                                                    @endif
-                                                                                </a>
-                                                                                <!-- Content -->
-                                                                                <div class="ms-3">
-                                                                                    <a href="{{ route('preview.file', ['id' => $content['id']]) }}" class="d-inline-block text-truncate mb-0 h6 fw-normal w-100px w-sm-200px w-md-400px">{{ isset($content['topic_title']) ? $content['topic_title'] : '' }}</a>
-                                                                                    <ul class="nav nav-divider small mb-0">
-                                                                                        <li class="nav-item">
-                                                                                            {{ isset($content['content_type']) ? $content['content_type'] : '' }}
-                                                                                        </li>
-                                                                                    </ul>
-                                                                                </div>
+                                                                    <div class="card" style="width: 18rem;">
+                                                                        @if (isset($content['thumbnail']))
+                                                                            <img src='{{ Storage::disk('local')->temporaryUrl($content['thumbnail'], now()->addMinutes(20)) }}'
+                                                                                class="card-img-top" alt="..."
+                                                                                loading="lazy"
+                                                                                 style="height: 250px !important; width: 100%; ">
+                                                                                
+                                                                        @endif
 
-                                                                            </div>
+                                                                        <div class="card-body">
+                                                                            <h5 class="card-title">
+                                                                                {{ isset($content['topic_title']) ? $content['topic_title'] : '' }}
+                                                                            </h5>
+                                                                            <a href="{{ route('preview.file', ['id' => $content['id']]) }}"
+                                                                                class="btn btn-primary">View</a>
                                                                         </div>
-                                                                        <!-- Actions Mark button -->
-                                                                        <a href="{{ route('preview.file', ['id' => $content['id']]) }}"
-                                                                            class="p-2 mb-0 text-secondary"
-                                                                            data-bs-toggle="tooltip" data-bs-placement="top"
-                                                                            aria-label="Open" data-bs-original-title="Open">
-                                                                            <i class="bi bi-eye-fill"></i>
-                                                                        </a>
                                                                     </div>
+
                                                                     <hr> <!-- Divider -->
                                                                 @endforeach
                                                             @endif
@@ -176,16 +158,17 @@
 
                                             <!-- Card body -->
                                             <div class="card-body p-0 pt-3">
-                                        
 
-                                         
+
+
                                                 @foreach ($transformedResponse as $item)
-                                                    <h4>  {{ isset($item['chapterName']) ? $item['chapterName'] : '' }}</h4>
+                                                    <h4> {{ isset($item['chapterName']) ? $item['chapterName'] : '' }}</h4>
                                                     <ul>
                                                         @if (isset($item['content']))
-                                                                @foreach ($item['content'] as $content)
-                                                                     <li>{{ isset($content['topic_title']) ? $content['topic_title'] : '' }}</li>
-                                                                @endforeach
+                                                            @foreach ($item['content'] as $content)
+                                                                <li>{{ isset($content['topic_title']) ? $content['topic_title'] : '' }}
+                                                                </li>
+                                                            @endforeach
                                                         @endif
                                                     </ul>
                                                 @endforeach
@@ -207,7 +190,7 @@
             </div>
         </section>
         <!-- =======================
-                                                        Page content END -->
+                                                            Page content END -->
 
     </main>
 
