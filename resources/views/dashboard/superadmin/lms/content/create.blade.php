@@ -3,6 +3,9 @@
 @section('sidebar')
     @include('dashboard.superadmin.sidebar')
     <script src="https://cdn.jsdelivr.net/npm/resumablejs@1.1.0/resumable.min.js"></script>
+    <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.14.0-beta3/dist/css/bootstrap-select.min.css">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 @endsection
 
 @section('content')
@@ -78,7 +81,8 @@
                     <div class="col-md-4">
                         <div class="form-group">
                             <label for="txtUserName">Board <span class="text-danger">*</span></label>
-                            <select name="tboard_id" class="form-control">
+                            <select  id="subjects" name="boards[]" class="form-control selectpicker"
+                                required multiple data-live-search="true">
                                 @foreach ($boards as $item)
                                     <option value="{{ $item->id }}"> {{ $item->board_name }} </option>
                                 @endforeach
@@ -142,11 +146,11 @@
 
 @section('footer')
     <script>
-        document.querySelector('#submitForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            showLoader();
-            e.target.submit();
-        });
+        // document.querySelector('#submitForm').addEventListener('submit', function(e) {
+        //     e.preventDefault();
+        //     showLoader();
+        //     e.target.submit();
+        // });
     </script>
     <script>
         function validateFileSize(input) {
@@ -249,7 +253,8 @@
                 _token: '{{ csrf_token() }}'
             }, // CSRF token
             fileType: ["png", "jpg", "jpeg", "gif", "pdf", "mp4", "zip", "rar", "swf", "ppt", "pptx"],
-            chunkSize: 5 * 1024 * 1024, // default is 1*1024*1024, this should be less than your maximum limit in php.ini
+            chunkSize: 2 * 1024 *
+                1024, // default is 1*1024*1024, this should be less than your maximum limit in php.ini
             headers: {
                 'Accept': 'application/json'
             },
@@ -297,5 +302,23 @@
         function hideProgress() {
             progress.hide();
         }
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.14.0-beta3/dist/js/bootstrap-select.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('.selectpicker').selectpicker();
+            $('.selectpicker-classes').selectpicker();
+
+            $('#submitForm').submit(function(event) {
+                // Prevent the default form submission
+                event.preventDefault();
+                showLoader();
+                event.target.submit();
+        
+            });
+
+        });
+
+       
     </script>
 @endsection

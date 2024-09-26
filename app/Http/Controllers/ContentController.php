@@ -101,19 +101,23 @@ class ContentController extends Controller
 
                 $content_link = 'web_uploads/'. $course->course_name. '/'. basename($content_link); 
 
+                $boards = $request->input('boards');
 
+                foreach ($boards as $board_id) {
+                    $content = new TContent;
+                    $content->tboard_id = $board_id;
+                    $content->tcourse_id = $request->tcourse_id;
+                    $content->tclass_id = $request->tclass_id;
+                    $content->tchapter_id = $request->tchapter_id;
+                    $content->content_type = $request->content_type;
+                    $content->content_link = $content_link;
+                    $content->thumbnail = $thumbPath;
+                    $content->content_title = $request->content_title;
+                    // $content->tslo_id = $request->tslo_id;
+                    $content->save();
+                }
 
-                $content = new TContent;
-                $content->tboard_id = $request->tboard_id;
-                $content->tcourse_id = $request->tcourse_id;
-                $content->tclass_id = $request->tclass_id;
-                $content->tchapter_id = $request->tchapter_id;
-                $content->content_type = $request->content_type;
-                $content->content_link = $content_link;
-                $content->thumbnail = $thumbPath;
-                $content->content_title = $request->content_title;
-                // $content->tslo_id = $request->tslo_id;
-                $content->save();
+           
                 return redirect()->route('superadmin.lms.content.view');
             } else {
                 return "No file selected";
