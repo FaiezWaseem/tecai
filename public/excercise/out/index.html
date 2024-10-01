@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- <link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css"> -->
+
+    <link rel="stylesheet" href="style.css">
+    <title>Document</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@400;700&display=swap');
+
+        body {
+            font-family: 'Arial', sans-serif;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="main-container">
+        <div style="display: flex; background-color: rgba(255, 255, 255, 0.8); padding: 2px; border-radius: 8px;">
+            <div style="display: flex; gap: 3;">
+                <span id='font-size-value'>16px</span>
+                <input type='range' min='8' max='48' value='16' id='font-size-slider' oninput='changeFontSize()'>
+            </div>
+            <div style="display: flex; gap: 3;">
+                <label for="font-select">Select font:</label>
+                <select id="font-select" onchange="changeFont()">
+                    <option value="Arial, sans-serif">Arial</option>
+                    <option value="Times New Roman, serif">Times New Roman</option>
+                    <option value="Verdana, sans-serif">Verdana</option>
+                    <option value="Georgia, serif">Georgia</option>
+                    <option value="Courier New, monospace">Courier New</option>
+                    <option value="'Roboto', sans-serif">Roboto</option>
+                    <option value="'Lato', sans-serif">Lato</option>
+                    <option value="'Oswald', sans-serif">Oswald</option>
+                    <option value="'Merriweather', serif">Merriweather</option>
+                    <option value="'Playfair Display', serif">Playfair Display</option>
+                    <option value="'Raleway', sans-serif">Raleway</option>
+                    <option value="'Poppins', sans-serif">Poppins</option>
+                    <option value="'Noto Sans', sans-serif">Noto Sans</option>
+                    <option value="'Montserrat', sans-serif">Montserrat</option>
+                </select>
+            </div>
+        </div>
+        <h3 id="score">SCORE : 0</h3>
+        <div class="paragraphcontainer">
+
+            <span>
+                <span>
+                    What is <div class="drop" target="overflowing"></div> text? In CSS if you have an unbreakable string
+                    such as a very long word by default it will overflow any <div class="drop" target="container"></div>
+                    that is too small for it in the inline direction. We can see this happening in the example below:
+                    the long word is extending past the <div class="drop" target="boundary"></div> of the box.
+                </span>
+        </div>
+
+
+
+        <div class="selection">
+            <div class="item dragdrop" sid="overflowing">overflowing</div>
+            <div class="item dragdrop" sid="potato">Potato</div>
+        </div>
+        .
+    </div>
+
+    <script src="./data.js"></script>
+    <script src="./grade.js"></script>
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+    <script src="draganddrop.js"></script>
+    <script src="script.js"></script>
+    <script>
+
+        function changeFontSize() {
+            var textContainers = document.getElementsByClassName('paragraphcontainer');
+            var itemContainers = document.getElementsByClassName('item');
+            var dropContainers = document.getElementsByClassName('drop');
+            var slider = document.getElementById('font-size-slider');
+            var fontSizeValue = document.getElementById('font-size-value');
+            var newFontSize = slider.value + 'px';
+
+            for (var i = 0; i < textContainers.length; i++) {
+                textContainers[i].style.fontSize = newFontSize;
+            }
+
+            for (var j = 0; j < itemContainers.length; j++) {
+                itemContainers[j].style.fontSize = newFontSize;
+                itemContainers[j].style.width = 'auto';
+                itemContainers[j].style.height = 'auto';
+                itemContainers[j].style.padding = 'calc(' + slider.value / 4 + 'px)';
+            }
+
+            for (var k = 0; k < dropContainers.length; k++) {
+                dropContainers[k].style.fontSize = newFontSize;
+                dropContainers[k].style.width = 'auto'; // Set a minimum width
+                dropContainers[k].style.height = 'auto'; // Set a minimum height
+                dropContainers[k].style.minWidth = '150px'; // Set a minimum width
+                dropContainers[k].style.minHeight = '30px'; // Set a minimum height
+                dropContainers[k].style.padding = 'calc(' + slider.value / 4 + 'px)';
+            }
+
+            fontSizeValue.textContent = newFontSize;
+        }
+
+        function changeFont() {
+            var fontSelect = document.getElementById("font-select");
+            var selectedFont = fontSelect.value;
+            document.body.style.fontFamily = selectedFont;
+        }
+    </script>
+</body>
+
+</html>

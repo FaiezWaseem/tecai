@@ -402,8 +402,10 @@ class StudentsController extends Controller
         $student = students::where('students.id', session('user')['id'])
             ->join('school', 'students.school', '=', 'school.id')
             ->first();
-        $studentId = $request->id;
-        $class = classes::where('class_name', $student->class)->first();
+        $studentId = session('user')['id'];
+        $class = classes::where('class_name', $student->class )
+        ->where('school_id', $student->school)
+        ->first();
         $query = Activity::where('class_id', $class->id)
             ->join('course', 'activity.course_id', '=', 'course.id')
             ->join('teachers', 'activity.tid', '=', 'teachers.id')
@@ -416,7 +418,8 @@ class StudentsController extends Controller
                 'activity.created_at',
                 'activity.deadline',
                 'activity.total_marks',
-                'teachers.name as teacher_name'
+                'teachers.name as teacher_name',
+                'course.course_name'
             )
             ->whereNotIn('activity.id', function ($subquery) use ($studentId) {
                 $subquery->select('activity_id')
@@ -425,7 +428,7 @@ class StudentsController extends Controller
             });
 
         $activities = $query->paginate(5);
-        return view('dashboard.students.assignment.view', compact('activities'));
+        return view('dashboard.students.assignment.view', compact('activities' , 'class' ,'student'));
     }
 
     public function StudentViewAssignmentGrades(Request $request)
@@ -615,32 +618,34 @@ class StudentsController extends Controller
             ]);
         }
 
+        
         $std = HelperFunctionsController::getCurrentStudent($request->id);
-
+        
         $exist = tasks::where('activity_id', '==', $id)
-            ->where('std_id', '==', $request->id)
-            ->firstOrFail();
-
+        ->where('std_id', '==', $request->id)
+        ->first();
+        
         if ($exist) {
             return response()->json([
                 'success' => true,
                 'message' => 'Already Graded This Assignment'
             ]);
         }
-
-
-
+        
+        
+        
         $task = new tasks();
         $task->std_id = $request->id;
         $task->activity_id = $id;
         $task->points_obtained = $request->points_obtained;
         $task->points_total = $request->points_total;
         $task->save();
+        
+        // dd($task);
 
-
-        if ($std->token) {
-            HelperFunctionsController::sendNotification($std->token, 'You have been Graded on The Assignment', $std->name . ' Your Score is saved.');
-        }
+        // if ($std->token) {
+        //     HelperFunctionsController::sendNotification($std->token, 'You have been Graded on The Assignment', $std->name . ' Your Score is saved.');
+        // }
 
         return response()->json([
             'success' => true,

@@ -26,20 +26,23 @@
     <!-- Main content -->
     <section class="content">
         <div class="container-fluid">
-       
+
+     
 
             @foreach ($activities as $activity)
                 <div class="card shadow mb-4">
                     <div class="card-header py-3">
                         <h6 class="m-0 font-weight-bold text-primary">Title : {{ $activity->title }}</h6>
+                        <h6 class="m-0 font-weight-bold text-primary">Course : {{ $activity->course_name }}</h6>
+                        <h6 class="m-0 font-weight-bold text-primary">Teacher : {{ $activity->teacher_name }}</h6>
                        
-                        <h6 class="m-0 text-secondary">deadline : <?php
+                        <h6 class="m-0 text-secondary font-weight-bold">deadline : <?php
                         $dateTime = new DateTime($activity->deadline);
                         $formattedDate = $dateTime->format('l g:i a Y');
                         echo $formattedDate;
                         echo ' - ' . $activity->deadline;
                         ?></h6>
-                        <h6 class="m-0 text-secondary">Created At :
+                        <h6 class="m-0 text-secondary font-weight-bold">Created At :
                             <?php
                             $dateTime = new DateTime($activity->created_at);
                             $formattedDate = $dateTime->format('l g:i a Y');

@@ -92,7 +92,8 @@
                                 Delete </a>
                         </li>
                         <li class="list-inline-item">
-                            <a id="copy" class="btn btn-small btn-outline-primary btn-2"><i class="fa fa-files-o"></i>
+                            <a id="copy" class="btn btn-small btn-outline-primary btn-2" data-toggle="modal"
+                                data-target="#CopyModal"><i class="fa fa-files-o"></i>
                                 Copy </a>
                         </li>
                     </ul>
@@ -190,6 +191,37 @@
         </div><!-- /.container-fluid -->
     </section>
     <!-- /.content -->
+
+    <!-- Delete confirm Modal-->
+    <div class="modal fade" id="CopyModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Copy To Different Board</h5>
+
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <h3>Boards</h3>
+                    <div class="row">
+                        @foreach ($boards as $item)
+                            <div class="col-md-6 d-flex">
+                                <input type="checkbox" id="{{ $item->id }}" class="form-control boards-selection">
+                                <p>{{ $item->board_name }}</p>
+                            </div>
+                        @endforeach
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                    <a class="btn btn-primary" id="copy-boards">COPY</a>
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection
 
 
@@ -224,6 +256,33 @@
             $('#select-all').prop('checked', checked);
         }
 
+        $('#copy-boards').on('click', function() {
+            var SelectedBoards = [];
+            $('.boards-selection:checked').each(function() {
+                var rowData = Number($(this)[0].id);
+                SelectedBoards.push(rowData);
+            });
+            const  contentIds = getCheckedRows()
+            console.log(SelectedBoards , contentIds)
+
+            $.ajax({
+                    url: "{{ route('superadmin.lms.content.copy') }}", // Replace with your endpoint
+                    type: 'POST',
+                    data: {
+                        ids: contentIds ,
+                        boards : SelectedBoards
+                    },
+                    success: function(response) {
+                        console.log(response.message);
+                        window.location.reload();
+                        // Handle success (e.g., refresh the table)
+                    },
+                    error: function(xhr) {
+                        console.error(xhr.responseJSON.message);
+                        // Handle error
+                    }
+                });
+        });
         $('#check-all').on('click', function() {
             checkAllRows(true);
         });

@@ -57,7 +57,7 @@ class ContentController extends Controller
                 ->join('tchapters', 'tchapters.id', '=', 'tcontent.tchapter_id')
                 ->join('tcourse', 'tcourse.id', '=', 'tcontent.tcourse_id')
                 ->select('tcontent.*', 'tcontent.content_title as topic_title', 'tclasses.class_name', 'tchapters.chapter_title', 'tboards.board_name', 'tcourse.course_name')
-                ->paginate(500);
+                ->paginate(200);
             return view('dashboard.superadmin.lms.content.view')
                 ->with('content', $content)
                 ->with('boards', $boards)
@@ -75,7 +75,7 @@ class ContentController extends Controller
                 ->join('tchapters', 'tchapters.id', '=', 'tcontent.tchapter_id')
                 ->join('tcourse', 'tcourse.id', '=', 'tcontent.tcourse_id')
                 ->select('tcontent.*', 'tcontent.content_title as topic_title', 'tclasses.class_name', 'tchapters.chapter_title', 'tboards.board_name', 'tcourse.course_name')
-                ->paginate(500);
+                ->paginate(200);
             return view('dashboard.superadmin.lms.content.view')
                 ->with('content', $content)
                 ->with('boards', $boards)
@@ -96,10 +96,10 @@ class ContentController extends Controller
 
 
                 $course = TCourses::find($request->tcourse_id);
-                Storage::disk('public')->makeDirectory('web_uploads/'. $course->course_name);
-                Storage::disk('public')->move($content_link, 'web_uploads/'. $course->course_name. '/'. basename($content_link));
+                Storage::disk('public')->makeDirectory('web_uploads/' . $course->course_name);
+                Storage::disk('public')->move($content_link, 'web_uploads/' . $course->course_name . '/' . basename($content_link));
 
-                $content_link = 'web_uploads/'. $course->course_name. '/'. basename($content_link); 
+                $content_link = 'web_uploads/' . $course->course_name . '/' . basename($content_link);
 
                 $boards = $request->input('boards');
 
@@ -117,7 +117,7 @@ class ContentController extends Controller
                     $content->save();
                 }
 
-           
+
                 return redirect()->route('superadmin.lms.content.view');
             } else {
                 return "No file selected";
@@ -164,12 +164,12 @@ class ContentController extends Controller
     {
         // Get the array of IDs from the request
         $ids = $request->ids;
-    
+
         // Check if the IDs array is provided
         if (!empty($ids) && is_array($ids)) {
             // Attempt to delete the records
             $deletedRows = TContent::destroy($ids);
-    
+
             // Check if any rows were deleted
             if ($deletedRows > 0) {
                 return response()->json([
@@ -191,6 +191,49 @@ class ContentController extends Controller
                 'message' => 'No record IDs provided or IDs are not in the correct format.',
             ]);
         }
+    }
+
+    public function SuperAdminCopyLMSContent(Request $request)
+    {
+        $boards = $request->boards;
+        $ids = $request->ids;
+
+        // Validate the request
+        if (empty($boards) || !is_array($boards) || empty($ids) || !is_array($ids)) {
+            return response()->json([
+                'status' => 400,
+                'deleted' => false,
+                'message' => 'No record IDs provided or IDs are not in the correct format.',
+            ]);
+        }
+
+        // Fetch the content based on IDs
+        $content = TContent::whereIn('id', $ids)->get();
+
+        // Check if content exists
+        if ($content->isEmpty()) {
+            return response()->json([
+                'status' => 404,
+                'deleted' => false,
+                'message' => 'No content found for the provided IDs.',
+            ]);
+        }
+
+        // Copy content to specified boards
+        foreach ($boards as $board) {
+            foreach ($content as $item) {
+                // Assuming you have a method to copy the content to the board
+                $newContent = $item->replicate(); // Clone the original content
+                $newContent->tboard_id = $board; // Set the new board ID
+                $newContent->save(); // Save the new content
+            }
+        }
+
+        return response()->json([
+            'status' => 200,
+            'deleted' => true,
+            'message' => 'Content copied successfully.',
+        ]);
     }
     public function SuperAdminEditLMSContent(Request $request)
     {
@@ -316,7 +359,8 @@ class ContentController extends Controller
 
         return view('dashboard.teachers.content.create', compact('classes'));
     }
-    public function TeacherDeleteContent(Request $request){
+    public function TeacherDeleteContent(Request $request)
+    {
         if ($request->id) {
             $deletedRows = TeacherContent::destroy($request->id);
             if ($deletedRows > 0) {
