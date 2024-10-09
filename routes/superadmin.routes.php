@@ -416,4 +416,125 @@ Route::middleware('CheckSuperAdmin')->prefix('/superadmin')->group(function () {
     ->name('superadmin.notes.create');
     Route::post('/ecoaching/notes/create', [App\Http\Controllers\EContentController::class, 'SuperAdminCreateNotes'])
     ->name('superadmin.notes.create');
+
+
+
+
+     /**
+     *   --------------------------------------------------
+     *                         CBTS
+     *   --------------------------------------------------
+     * 
+     */
+ 
+     Route::get('/cbts/questionbank/view', [App\Http\Controllers\QuestionbankController::class, 'SuperAdminViewCBTSQuestionbank'])
+     ->name('superadmin.cbts.questionbank.view');
+     Route::post('/cbts/questionbank/view', [App\Http\Controllers\QuestionbankController::class, 'SuperAdminViewCBTSQuestionbank'])
+     ->name('superadmin.cbts.questionbank.view');
+ 
+     Route::post('/cbts/exam/result', [App\Http\Controllers\ExamController::class, 'SuperAdminViewCBTSResult'])
+     ->name('superadmin.cbts.exam.result');
+ 
+     Route::get('/cbts/exam/view', [App\Http\Controllers\ExamController::class, 'SuperAdminViewCBTSExam'])
+     ->name('superadmin.cbts.exam.view');
+ 
+     Route::get('/cbts/exam/result', [App\Http\Controllers\ExamController::class, 'SuperAdminViewCBTSResult'])
+     ->name('superadmin.cbts.exam.result');
+ 
+     Route::post('/cbts/exam/examresult', [App\Http\Controllers\ExamController::class, 'SuperAdminViewCBTSExamResult'])
+     ->name('superadmin.cbts.exam.examresult');
+ 
+     // Route to view exam results
+     Route::get('/cbts/exam/examresult', [App\Http\Controllers\ExamController::class, 'SuperAdminViewCBTSExamResult'])
+         ->name('superadmin.cbts.exam.examresult');
+     
+     Route::get('/cbts/exam/examresult/pdf', [App\Http\Controllers\ExamController::class, 'SuperadmindownloadExamResultPDF'])
+     ->name('superadmin.cbts.exam.results.pdf');
+   
+     Route::get('/cbts/exam/takeexam', [App\Http\Controllers\ExamController::class, 'SuperAdminViewCBTSTakeExam'])
+     ->name('superadmin.cbts.exam.takeexam');
+     Route::post('/cbts/exam/takeexam', [App\Http\Controllers\ExamController::class, 'SuperAdminViewCBTSTakeExam'])
+     ->name('superadmin.cbts.exam.takeexam');
+   
+     Route::post('/cbts/exam/view', [App\Http\Controllers\ExamController::class, 'SuperAdminViewCBTSExam'])
+     ->name('superadmin.cbts.exam.view');
+     
+     Route::get('/cbts/exam/startexam', [App\Http\Controllers\ExamController::class, 'SuperAdminViewCBTSStartExam'])
+     ->name('superadmin.cbts.exam.startexam');
+     Route::post('/cbts/exam/startexam', [App\Http\Controllers\ExamController::class, 'SuperAdminViewCBTSStartExam'])
+     ->name('superadmin.cbts.exam.startexam');
+ 
+     /**
+      *   --------------------------------------------------
+      *                         CBTS   END
+      *   --------------------------------------------------
+      * 
+      */
+
+
+         /**
+     *   --------------------------------------------------
+     *                         CBTS
+     *   --------------------------------------------------
+     * 
+     */
+    Route::delete('/cbts/questionbank/view/{id}', [App\Http\Controllers\QuestionbankController::class, 'SuperAdminDeleteCBTSQuestion'])
+    ->name('superadmin.cbts.questionbank.delete');
+    Route::delete('/cbts/exam/view/{id}', [App\Http\Controllers\ExamController::class, 'SuperAdminDeleteCBTSExam'])
+    ->name('superadmin.cbts.exam.delete');
+    Route::delete('/cbts/examquestion/view/{id}', [App\Http\Controllers\ExamController::class, 'SuperAdminDeleteCBTSExamQuestion'])
+    ->name('superadmin.cbts.examquestion.delete');
+       /**
+     *   --------------------------------------------------
+     *                         CBTS   END
+     *   --------------------------------------------------
+     * 
+     */
+
+
+        /**
+     *   --------------------------------------------------
+     *                         CBTS
+     *   --------------------------------------------------
+     * 
+     */
+    Route::get('/cbts/questionbank/create', [App\Http\Controllers\QuestionbankController::class, 'SuperAdminCreateCBTSQuestionbank'])
+    ->name('superadmin.cbts.questionbank.create');
+    Route::post('/cbts/questionbank/create', [App\Http\Controllers\QuestionbankController::class, 'SuperAdminCreateCBTSQuestionbank'])
+    ->name('superadmin.cbts.questionbank.create');
+    Route::post('/cbts/examquestion/create', [App\Http\Controllers\ExamController::class, 'SuperAdminCreateCBTSExamQuestion'])
+    ->name('superadmin.cbts.examquestion.create');
+    Route::get('/cbts/examquestion/create', [App\Http\Controllers\ExamController::class, 'SuperAdminCreateCBTSExamQuestion'])
+    ->name('superadmin.cbts.examquestion.create');
+    
+    Route::get('/cbts/exam/create', [App\Http\Controllers\ExamController::class, 'SuperAdminCreateCBTSExam'])
+    ->name('superadmin.cbts.exam.create');
+    Route::post('/cbts/exam/create', [App\Http\Controllers\ExamController::class, 'SuperAdminCreateCBTSExam'])
+    ->name('superadmin.cbts.exam.create');
+    Route::get('/cbts/examquestion/view', [App\Http\Controllers\ExamController::class, 'SuperAdminViewCBTSExamQuestion'])
+    ->name('superadmin.cbts.examquestion.view');
+    Route::get('/get-chapters/{courseId}', [App\Http\Controllers\ExamController::class, 'getChapters']);
+
+    Route::post('/cbts/filter/chapter', [App\Http\Controllers\QuestionbankController::class, 'filterChapter'])
+    ->name('superadmin.cbts.filter.chapter');
+   
+    Route::get('/cbts/exam/edit', [App\Http\Controllers\ExamController::class, 'SuperAdminEditCBTSExam'])
+    ->name('superadmin.cbts.exam.edit');
+    Route::put('/cbts/exam/edit', [App\Http\Controllers\ExamController::class, 'SuperAdminEditCBTSExam'])
+    ->name('superadmin.cbts.exam.edit');
+   
+    Route::post('/cbts/filter/classes', [App\Http\Controllers\QuestionbankController::class, 'filterClasses'])
+    ->name('superadmin.cbts.filter.classes');
+
+
+
+    Route::post('/cbts/filter/courses', [App\Http\Controllers\QuestionbankController::class, 'filterCourses'])
+    ->name('superadmin.cbts.filter.courses'); 
+
+    /**
+     *   --------------------------------------------------
+     *                         CBTS  END
+     *   --------------------------------------------------
+     * 
+     */
 });

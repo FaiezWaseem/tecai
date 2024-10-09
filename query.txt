@@ -622,3 +622,96 @@ WHERE prefix IS NULL OR prefix = '';
 
 ALTER TABLE school
 MODIFY COLUMN prefix varchar(255) NOT NULL UNIQUE;
+
+
+
+
+
+DROP TABLE IF EXISTS `exam_taken_exams`;
+DROP TABLE IF EXISTS `exam_question`;
+DROP TABLE IF EXISTS `exam_chapter`;
+DROP TABLE IF EXISTS `exam`;
+DROP TABLE IF EXISTS `c_answer`;
+DROP TABLE IF EXISTS `c_questionbank`;
+
+CREATE TABLE `c_questionbank` (
+    `id` INT PRIMARY KEY AUTO_INCREMENT,
+    `school_id` INT,
+    `cboard_id` INT,
+    `cclass_id` INT,
+    `ccourse_id` INT,
+    `cchapter_id` INT,
+    `cquestion` TEXT,
+    `image` VARCHAR(255),
+    `cqtype` VARCHAR(50),
+    `mark` INT,
+    `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP,
+    `updated_at` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+CREATE TABLE `c_answer` (
+    `id` INT PRIMARY KEY AUTO_INCREMENT,
+    `q_Id` INT,
+    `answer` TEXT,
+    `is_correct` BOOLEAN,
+    FOREIGN KEY (`q_Id`) REFERENCES `c_questionbank`(`id`) ON DELETE CASCADE
+);
+
+CREATE TABLE `exam` (
+    `id` INT PRIMARY KEY AUTO_INCREMENT,
+    `school_id` INT,
+    `ex_board_id` INT,
+    `ex_course_id` INT,
+    `ex_class_id` INT,
+    `ex_title` VARCHAR(255),
+    `ex_duration` INT, -- Duration in minutes
+    `ex_start_date` DATETIME,
+    `ex_end_date` DATETIME,
+    `ex_pass_mark` INT,
+    `ex_total_question` INT,
+    `ex_instruction` TEXT,
+    `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP,
+    `updated_at` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+CREATE TABLE `exam_chapter` (
+    `id` INT PRIMARY KEY AUTO_INCREMENT,
+    `exam_id` INT,
+    `course_id` INT,
+    `chapter_id` INT,
+    `updated_at` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (`exam_id`) REFERENCES `exam`(`id`) ON DELETE CASCADE,
+    FOREIGN KEY (`course_id`) REFERENCES `c_course`(`id`), -- Adjust based on your actual course table name
+    FOREIGN KEY (`chapter_id`) REFERENCES `c_chapter`(`id`) -- Adjust based on your actual chapter table name
+);
+
+CREATE TABLE `exam_question` (
+    `id` INT PRIMARY KEY AUTO_INCREMENT,
+    `q_id` INT,
+    `exam_id` INT,
+    FOREIGN KEY (`q_id`) REFERENCES `c_questionbank`(`id`) ON DELETE CASCADE,
+    FOREIGN KEY (`exam_id`) REFERENCES `exam`(`id`) ON DELETE CASCADE
+);
+
+CREATE TABLE `exam_taken_exams` (
+    `id` INT PRIMARY KEY AUTO_INCREMENT,
+    `school_id` INT,
+    `student_id` INT,
+    `exam_id` INT,
+    `class_id` INT,
+    `section` VARCHAR(50),
+    `subject_id` INT,
+    `total_question` INT,
+    `total_answer` INT,
+    `total_mark` INT,
+    `total_correct_answer` INT,
+    `total_incorrect_answer` INT,
+    `total_obtain_mark` INT,
+    `obtain_mark_percent` DECIMAL(5, 2), -- Percentage with two decimal points
+    `result_status` VARCHAR(50),
+    `exam_status` VARCHAR(50),
+    `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP,
+    `updated_at` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    `not_answer` INT,
+);

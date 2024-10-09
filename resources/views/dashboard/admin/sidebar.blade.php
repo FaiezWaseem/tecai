@@ -358,6 +358,80 @@
 
                       </ul>
                   </li>
+                  <li class="nav-header">CBTS</li>
+                  <li
+                      class="nav-item {{ request()->is('dashboard/schooladmin/cbts/questionbank*') ? 'menu-open' : '' }}">
+                      <a href="#"
+                          class="nav-link {{ request()->is('dashboard/schooladmin//questionbank*') ? 'active' : '' }}">
+                          <i class="nav-icon fas fa-book"></i>
+                          <p>
+                              CBTS
+                              <i class="fas fa-angle-left right"></i>
+                          </p>
+                      </a>
+                      <ul class="nav nav-treeview">
+                          <li class="nav-item">
+                              <a href="#" class="nav-link">
+                                  <i class="far fa-circle nav-icon"></i>
+                                  <p>
+                                      Question Bank
+                                      <i class="right fas fa-angle-left"></i>
+                                  </p>
+                              </a>
+                              <ul class="nav nav-treeview" style="display: none;">
+                                  <li class="nav-item">
+                                      <a href="{{ route('schooladmin.cbts.questionbank.view') }}"
+                                          class="nav-link {{ request()->is('dashboard/schooladmin/cbtd/questionbank/view') ? 'active' : '' }}">
+                                          <i class="far fa fa-eye nav-icon"></i>
+                                          <p>View Question Bank</p>
+                                      </a>
+                                  </li>
+                                  <li class="nav-item">
+                                      <a href="{{ route('schooladmin.cbts.questionbank.create') }}"
+                                          class="nav-link {{ request()->is('dashboard/schooladmin/cbts/questionbank/create') ? 'active' : '' }}">
+                                          <i class="far fa fa-plus-square nav-icon"></i>
+                                          <p>Add Question Bank</p>
+                                      </a>
+                                  </li>
+                              </ul>
+                          </li>
+                          <li class="nav-item">
+                              <a href="#" class="nav-link">
+                                  <i class="far fa-circle nav-icon"></i>
+                                  <p>
+                                      Exam
+                                      <i class="right fas fa-angle-left"></i>
+                                  </p>
+                              </a>
+                              <ul class="nav nav-treeview" style="display: none;">
+                                  <li class="nav-item">
+                                      <a href="{{ route('schooladmin.cbts.exam.view') }}"
+                                          class="nav-link {{ request()->is('dashboard/schooladmin/cbts/exam/view') ? 'active' : '' }}">
+                                          <i class="far fa fa-eye nav-icon"></i>
+                                          <p>View Exam</p>
+                                      </a>
+                                  </li>
+                                  <li class="nav-item">
+                                      <a href="{{ route('schooladmin.cbts.exam.create') }}"
+                                          class="nav-link {{ request()->is('dashboard/schooladmin/cbts/exam/create') ? 'active' : '' }}">
+                                          <i class="far fa fa-plus-square nav-icon"></i>
+                                          <p>Add Exam</p>
+                                      </a>
+                                  </li>
+                                  <li class="nav-item">
+                                      <a href="{{ route('schooladmin.cbts.exam.result') }}"
+                                          class="nav-link {{ request()->is('dashboard/schooladmin/cbts/exam/result') ? 'active' : '' }}">
+                                          <i class="far fa fa-eye nav-icon"></i>
+                                          <p>Result</p>
+                                      </a>
+                                  </li>
+
+                              </ul>
+                          </li>
+
+
+                      </ul>
+                  </li>
               </ul>
           </nav>
           <!-- /.sidebar-menu -->

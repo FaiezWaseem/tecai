@@ -202,4 +202,96 @@ Route::middleware('CheckSchoolAdmin')->prefix('/school_admin')->group(function (
         ->name('schooladmin.notice.board.create');
     Route::post('/notice-board/create', [App\Http\Controllers\NoticeBoardController::class, 'SchoolAdminCreateNoticeBoard'])
         ->name('schooladmin.notice.board.create');
+
+
+
+
+      /**
+     *   --------------------------------------------------
+     *                         CBTS
+     *   --------------------------------------------------
+     * 
+     */
+
+     Route::get('/cbts/questionbank/view', [App\Http\Controllers\QuestionbankController::class, 'SchooladminViewCBTSQuestionbank'])
+     ->name('schooladmin.cbts.questionbank.view');
+     Route::post('/cbts/questionbank/view', [App\Http\Controllers\QuestionbankController::class, 'SchooladminViewCBTSQuestionbank'])
+     ->name('schooladmin.cbts.questionbank.view');
+ 
+     Route::get('/cbts/questionbank/create', [App\Http\Controllers\QuestionbankController::class, 'SchooladminCreateCBTSQuestionbank'])
+     ->name('schooladmin.cbts.questionbank.create');
+     Route::post('/cbts/questionbank/create', [App\Http\Controllers\QuestionbankController::class, 'SchooladminCreateCBTSQuestionbank'])
+     ->name('schooladmin.cbts.questionbank.create');
+ 
+   
+     Route::get('/cbts/exam/view', [App\Http\Controllers\ExamController::class, 'schooladminViewCBTSExam'])
+     ->name('schooladmin.cbts.exam.view');
+     Route::post('/cbts/exam/view', [App\Http\Controllers\ExamController::class, 'schooladminViewCBTSExam'])
+     ->name('schooladmin.cbts.exam.view');
+ 
+     Route::get('/cbts/exam/create', [App\Http\Controllers\ExamController::class, 'schooladminCreateCBTSExam'])
+     ->name('schooladmin.cbts.exam.create');
+     Route::post('/cbts/exam/create', [App\Http\Controllers\ExamController::class, 'schooladminCreateCBTSExam'])
+     ->name('schooladmin.cbts.exam.create');
+ 
+ 
+     Route::post('/cbts/exam/result', [App\Http\Controllers\ExamController::class, 'SchooladminViewCBTSResult'])
+     ->name('schooladmin.cbts.exam.result');
+     Route::get('/cbts/exam/result', [App\Http\Controllers\ExamController::class, 'SchooladminViewCBTSResult'])
+     ->name('schooladmin.cbts.exam.result');
+ 
+     Route::post('/cbts/exam/examresult', [App\Http\Controllers\ExamController::class, 'SchooladminViewCBTSExamResult'])
+     ->name('schooladmin.cbts.exam.examresult');
+     Route::get('/cbts/exam/examresult', [App\Http\Controllers\ExamController::class, 'SchooladminViewCBTSExamResult'])
+         ->name('schooladmin.cbts.exam.examresult');
+     
+     Route::get('/cbts/exam/examresult/pdf', [App\Http\Controllers\ExamController::class, 'SchooladmindownloadExamResultPDF'])
+         ->name('schooladmin.cbts.exam.results.pdf');
+   
+    
+ 
+     
+ 
+     Route::post('/cbts/examquestion/create', [App\Http\Controllers\ExamController::class, 'schooladminCreateCBTSExamQuestion'])
+     ->name('schooladmin.cbts.examquestion.create');
+     Route::get('/cbts/examquestion/create', [App\Http\Controllers\ExamController::class, 'schooladminCreateCBTSExamQuestion'])
+     ->name('schooladmin.cbts.examquestion.create');
+     
+    
+     Route::get('/cbts/exam/edit', [App\Http\Controllers\ExamController::class, 'SchooladminEditCBTSExam'])
+     ->name('schooladmin.cbts.exam.edit');
+     Route::put('/cbts/exam/edit', [App\Http\Controllers\ExamController::class, 'SchooladminEditCBTSExam'])
+     ->name('schooladmin.cbts.exam.edit');
+ 
+ 
+ 
+ 
+     Route::delete('/cbts/questionbank/view/{id}', [App\Http\Controllers\QuestionbankController::class, 'SchoolAdminDeleteCBTSQuestion'])
+     ->name('schooladmin.cbts.questionbank.delete');
+     Route::delete('/cbts/exam/view/{id}', [App\Http\Controllers\ExamController::class, 'SchoolAdminDeleteCBTSExam'])
+     ->name('schooladmin.cbts.exam.delete');
+     Route::delete('/cbts/examquestion/view/{id}', [App\Http\Controllers\ExamController::class, 'SchoolAdminDeleteCBTSExamQuestion'])
+     ->name('schooladmin.cbts.examquestion.delete');
+ 
+     
+     Route::get('/cbts/examquestion/view', [App\Http\Controllers\ExamController::class, 'schooladminViewCBTSExamQuestion'])
+     ->name('schooladmin.cbts.examquestion.view');
+ 
+ 
+ 
+     Route::post('/cbts/filter/chapter', [App\Http\Controllers\QuestionbankController::class, 'filterChapter'])
+     ->name('superadmin.cbts.filter.chapter');   
+     Route::post('/cbts/filter/classes', [App\Http\Controllers\QuestionbankController::class, 'filterClasses'])
+     ->name('superadmin.cbts.filter.classes');
+     Route::post('/cbts/filter/courses', [App\Http\Controllers\QuestionbankController::class, 'filterCourses'])
+     ->name('superadmin.cbts.filter.courses');
+ 
+        /**
+      *   --------------------------------------------------
+      *                         CBTS  END
+      *   --------------------------------------------------
+      * 
+      */
+ 
+
 });

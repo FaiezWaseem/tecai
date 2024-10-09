@@ -49,10 +49,18 @@
                             <span id="txtUserName_Error" class="error invalid-feedback hide"></span>
                         </div>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-3">
                         <div class="form-group">
                             <label for="txtUserName">School Name <span class="text-danger">*</span></label>
                             <input type="text" name="school_name" class="form-control" id="txtUserName" placeholder="Enter School Name"
+                                maxlength="255">
+                            <span id="txtUserName_Error" class="error invalid-feedback hide"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label for="txtUserName">School Prefix (*)</label>
+                            <input type="text" name="prefix" class="form-control" id="txtUserName"  placeholder="Enter School Name"
                                 maxlength="255">
                             <span id="txtUserName_Error" class="error invalid-feedback hide"></span>
                         </div>

@@ -17,18 +17,16 @@ class HomeController extends Controller
     {
 
         $boards = [];
-        if (!session('user')) {
-            $boards = Tboards::all();
-        }
         if (UserPermission::isSuperAdmin()) {
             $boards = Tboards::all();
         }
         if (UserPermission::isAdmin()) {
             $schoolsId = HelperFunctionsController::getUserSchoolsIds();
             $boards = SchoolContentPermission::whereIn('school_content_permission.school_id', $schoolsId)
-                ->join('tboards', 'tboards.id', 'school_content_permission.board_id')
-                ->distinct('school_content_permission.school_id')
-                ->get();
+            ->join('tboards', 'tboards.id', '=', 'school_content_permission.board_id')
+            ->select('tboards.*') // Select the columns you need from the tboards table
+            ->distinct() // Get distinct records
+            ->get();
         }
         if (UserPermission::isTeacher()) {
             $Id = session('user')['id'];
@@ -37,6 +35,14 @@ class HomeController extends Controller
                 ->select('teacher_content_permission.board_id', 'tboards.*')
                 ->distinct()
                 ->get();
+        }
+        if(UserPermission::isStudent()){
+            $schoolsId = session('user')['school'];
+            $boards = SchoolContentPermission::where('school_content_permission.school_id', $schoolsId)
+            ->join('tboards', 'tboards.id', '=', 'school_content_permission.board_id')
+            ->select('tboards.*') // Select the columns you need from the tboards table
+            ->distinct() // Get distinct records
+            ->get();
         }
 
         return view('home.welcome', compact('boards'));
@@ -48,13 +54,10 @@ class HomeController extends Controller
         $board_id = $request->id;
         $board_name = $request->board_name;
 
-        if (!session('user')) {
-            $classes = TClasses::all();
-        }
         if (UserPermission::isSuperAdmin()) {
             $classes = TClasses::all();
         }
-        if (UserPermission::isAdmin()) {
+        if (UserPermission::isAdmin() || UserPermission::isStudent()) {
             $classes = TClasses::all();
         }
         if (UserPermission::isTeacher()) {
@@ -86,7 +89,7 @@ class HomeController extends Controller
         if(UserPermission::isSuperAdmin()){
             $courses = TCourses::all();
         }
-        if(UserPermission::isAdmin()){
+        if(UserPermission::isAdmin() || UserPermission::isStudent()){
             $courses = TCourses::all();
         }
         if(UserPermission::isTeacher()){

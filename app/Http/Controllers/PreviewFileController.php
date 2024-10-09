@@ -21,6 +21,12 @@ class PreviewFileController extends Controller
         $content_type = $content->content_type;
 
         if ($content_type == 'Flash') {
+            // $filePath = Storage::disk('local')->path($content->content_link);
+            // $fileName = 'your-custom-filename.swf';
+            // $headers = [
+            //     'Content-Type' => 'application/x-shockwave-flash',
+            // ];
+            // return Response::download($filePath, $fileName, $headers);
             return view('home.viewer.flash', compact('content_type', 'id'));
         }
         if ($content_type == 'Pdf') {
@@ -69,12 +75,6 @@ class PreviewFileController extends Controller
                 $stream = new VideoStream($path);
                 $stream->start();
                 
-                // $filePath = Storage::disk('local')->path($content->content_link);
-                // $fileName = 'your-custom-filename.mp4';
-                // $headers = [
-                //     'Content-Type' => 'video/mp4',
-                //     'Accept-Ranges' => 'bytes',
-                // ];
             } elseif ($content_type == 'Flash') {
                 $filePath = Storage::disk('local')->path($content->content_link);
                 $fileName = 'your-custom-filename.swf';
