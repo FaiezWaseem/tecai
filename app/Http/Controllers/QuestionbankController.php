@@ -7,7 +7,7 @@ use App\Models\Canswer;
 use Illuminate\Http\Request;
 use App\Models\Tboards;
 use App\Models\course;
-use App\Models\Classes;
+use App\Models\classes;
 use App\Models\Chapter;
 use App\Models\school;
 
@@ -32,7 +32,7 @@ class QuestionbankController extends Controller
     public function filterClasses(Request $request)
     {
       
-        $classes = Classes::where('school_id', $request->school_id)
+        $classes = classes::where('school_id', $request->school_id)
             ->get();
     
         return response()->json(['classes' => $classes]);
@@ -41,7 +41,7 @@ class QuestionbankController extends Controller
     public function SuperAdminViewCBTSQuestionbank(Request $request)
     {
         $boards = Tboards::all();
-        $classes = Classes::all();
+        $classes = classes::all();
         $courses = course::all();
         $schools = school::all();
 
@@ -161,6 +161,7 @@ class QuestionbankController extends Controller
         $question->school_id = $request->school;
         $question->mark = $request->mark;
         $question->cqtype = $request->cqtype_id;
+        
         if ($request->hasFile('image')) {
             $image = $request->file('image');
             $filename = time() . '.' . $image->getClientOriginalExtension(); 
@@ -175,14 +176,23 @@ class QuestionbankController extends Controller
         if ($qtype === "mcqs") {
             $answers = $request->answer; 
             $correctAnswers = $request->correct_answer; 
-
+        
+            if (is_string($correctAnswers)) {
+                $correctAnswers = explode(',', $correctAnswers); 
+            }
+        
+            $correctAnswers = array_map('intval', $correctAnswers);
+        
             foreach ($answers as $index => $answerText) {
-                $answer = new CAnswer; 
+                $answer = new CAnswer;
                 $answer->q_Id = $question->id; 
-                $answer->answer = $answerText; 
-                $answer->is_correct = in_array($index + 1, $correctAnswers) ? 1 : 0; 
+                $answer->answer = $answerText;
+        
+                $answer->is_correct = in_array($index + 1, $correctAnswers) ? 1 : 0;
+    
                 $answer->save();
             }
+         
         } elseif ($qtype === "true_false") {
             $trueFalseAnswers = [
                 'true' => ($request->correct_answer === 'true'),
@@ -240,18 +250,26 @@ if ($request->isMethod('POST')) {
     $question->save();
 
     $qtype = $request->cqtype_id;
-
     if ($qtype === "mcqs") {
         $answers = $request->answer; 
         $correctAnswers = $request->correct_answer; 
-
+    
+        if (is_string($correctAnswers)) {
+            $correctAnswers = explode(',', $correctAnswers); 
+        }
+    
+        $correctAnswers = array_map('intval', $correctAnswers);
+    
         foreach ($answers as $index => $answerText) {
-            $answer = new CAnswer; 
+            $answer = new CAnswer;
             $answer->q_Id = $question->id; 
-            $answer->answer = $answerText; 
-            $answer->is_correct = in_array($index + 1, $correctAnswers) ? 1 : 0; 
+            $answer->answer = $answerText;
+    
+            $answer->is_correct = in_array($index + 1, $correctAnswers) ? 1 : 0;
+
             $answer->save();
         }
+     
     } elseif ($qtype === "true_false") {
         $trueFalseAnswers = [
             'true' => ($request->correct_answer === 'true'),
@@ -363,7 +381,7 @@ if ($request->isMethod('POST')) {
     
         // Fetch related data for dropdowns
         $boards = Tboards::all();
-        $classes = Classes::all();
+        $classes = classes::all();
         $courses = Course::all();
         $schools = School::all();
     

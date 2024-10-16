@@ -276,7 +276,8 @@ Route::middleware('CheckSchoolAdmin')->prefix('/school_admin')->group(function (
      
      Route::get('/cbts/examquestion/view', [App\Http\Controllers\ExamController::class, 'schooladminViewCBTSExamQuestion'])
      ->name('schooladmin.cbts.examquestion.view');
- 
+     Route::put('/cbts/questionbank/{id}/edit', [App\Http\Controllers\QuestionbankController::class, 'SuperAdminEditCBTSQuestionbank'])
+     ->name('superadmin.questionbank.edit');
  
  
      Route::post('/cbts/filter/chapter', [App\Http\Controllers\QuestionbankController::class, 'filterChapter'])

@@ -55,4 +55,55 @@ Route::middleware('CheckStudent')->prefix('/students')->group(function () {
     Route::get('/content/preview/{id}', [App\Http\Controllers\TeachersController::class, 'TeacherViewFile'])
         ->name('teacher.content.preview.view');
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        // ----------------------Student View CBTS Exam-------------------------------------
+
+
+
+
+     
+        Route::get('/cbts/exam/view', [App\Http\Controllers\ExamController::class, 'StudentViewCBTSExamView'])
+        ->name('student.cbts.exam.view');
+        Route::get('/cbts/exam/takeexam', [App\Http\Controllers\ExamController::class, 'StudentViewCBTSTakeExam'])
+        ->name('student.cbts.exam.takeexam');
+        Route::post('/cbts/exam/takeexam', [App\Http\Controllers\ExamController::class, 'StudentViewCBTSTakeExam'])
+        ->name('student.cbts.exam.takeexam');
+        Route::get('/cbts/exam/startexam', [App\Http\Controllers\ExamController::class, 'StudentViewCBTSStartExam'])
+        ->name('student.cbts.exam.startexam');
+        Route::post('/cbts/exam/startexam', [App\Http\Controllers\ExamController::class, 'StudentViewCBTSStartExam'])
+        ->name('student.cbts.exam.startexam');
+        Route::get('/cbts/exam/result', [App\Http\Controllers\ExamController::class, 'StudentViewCBTSResult'])
+        ->name('student.cbts.exam.result');
+
+        Route::post('/cbts/exam/examresult', [App\Http\Controllers\ExamController::class, 'StudentViewCBTSExamResult'])
+        ->name('student.cbts.exam.examresult');
+
+        // Route to view exam results
+        Route::get('/cbts/exam/examresult', [App\Http\Controllers\ExamController::class, 'StudentViewCBTSExamResult'])
+            ->name('student.cbts.exam.examresult');
+        
+        // Route to download the exam results as a PDF
+        Route::get('/cbts/exam/examresult/pdf', [App\Http\Controllers\ExamController::class, 'StudentdownloadExamResultPDF'])
+            ->name('exam.results.pdf');
+
+   
+
 });

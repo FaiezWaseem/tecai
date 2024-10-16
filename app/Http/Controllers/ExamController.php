@@ -1090,7 +1090,7 @@ $questionsbank = Cquestion::join('school', 'school.id', '=', 'c_questionbank.sch
             $exam->ex_pass_mark = $request->ex_pass_mark;
             $exam->ex_total_question = $request->ex_total_question;
             $exam->school_id = $request->school;
-            $exam->ex_instraction= $request->ex_instraction;
+            $exam->ex_instruction= $request->ex_instraction;
 
             if (!empty($request->chapters) && is_array($request->chapters)) {
                 $allQuestions = collect(); 

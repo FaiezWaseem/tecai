@@ -19,7 +19,7 @@ class Exam extends Model
         'ex_end_date',
         'ex_duration',
         'ex_pass_mark',
-        'ex_instraction'
+        'ex_instruction'
 
 
     ];

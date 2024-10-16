@@ -680,10 +680,7 @@ CREATE TABLE `exam_chapter` (
     `course_id` INT,
     `chapter_id` INT,
     `updated_at` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (`exam_id`) REFERENCES `exam`(`id`) ON DELETE CASCADE,
-    FOREIGN KEY (`course_id`) REFERENCES `c_course`(`id`), -- Adjust based on your actual course table name
-    FOREIGN KEY (`chapter_id`) REFERENCES `c_chapter`(`id`) -- Adjust based on your actual chapter table name
+    `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE `exam_question` (
@@ -713,5 +710,24 @@ CREATE TABLE `exam_taken_exams` (
     `exam_status` VARCHAR(50),
     `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP,
     `updated_at` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    `not_answer` INT,
+    `not_answer` INT
 );
+
+
+
+
+
+-------------------------REMOVE FOREIGN KEYS-----------------
+ALTER TABLE exam_chapter
+DROP FOREIGN KEY exam_chapter_ibfk_2;
+
+
+ALTER TABLE exam_chapter
+DROP FOREIGN KEY exam_chapter_ibfk_3;
+
+
+ALTER TABLE exam
+MODIFY COLUMN ex_start_date VARCHAR(255);
+
+ALTER TABLE exam
+MODIFY COLUMN ex_end_date VARCHAR(255);

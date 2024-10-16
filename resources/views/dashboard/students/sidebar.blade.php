@@ -150,6 +150,30 @@
        
             </ul>
           </li>
+          <li class="nav-item {{ request()->is('dashboard/students/exam*') ? 'menu-open' : '' }}">
+            <a href="#" class="nav-link {{ request()->is('dashboard/students/exam/takeexam') ? 'active' : '' }}">
+              <i class="nav-icon fas fa-folder-open"></i>
+              <p>
+              CBTS
+                <i class="fas fa-angle-left right"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="{{ route('student.cbts.exam.view') }}" class="nav-link {{ request()->is('dashboard/students/homework/view') ? 'active' : '' }}">
+                  <i class="far fa fa-eye nav-icon"></i>
+                  <p>Take Exam</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="{{ route('student.cbts.exam.result') }}" class="nav-link {{ request()->is('dashboard/students/homework/view') ? 'active' : '' }}">
+                  <i class="far fa fa-eye nav-icon"></i>
+                  <p>Result</p>
+                </a>
+              </li>
+       
+            </ul>
+          </li>
 
         </ul>
       </nav>

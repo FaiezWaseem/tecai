@@ -11,7 +11,7 @@ class ExamChapter extends Model
     protected $table = 'exam_chapter';
     protected $fillable = [
         'chapter_id',
-        // 'ex_class_id',
+        'exam_id',
         'course_id',
         
 

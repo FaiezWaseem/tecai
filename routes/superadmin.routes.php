@@ -444,6 +444,11 @@ Route::middleware('CheckSuperAdmin')->prefix('/superadmin')->group(function () {
      Route::post('/cbts/exam/examresult', [App\Http\Controllers\ExamController::class, 'SuperAdminViewCBTSExamResult'])
      ->name('superadmin.cbts.exam.examresult');
  
+     Route::get('/cbts/questionbank/{id}/edit', [App\Http\Controllers\QuestionbankController::class, 'SuperAdminEditCBTSQuestionbank'])
+     ->name('superadmin.cbts.questionbank.edit');
+     Route::put('/cbts/questionbank/{id}/edit', [App\Http\Controllers\QuestionbankController::class, 'SuperAdminEditCBTSQuestionbank'])
+     ->name('superadmin.cbts.questionbank.edit');
+ 
      // Route to view exam results
      Route::get('/cbts/exam/examresult', [App\Http\Controllers\ExamController::class, 'SuperAdminViewCBTSExamResult'])
          ->name('superadmin.cbts.exam.examresult');
