@@ -114,6 +114,8 @@ class HomeController extends Controller
         $board_id = $request->board_id;
         $course_id = $request->course_id;
         $course_name = $request->course_name;
+        $board_name = $request->board_name;
+        $class_name = $request->class_name;
 
         $contents = TContent::where('tcontent.tcourse_id', $course_id)
             ->where('tcontent.tboard_id', '=', $board_id)
@@ -126,6 +128,6 @@ class HomeController extends Controller
             ->join('tchapters', 'tchapters.id', '=', 'ttopics.tchapter_id')
             ->get();
 
-        return view('home.subject', compact('contents', 'course_name', 'course_id', 'slos'));
+        return view('home.subject', compact('contents', 'course_name','class_name','board_name', 'course_id', 'slos'));
     }
 }

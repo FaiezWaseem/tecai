@@ -13,7 +13,9 @@
                     <div class="col-lg-8">
                         <!-- Title -->
 
-                        <h1 class="text-white">{{ $course_name }}</h1>
+                        <h3 class="text-white">Board : {{$board_name }}</h3>
+                        <h3 class="text-white">Subject : {{ $course_name }}</h3>
+                        <h3 class="text-white">Class : {{ $class_name }}</h3>
                     </div>
 
 
