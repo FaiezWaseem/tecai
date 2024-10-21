@@ -196,7 +196,7 @@ class StudentsController extends Controller
         if ($rqMethod === 'POST') {
             $students = students::whereIn('school', $schoolId)
                 ->join('school', 'school.id', 'students.school')
-                ->select('students.*', 'school.school_name' , 'school.prefix')
+                ->select('students.*', 'school.school_name', 'school.prefix')
                 ->get();
             return response()->json([
                 'students' => $students
@@ -330,6 +330,16 @@ class StudentsController extends Controller
 
 
 
+    public function StudentViewProfile(Request $request)
+    {
+        $studentId = session('user')['id'];
+        $student = students::where('students.id', $studentId)
+            ->join('school', 'students.school', '=', 'school.id')
+            ->first();
+        $class = classes::where('class_name', $student->class)->first();
+        return view('dashboard.students.profile.view', compact('studentId', 'student', 'class'));
+    }
+
     public function StudentViewHome(Request $request)
     {
 
@@ -403,9 +413,9 @@ class StudentsController extends Controller
             ->join('school', 'students.school', '=', 'school.id')
             ->first();
         $studentId = session('user')['id'];
-        $class = classes::where('class_name', $student->class )
-        ->where('school_id', $student->school)
-        ->first();
+        $class = classes::where('class_name', $student->class)
+            ->where('school_id', $student->school)
+            ->first();
         $query = Activity::where('class_id', $class->id)
             ->join('course', 'activity.course_id', '=', 'course.id')
             ->join('teachers', 'activity.tid', '=', 'teachers.id')
@@ -428,7 +438,7 @@ class StudentsController extends Controller
             });
 
         $activities = $query->paginate(5);
-        return view('dashboard.students.assignment.view', compact('activities' , 'class' ,'student'));
+        return view('dashboard.students.assignment.view', compact('activities', 'class', 'student'));
     }
 
     public function StudentViewAssignmentGrades(Request $request)
@@ -618,29 +628,29 @@ class StudentsController extends Controller
             ]);
         }
 
-        
+
         $std = HelperFunctionsController::getCurrentStudent($request->id);
-        
+
         $exist = tasks::where('activity_id', '==', $id)
-        ->where('std_id', '==', $request->id)
-        ->first();
-        
+            ->where('std_id', '==', $request->id)
+            ->first();
+
         if ($exist) {
             return response()->json([
                 'success' => true,
                 'message' => 'Already Graded This Assignment'
             ]);
         }
-        
-        
-        
+
+
+
         $task = new tasks();
         $task->std_id = $request->id;
         $task->activity_id = $id;
         $task->points_obtained = $request->points_obtained;
         $task->points_total = $request->points_total;
         $task->save();
-        
+
         // dd($task);
 
         // if ($std->token) {

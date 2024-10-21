@@ -146,20 +146,30 @@
                                         </button>
                                     </td>
                                     <td>{{ $item->id }}</td>
-                                    <td>
+                                    <td contenteditable="true" >
                                         @if ($item->thumbnail)
                                             <img src="{{ Storage::disk('local')->temporaryUrl($item->thumbnail, now()->addMinutes(10)) }}"
                                                 alt="thumbnail_image" loading='lazy' width="50px" height="50px">
                                         @endif
                                     </td>
                                     <td contenteditable="true">{{ $item->chapter_title }} </td>
-                                    <td>{{ $item->topic_title }} </td>
-                                    <td>{{ $item->board_name }} </td>
-                                    <td>{{ $item->class_name }} </td>
-                                    <td>{{ $item->course_name }} </td>
-                                    <td>{{ $item->content_type }} </td>
-                                    <td>{{ $item->created_at }}</td>
-                                    <td>{{ $item->updated_at }}</td>
+                                    <td contenteditable="true" >{{ $item->topic_title }} </td>
+                                    <td contenteditable="true" >{{ $item->board_name }} </td>
+                                    <td contenteditable="true" >{{ $item->class_name }} </td>
+                                    <td contenteditable="true" >{{ $item->course_name }} </td>
+                                    <td contenteditable="true" >{{ $item->content_type }} </td>
+                                    <td>
+                                        <?php
+                                            $date=date_create($item->created_at);
+                                            echo date_format($date,"Y/M/d D H:i:s a");
+                                            ?>
+                                    </td>
+                                    <td>
+                                        <?php
+                                        $date=date_create($item->updated_at);
+                                        echo date_format($date,"Y/M/d D H:i:s a");
+                                        ?>
+                               
                                 </tr>
                             @endforeach
                         </tbody>

@@ -34,7 +34,9 @@ class ContentController extends Controller
     }
     public function filterChapter(Request $request)
     {
-        $chapters = Tchapters::where('tcourse_id', $request->course_id)->get();
+        $chapters = Tchapters::where('tcourse_id', $request->course_id)
+        ->where('tclass_id', $request->class_id)
+        ->get();
         return response()->json(['chapters' => $chapters]);
     }
     public function filterSLO(Request $request)

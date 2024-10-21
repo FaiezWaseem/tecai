@@ -93,7 +93,7 @@
                     <div class="col-md-4">
                         <div class="form-group">
                             <label for="txtUserName">Class <span class="text-danger">*</span></label>
-                            <select name="tclass_id" class="form-control">
+                            <select name="tclass_id" class="form-control" id="class" >
                                 @foreach ($classes as $item)
                                     <option value="{{ $item->id }}"> {{ $item->class_name }} </option>
                                 @endforeach
@@ -104,7 +104,7 @@
                     <div class="col-md-4">
                         <div class="form-group">
                             <label for="txtUserName">Course <span class="text-danger">*</span></label>
-                            <select name="tcourse_id" class="form-control" id="classes">
+                            <select name="tcourse_id" class="form-control" id="course">
                                 <option value="-1"> --Select-- </option>
                                 @foreach ($courses as $item)
                                     <option value="{{ $item->id }}"> {{ $item->course_name }} </option>
@@ -145,13 +145,7 @@
 
 
 @section('footer')
-    <script>
-        // document.querySelector('#submitForm').addEventListener('submit', function(e) {
-        //     e.preventDefault();
-        //     showLoader();
-        //     e.target.submit();
-        // });
-    </script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.14.0-beta3/dist/js/bootstrap-select.min.js"></script>
     <script>
         function validateFileSize(input) {
             if (input.files && input.files[0]) {
@@ -164,14 +158,16 @@
                 }
             }
         }
-        $('#classes').change(function() {
+
+        $('#course').change(function() {
             // Get the selected option value
             const selectedValue = $(this).val();
+            const class_id = $('#class').val();
 
             // Get the CSRF token value from the <meta> tag
             const csrfToken = $('meta[name="csrf-token"]').attr('content');
-
-            console.log(selectedValue, csrfToken)
+            
+            console.log(class_id ,selectedValue, csrfToken)
 
 
             $.ajax({
@@ -179,7 +175,8 @@
                 type: 'POST', // or 'GET', 'PUT', etc. depending on your needs
                 data: {
                     _token: csrfToken, // Include the CSRF token in the request data
-                    course_id: selectedValue
+                    course_id: selectedValue,
+                    class_id,
                 },
                 dataType: 'json', // Specify the expected response data type
                 success: function(data) {
@@ -303,7 +300,7 @@
             progress.hide();
         }
     </script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.14.0-beta3/dist/js/bootstrap-select.min.js"></script>
+   
     <script>
         $(document).ready(function() {
             $('.selectpicker').selectpicker();

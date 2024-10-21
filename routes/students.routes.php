@@ -12,6 +12,11 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('CheckStudent')->prefix('/students')->group(function () {
     Route::get('/', [App\Http\Controllers\StudentsController::class, 'StudentViewHome'])
         ->name('student.home.view');
+
+
+
+        Route::get('/profile', [App\Http\Controllers\StudentsController::class, 'StudentViewProfile'])
+        ->name('student.profile.view');
     /**
      *  Route : STUDENT / View All Assignments
      *  # Display list of all Assignment 
