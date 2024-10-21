@@ -19,6 +19,7 @@ class PreviewFileController extends Controller
         $id = $request->id;
         $content = TContent::find($id);
         $content_type = $content->content_type;
+        $content_link = $content->content_link;
 
         if ($content_type == 'Flash') {
             // $filePath = Storage::disk('local')->path($content->content_link);
@@ -41,6 +42,9 @@ class PreviewFileController extends Controller
         }
         if ($content_type == 'Ppt') {
             return view('home.viewer.ppt', compact('content_type', 'id'));
+        }
+        if ($content_type == 'Vimeo') {
+            return view('home.viewer.vimeo', compact('content_link'));
         }
 
         // return $this->downloadFile($request);

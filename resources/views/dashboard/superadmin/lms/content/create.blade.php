@@ -51,7 +51,7 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="txtUserName">Content File </label>
-                            <input type="text" name="content_link" id="content_link" hidden>
+                            <input type="text" name="content_link" id="content_link" style="display: none;">
                             <input type="button" id="browseFile" class="btn btn-primary" value="Select file">
                             <div style="display: none" class="progress mt-3" style="height: 25px">
                                 <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar"
@@ -66,7 +66,7 @@
                     <div class="col-md-4">
                         <div class="form-group">
                             <label for="txtUserName">Content Type <span class="text-danger">*</span></label>
-                            <select name="content_type" class="form-control">
+                            <select name="content_type" class="form-control" id="content_type" >
                                 <option value="0">--Select--</option>
                                 <option value="Video">Video</option>
                                 <option value="Pdf">Pdf</option>
@@ -74,6 +74,7 @@
                                 <option value="GIF">GIF</option>
                                 <option value="Ppt">PowerPoint</option>
                                 <option value="Web">Web</option>
+                                <option value="Vimeo">Vimeo</option>
                             </select>
                             <span id="txtUserName_Error" class="error invalid-feedback hide"></span>
                         </div>
@@ -158,6 +159,18 @@
                 }
             }
         }
+        $('#content_type').change(function() {
+            const selectedValue = $(this).val();
+            console.log(selectedValue)
+            if(selectedValue == "Vimeo"){
+                $('#browseFile').hide();
+                $('#content_link').show();
+            }else{
+                $('#browseFile').show();
+                // $('#content_link').val(response.filename)
+                $('#content_link').hide();
+            }
+        })
 
         $('#course').change(function() {
             // Get the selected option value

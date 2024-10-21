@@ -67,6 +67,24 @@
 
                         <div class="col-md-3">
                             <div class="form-group">
+                                <label for="txtUserName">Class <span class="text-danger">*</span></label>
+                                <select name="class_id" id="class_id" class="form-control">
+                                    <option value="--select--">--Select--</option>
+                                </select>
+                                <span id="txtUserName_Error" class="error invalid-feedback hide"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label for="txtUserName">Subject <span class="text-danger">*</span></label>
+                                <select name="class_id" id="course_id" class="form-control">
+                                    <option value="--select--">--Select--</option>
+                                </select>
+                                <span id="txtUserName_Error" class="error invalid-feedback hide"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
                                 <label for="txtUserName">Title <span class="text-danger">*</span></label>
                                 <input type="text" name="title" class="form-control" id="txtUserName"
                                     placeholder="Enter Head ex : Final Term" maxlength="255">
@@ -85,7 +103,7 @@
                     </div>
                     <div class="row">
                         <div class="col-md-11">
-                            <input type="submit" value="CREATE" class="btn btn-success">
+                            <input type="submit" value="SAVE" class="btn btn-success">
                 </form>
             </div>
 
