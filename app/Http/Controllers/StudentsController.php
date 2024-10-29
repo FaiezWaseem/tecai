@@ -187,6 +187,48 @@ class StudentsController extends Controller
 
     // ==================== SCHOOL ADMIN
 
+    public function SchoolAdminBulkImportStudents(Request $request)
+    {
+
+        $requestMethod = $request->method();
+
+
+        if ($requestMethod === "POST"  && $request->students) {
+
+            $students = json_decode($request->students);
+
+            foreach ($students as $student) {
+                $std = $student;
+
+                $student = new students();
+                $student->name = $std->name;
+                $student->father_name = $std->father_name;
+                $student->admission_no = $std->admission_no;
+                $student->group = $std->group;
+                $student->email = $std->email;
+                $student->password = bcrypt("87654321");
+                $student->dob = $std->dob;
+                $student->school = $std->school_id;
+                $student->class = $std->class_name;
+                $student->section = $std->section;
+                $student->gender = $std->gender ?? 'unknown';
+                $student->contact = $std->contact;
+
+                $student->save();
+            }
+
+            return response()->json([
+                'status' => 200,
+                'message' => 'Students Uploaded Successfully',
+                'students' => $request->students
+            ]);
+        } else {
+            $schools = HelperFunctionsController::getUserSchools();
+            return view('dashboard.admin.students.import.view')
+                ->with('schools', $schools)
+            ;
+        }
+    }
     public function SchoolAdminViewStudents(Request $request)
     {
 

@@ -243,6 +243,13 @@
                               </a>
                           </li>
                           <li class="nav-item">
+                              <a href="{{ route('schooladmin.students.bulk.import') }}"
+                                  class="nav-link {{ request()->is('dashboard/school_admin/students/bulk-import') ? 'active' : '' }}">
+                                  <i class="far fa fa-plus-square nav-icon"></i>
+                                  <p>Bulk Import students</p>
+                              </a>
+                          </li>
+                          <li class="nav-item">
                               <a href="{{ route('schooladmin.attendance.view') }}"
                                   class="nav-link {{ request()->is('dashboard/school_admin/attendance/create') ? 'active' : '' }}">
                                   <i class="far fa fa-eye nav-icon"></i>

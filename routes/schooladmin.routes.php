@@ -83,6 +83,14 @@ Route::middleware('CheckSchoolAdmin')->prefix('/school_admin')->group(function (
     Route::post('/students/view', [App\Http\Controllers\StudentsController::class, 'SchoolAdminViewStudents'])
         ->name('schooladmin.students.view');
     /**
+     *  Route : SchoolAdmin / bulk Import Students
+     *  # Display list of all Students
+     */
+    Route::get('/students/bulk-import', [App\Http\Controllers\StudentsController::class, 'SchoolAdminBulkImportStudents'])
+        ->name('schooladmin.students.bulk.import');
+    Route::post('/students/bulk-import', [App\Http\Controllers\StudentsController::class, 'SchoolAdminBulkImportStudents'])
+        ->name('schooladmin.students.bulk.import');
+    /**
      *  Route : SchoolAdmin / create Student
      *  # Display create Form
      */
