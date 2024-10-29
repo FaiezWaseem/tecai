@@ -14,6 +14,7 @@ class studentGrade extends Model
     protected $fillable = [
         'student_id',
         'course_id',
+        'class_id',
         'academic_id',
         'term_id',
         'total',

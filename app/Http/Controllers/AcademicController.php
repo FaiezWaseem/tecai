@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\AcademicYear;
+use App\Models\classes;
 use App\Models\school;
 use App\Models\Term;
 use Illuminate\Http\Request;
@@ -105,7 +106,12 @@ class AcademicController extends Controller
         
 
         if($school_id){
-            $terms = Term::where('school_id', $school_id)
+            $terms = Term::where('term.school_id', $school_id)
+            ->join('classes', 'classes.id', '=', 'term.class_id')
+            ->join('course', 'course.id', '=', 'term.course_id')
+            ->join('school', 'school.id', '=', 'classes.school_id')
+
+            ->select('term.*', 'classes.class_name', 'school.school_name', 'course.course_name')
             ->get();
             return view('dashboard.admin.academic.term.view' , compact('terms'));
         }
@@ -119,7 +125,36 @@ class AcademicController extends Controller
         $rqMethod = $request->method();
         $school_id = $request->query('school_id');
 
-        if($rqMethod == 'POST'){
+      
+
+
+        if ($school_id) {
+
+            $classes = classes::where('school_id', $school_id)->get();
+            return view('dashboard.admin.academic.term.create', compact('classes'));
+        }
+
+        $schoolId = HelperFunctionsController::getUserSchoolsIds();
+
+        $schools = school::whereIn('id', $schoolId)->get();
+        #
+
+        return view('dashboard.admin.academic.term.create', compact('schools'));
+    }
+    public function SchoolAdminGetAllCoursesOfClass(Request $request)
+    {
+        $class_id = $request->id;
+        $selectedCourses = HelperFunctionsController::getAllcoursesByClassId($class_id);
+        return response()->json([
+            'status' => 200,
+            'courses' => $selectedCourses,
+        ]);
+    }
+    public function SchoolAdminAddAcademicTerm(Request $request)
+    {
+
+        $school_id = $request->school_id;
+
             $request->validate([
                 'title' => 'required',
                 'total' => 'required',
@@ -129,21 +164,15 @@ class AcademicController extends Controller
             $academicYear->title = $request->title;
             $academicYear->total = $request->total;
             $academicYear->school_id = $school_id;
+            $academicYear->class_id = $request->class_id;
+            $academicYear->course_id = $request->course_id;
             $academicYear->save();
-            return redirect()->route('schooladmin.academic.term.view')->with('success', 'Academic Year Created Successfully');
-        }
-
-
-        if ($school_id) {
-            return view('dashboard.admin.academic.term.create');
-        }
-
-        $schoolId = HelperFunctionsController::getUserSchoolsIds();
-
-        $schools = school::whereIn('id', $schoolId)->get();
-        #
-
-        return view('dashboard.admin.academic.term.create', compact('schools'));
+            return response()->json([
+                'status' => 200,
+                'message' => 'Academic Year Created Successfully',
+                'academicYear' => $academicYear,
+            ]); 
+   
     }
 
 }

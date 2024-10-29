@@ -8,11 +8,9 @@
     <!-- Content Header (Page header) -->
     <div class="content-header">
         <div class="container-fluid">
-                        <!-- Display success or error messages -->
-                        @if (session('success'))
-                <div class="alert alert-success">
-                    {{ session('success') }}
-                </div>
+            <!-- Display success or error messages -->
+            @if (session('success'))
+                <div class="alert alert-success">{{ session('success') }}</div>
             @endif
 
             @if ($errors->any())
@@ -24,10 +22,11 @@
                     </ul>
                 </div>
             @endif
+
             <div class="row mb-2">
                 <div class="col-sm-6">
                     <h1 class="m-0">CBTS Exam Question View</h1>
-                </div><!-- /.col -->
+                </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a href="#">Home</a></li>
@@ -35,15 +34,14 @@
                         <li class="breadcrumb-item">Exam</li>
                         <li class="breadcrumb-item active">Views</li>
                     </ol>
-                </div><!-- /.col -->
-            </div><!-- /.row -->
-        </div><!-- /.container-fluid -->
+                </div>
+            </div>
+        </div>
     </div>
 
     <!-- Main content -->
     <section class="content">
         <div class="container-fluid">
-         
             <div class="card">
                 <div class="card-header">
                     <h3 class="card-title">Questions Bank</h3>
@@ -78,7 +76,7 @@
                                 </tr>
                             @empty
                                 <tr>
-                                    <td colspan="6" class="text-center">No questions available.</td>
+                                    <td colspan="7" class="text-center">No questions available.</td>
                                 </tr>
                             @endforelse
                         </tbody>
@@ -88,11 +86,13 @@
                                 <th>Id</th>
                                 <th>Question Type</th>
                                 <th>Question</th>
+                                <th>Chapter</th>
                                 <th>Created At</th>
                                 <th>Updated At</th>
                             </tr>
                         </tfoot>
                     </table>
+
                     {{ $questionsbank->appends(['id' =>  $exam_id])->links() }} 
                 </div>
 
@@ -124,7 +124,7 @@
                                 @foreach($examanswers as $obj) 
                                     @if($obj->q_Id == $item2->id) 
                                         <div class="question-answer col-md-12" style="margin-top: 10px;">
-                                        @if($obj->cqtype == 'true_false')
+                                            @if($obj->cqtype == 'true_false')
                                                 <div style="display:inline-flex; align-items: center;">
                                                     <input type="radio" name="ans{{ $obj->id }}[]" value="{{ $obj->value }}" {{ $obj->is_correct ? 'checked' : '' }} disabled style="margin-right: 10px;"> {{ $obj->answer }} 
                                                 </div>
@@ -145,44 +145,88 @@
                             <div class="col-md-12 text-right" style="margin-top: 15px;">
                                 <button class="btn btn-danger" 
                                         data-toggle="modal" 
-                                        data-target="#DeleteModal" 
-                                        onclick="setdeleteModalId( {{ $exam_id }} , {{ $item->id }})" 
-                                        style="font-size: 1em;"> 
-                                    <i class="fa fa-trash"></i> Remove                                </button>
+                                        data-target="#DeleteModal2" 
+                                        onclick="setDeleteModalIdd({{ $exam_id }}, {{ $item2->id }})">
+                                    <i class="fa fa-trash"></i> Remove
+                                </button>
                             </div>
 
-                            <div class="col-md-12"><hr/></div>
+
+<!-- Delete Confirmation Modal -->
+<div class="modal fade" id="DeleteModal2" tabindex="-1" role="dialog" aria-labelledby="DeleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="DeleteModalLabel">Confirm Deletion</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to delete this question?
+                <form id="deleteQuestionForm" method="POST" action="{{ url('/delete-question') }}">
+                    @csrf
+                    <input type="hidden" id="examIdInput" name="exam_id" value="">
+                    <input type="hidden" id="questionIdInput" name="question_id" value="">
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-danger" onclick="submitDeleteForm()">Delete</button>
+            </div>
+        </div>
+    </div>
+</div>
+                           
                         </div>
                     @endforeach
                 </div>
-                <!-- /.card-body -->
             </div>
-        </div><!-- /.container-fluid -->
+        </div>
     </section>
 @endsection
+<script>
+    // Set exam_id and question_id when opening the modal
+    function setDeleteModalIdd(examId, questionId) {
+        document.getElementById('examIdInput').value = examId;
+        document.getElementById('questionIdInput').value = questionId;
+    }
 
-@section('footer')
-    <script src="{{ asset('plugins/datatables/jquery.dataTables.min.js') }}"></script>
-    <script src="{{ asset('plugins/datatables-bs4/js/dataTables.bootstrap4.min.js') }}"></script>
-    <script src="{{ asset('plugins/datatables-responsive/js/dataTables.responsive.min.js') }}"></script>
-    <script src="{{ asset('plugins/datatables-responsive/js/responsive.bootstrap4.min.js') }}"></script>
-    <script src="{{ asset('plugins/datatables-buttons/js/dataTables.buttons.min.js') }}"></script>
-    <script src="{{ asset('plugins/datatables-buttons/js/buttons.bootstrap4.min.js') }}"></script>
-    <script src="{{ asset('plugins/jszip/jszip.min.js') }}"></script>
-    <script src="{{ asset('plugins/pdfmake/pdfmake.min.js') }}"></script>
-    <script src="{{ asset('plugins/pdfmake/vfs_fonts.js') }}"></script>
-    <script src="{{ asset('plugins/datatables-buttons/js/buttons.html5.min.js') }}"></script>
-    <script src="{{ asset('plugins/datatables-buttons/js/buttons.print.min.js') }}"></script>
-    <script src="{{ asset('plugins/datatables-buttons/js/buttons.colVis.min.js') }}"></script>
-    <script>
-        $(function() {
-            $("#example1").DataTable({
-                "responsive": true,
-                "info": false,
-                "autoWidth": false,
-                paging: false,
-                "buttons": ["copy", "csv", "excel", "pdf", "print"]
-            }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
-        });
-    </script>
-@endsection
+   function submitDeleteForm() {
+    const examId = document.getElementById('examIdInput').value;
+    const questionId = document.getElementById('questionIdInput').value;
+
+    const url = `/cbts/examquestion/view/${questionId}`; // Ensure this is correct
+
+    fetch(url, {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': '{{ csrf_token() }}', // Ensure CSRF token is included
+        },
+        body: JSON.stringify({
+            exam_id: examId,
+            question_id: questionId
+        })
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        return response.json();
+    })
+    .then(data => {
+        if (data.status === 200) {
+            alert(data.message);
+            location.reload(); // Reload to show changes
+        } else {
+            alert(data.message);
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('An error occurred while deleting the question. See console for details.');
+    });
+}
+
+</script>

@@ -13,6 +13,8 @@ class Term extends Model
 
     protected $fillable = [
         'school_id',
+        'class_id',
+        'course_id',
         'title',
         'total',
     ];

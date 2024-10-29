@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\AcademicYear;
+use App\Models\ClassCourses;
+use App\Models\classes;
+use App\Models\course;
 use App\Models\SchoolsAdmin;
 use App\Models\students;
 use App\Models\teachers;
@@ -60,5 +63,19 @@ class HelperFunctionsController extends Controller
     }
     public static function getcurrentAcademicYear($school_id){
         return AcademicYear::where('school_id', '=', $school_id)->where('active', '=', 1)->first();
+    }
+    public static function getAllcoursesByClassId($class_id){
+       
+        $class = classes::find($class_id);
+
+        $selectedCourseIds = ClassCourses::where('class_id', $class_id)->pluck('course_id');
+
+        // Retrieve only the selected courses
+        $selectedCourses = course::whereIn('id', $selectedCourseIds)
+                                 ->where('school_id', $class->school_id)
+                                 ->get();
+
+
+        return $selectedCourses;
     }
 }

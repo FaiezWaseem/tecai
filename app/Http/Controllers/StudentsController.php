@@ -401,9 +401,11 @@ class StudentsController extends Controller
 
         $notices = NoticeBoard::where('school_id', $student->school)
             ->get();
+        $cbtsexam = Exam::where('school_id', $student->school)->where('ex_class_id', $class->id)
+            ->get();
 
 
-        return view('dashboard.students.home.view', compact('notices', 'marks', 'attendance', 'present', 'absent', 'late', 'assignments'));
+        return view('dashboard.students.home.view', compact('notices','cbtsexam', 'marks', 'attendance', 'present', 'absent', 'late', 'assignments'));
     }
 
     public function StudentViewAssignments(Request $request)

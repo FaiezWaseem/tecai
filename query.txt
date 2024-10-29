@@ -731,3 +731,29 @@ MODIFY COLUMN ex_start_date VARCHAR(255);
 
 ALTER TABLE exam
 MODIFY COLUMN ex_end_date VARCHAR(255);
+
+
+
+
+
+-- Add columns
+ALTER TABLE term
+ADD COLUMN class_id BIGINT NULL,
+ADD COLUMN course_id BIGINT NULL;
+
+
+ALTER TABLE student_grade
+ADD COLUMN class_id int NULL;
+
+
+
+CREATE TABLE `democbts` (
+  `id` BIGINT PRIMARY KEY AUTO_INCREMENT NOT NULL,
+  `class` varchar(255) NOT NULL,
+  `class_id` int NOT NULL,
+  `board_id` int NOT NULL,
+  `user_name` varchar(255) DEFAULT NULL,
+  `password` varchar(255) DEFAULT NULL,
+  `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);

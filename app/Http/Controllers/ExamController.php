@@ -8,11 +8,13 @@ use App\Models\{
     Exam,
     ExamQuestion,
     Tboards,
-    course,
-    classes,
+    TCourses,
+    TClasses,
+    Tchapters,
     school,
-    Chapter,
     students,
+    demostudents,
+
     ExamChapter,
     ExamResult
 };
@@ -30,51 +32,54 @@ class ExamController extends Controller
     {
         $boards = Tboards::all();
         $schools = School::all();
-    
+        $classes = TClasses::all();
+        $courses = TCourses::all();
         $rqMethod = $request->method();
     
         if ($rqMethod === 'GET') {
             $exams = Exam::join('tboards', 'tboards.id', '=', 'exam.ex_board_id')
-    ->join('classes', 'classes.id', '=', 'exam.ex_class_id')
-    ->join('course', 'course.id', '=', 'exam.ex_course_id')
+    ->join('tclasses', 'tclasses.id', '=', 'exam.ex_class_id')
+    ->join('tcourse', 'tcourse.id', '=', 'exam.ex_course_id')
     ->join('school', 'school.id', '=', 'exam.school_id')       
     ->select(
         'exam.*',
         'school.school_name as school',
-        'classes.class_name',
+        'tclasses.class_name',
         'exam.ex_title AS title',
         'tboards.board_name',
-        'course.course_name'
+        'tcourse.course_name'
     )
     ->paginate(10);
 
 
     $examschapter = ExamChapter::join('exam', 'exam.id', '=', 'exam_chapter.exam_id') 
-        ->join('chapter', 'chapter.id', '=', 'exam_chapter.chapter_id')
+        ->join('tchapters', 'tchapters.id', '=', 'exam_chapter.chapter_id')
 
         ->select(
             'exam_chapter.*', 
-            'chapter.chapter_title as chapter_name'
+            'tchapters.chapter_title as chapter_name'
         )
         ->paginate(10);
     
 
 return view('dashboard.superadmin.cbts.exam.view')
-    ->with('schools', $schools)
     ->with('exams', $exams)
     ->with('examschapter', $examschapter) 
-    ->with('boards', $boards);    
+    ->with('boards', $boards)    
+    ->with('classes', $classes)
+    ->with('schools', $schools)
+    ->with('courses', $courses);
     }
         
         // ----------------------Exam filter-------------------------------------
         elseif ($rqMethod === 'POST') {
             
     $examschapter = ExamChapter::join('exam', 'exam.id', '=', 'exam_chapter.exam_id') 
-    ->join('chapter', 'chapter.id', '=', 'exam_chapter.chapter_id')
+    ->join('tchapters', 'tchapters.id', '=', 'exam_chapter.chapter_id')
 
     ->select(
         'exam_chapter.*', 
-        'chapter.chapter_title as chapter_name'
+        'tchapters.chapter_title as chapter_name'
     )
     ->paginate(10);
 
@@ -85,15 +90,15 @@ return view('dashboard.superadmin.cbts.exam.view')
             ->where('exam.school_id', $request->school)
             ->join('tboards', 'tboards.id', '=', 'exam.ex_board_id')
             ->join('school', 'school.id', '=', 'exam.school_id')       
-            ->join('classes', 'classes.id', '=', 'exam.ex_class_id')
-            ->join('course', 'course.id', '=', 'exam.ex_course_id')
+            ->join('tclasses', 'tclasses.id', '=', 'exam.ex_class_id')
+            ->join('tcourse', 'tcourse.id', '=', 'exam.ex_course_id')
             ->select(
                 'exam.*', 
-                'classes.class_name', 
+                'tclasses.class_name', 
                 'tboards.board_name',
                 'school.school_name as school',
                 'exam.ex_title AS title', 
-                'course.course_name'
+                'tcourse.course_name'
             )
             ->paginate(50);
         
@@ -103,8 +108,9 @@ return view('dashboard.superadmin.cbts.exam.view')
                 ->with('exams', $exams) 
                 ->with('examschapter', $examschapter) 
                 ->with('boards', $boards)
-                ->with('schools', $schools);
-
+                ->with('classes', $classes)
+                ->with('schools', $schools)
+                ->with('courses', $courses);
         }
     }
 
@@ -120,26 +126,26 @@ return view('dashboard.superadmin.cbts.exam.view')
         if ($rqMethod === 'GET') {
             $exams = Exam::whereIn('exam.school_id', $schoolId)
             ->join('tboards', 'tboards.id', '=', 'exam.ex_board_id')
-    ->join('classes', 'classes.id', '=', 'exam.ex_class_id')
-    ->join('course', 'course.id', '=', 'exam.ex_course_id')
+    ->join('tclasses', 'tclasses.id', '=', 'exam.ex_class_id')
+    ->join('tcourse', 'tcourse.id', '=', 'exam.ex_course_id')
     ->join('school', 'school.id', '=', 'exam.school_id')       
     ->select(
         'exam.*',
         'school.school_name as school',
-        'classes.class_name',
+        'tclasses.class_name',
         'exam.ex_title AS title',
         'tboards.board_name',
-        'course.course_name'
+        'tcourse.course_name'
     )
     ->paginate(10);
 
 
     $examschapter = ExamChapter::join('exam', 'exam.id', '=', 'exam_chapter.exam_id') 
-        ->join('chapter', 'chapter.id', '=', 'exam_chapter.chapter_id')
+        ->join('tchapters', 'tchapters.id', '=', 'exam_chapter.chapter_id')
 
         ->select(
             'exam_chapter.*', 
-            'chapter.chapter_title as chapter_name'
+            'tchapters.chapter_title as chapter_name'
         )
         ->paginate(10);
     
@@ -155,11 +161,11 @@ return view('dashboard.admin.cbts.exam.view')
         elseif ($rqMethod === 'POST') {
             
     $examschapter = ExamChapter::join('exam', 'exam.id', '=', 'exam_chapter.exam_id') 
-    ->join('chapter', 'chapter.id', '=', 'exam_chapter.chapter_id')
+    ->join('tchapters', 'tchapters.id', '=', 'exam_chapter.chapter_id')
 
     ->select(
         'exam_chapter.*', 
-        'chapter.chapter_title as chapter_name'
+        'tchapters.chapter_title as chapter_name'
     )
     ->paginate(10);
             $exams = Exam::where('exam.ex_board_id', $request->ex_board_id)
@@ -168,15 +174,15 @@ return view('dashboard.admin.cbts.exam.view')
             ->where('exam.school_id', $request->school)
             ->join('tboards', 'tboards.id', '=', 'exam.ex_board_id')
             ->join('school', 'school.id', '=', 'exam.school_id')       
-            ->join('classes', 'classes.id', '=', 'exam.ex_class_id')
-            ->join('course', 'course.id', '=', 'exam.ex_course_id')
+            ->join('tclasses', 'tclasses.id', '=', 'exam.ex_class_id')
+            ->join('tcourse', 'tcourse.id', '=', 'exam.ex_course_id')
             ->select(
                 'exam.*', 
-                'classes.class_name', 
+                'tclasses.class_name', 
                 'tboards.board_name',
                 'school.school_name as school',
                 'exam.ex_title AS title', 
-                'course.course_name'
+                'tcourse.course_name'
             )
             ->paginate(50);
         
@@ -209,7 +215,7 @@ return view('dashboard.admin.cbts.exam.view')
                 return redirect()->back()->withErrors(['Student not found.']);
             }
             
-            $class = Classes::where('class_name', $student->class)->first();
+            $class = Tclasses::where('class_name', $student->class)->first();
             
             if (!$class) {
                 return redirect()->back()->withErrors(['Class not found.']);
@@ -220,8 +226,8 @@ return view('dashboard.admin.cbts.exam.view')
 
         
             $exams = Exam::join('tboards', 'tboards.id', '=', 'exam.ex_board_id')
-                ->join('classes', 'classes.id', '=', 'exam.ex_class_id')
-                ->join('course', 'course.id', '=', 'exam.ex_course_id')
+                ->join('tclasses', 'tclasses.id', '=', 'exam.ex_class_id')
+                ->join('tcourse', 'tcourse.id', '=', 'exam.ex_course_id')
                 ->join('school', 'school.id', '=', 'exam.school_id')
                 ->where('exam.ex_class_id', $userClassId)
                 ->where('exam.school_id', $userSchoolId)
@@ -230,25 +236,88 @@ return view('dashboard.admin.cbts.exam.view')
     ->select(
         'exam.*',
         'school.school_name as school',
-        'classes.class_name',
+        'tclasses.class_name',
         'exam.ex_title AS title',
         'tboards.board_name',
-        'course.course_name'
+        'tcourse.course_name'
     )
     ->paginate(10);
 
 
     $examschapter = ExamChapter::join('exam', 'exam.id', '=', 'exam_chapter.exam_id') 
-        ->join('chapter', 'chapter.id', '=', 'exam_chapter.chapter_id')
+        ->join('tchapters', 'tchapters.id', '=', 'exam_chapter.chapter_id')
 
         ->select(
             'exam_chapter.*', 
-            'chapter.chapter_title as chapter_name'
+            'tchapters.chapter_title as chapter_name'
         )
         ->paginate(10);
     
 
 return view('dashboard.students.cbts.exam.view')
+    ->with('exams', $exams)
+    ->with('examschapter', $examschapter);
+    }
+
+    }
+
+
+
+
+    
+    public function DemoStudentViewCBTSExamView(Request $request){
+      
+    
+        $rqMethod = $request->method();
+        if ($rqMethod === 'GET') {
+           
+            $boardId = 1;
+
+            $student = demostudents::all()->first();
+            
+            if (!$student) {
+                return redirect()->back()->withErrors(['Student not found.']);
+            }
+            
+            $class = TClasses::where('class_name', $student->class)->first();
+            
+            if (!$class) {
+                return redirect()->back()->withErrors(['Class not found.']);
+            }
+            
+            $userClassId = $class->id;
+
+        
+            $exams = Exam::join('tboards', 'tboards.id', '=', 'exam.ex_board_id')
+                ->join('tclasses', 'tclasses.id', '=', 'exam.ex_class_id')
+                ->join('tcourse', 'tcourse.id', '=', 'exam.ex_course_id')
+                ->join('school', 'school.id', '=', 'exam.school_id')
+                ->where('exam.ex_class_id', $userClassId)
+                ->where('exam.ex_board_id', $student->board_id)
+                                
+  
+    ->select(
+        'exam.*',
+        'school.school_name as school',
+        'tclasses.class_name',
+        'exam.ex_title AS title',
+        'tboards.board_name',
+        'tcourse.course_name'
+    )
+    ->paginate(10);
+
+
+    $examschapter = ExamChapter::join('exam', 'exam.id', '=', 'exam_chapter.exam_id') 
+        ->join('tchapters', 'tchapters.id', '=', 'exam_chapter.chapter_id')
+
+        ->select(
+            'exam_chapter.*', 
+            'tchapters.chapter_title as chapter_name'
+        )
+        ->paginate(10);
+    
+
+return view('dashboard.demostudents.cbts.exam.view')
     ->with('exams', $exams)
     ->with('examschapter', $examschapter);
     }
@@ -262,8 +331,8 @@ return view('dashboard.students.cbts.exam.view')
     public function StudentViewCBTSTakeExam(Request $request)
     {
         $boards = Tboards::all();
-        $classes = classes::all();
-        $courses = course::all();
+        $tclasses = Tclasses::all();
+        $TCourses = TCourses::all();
         $schools = School::all();
     
         $rqMethod = $request->method();
@@ -280,13 +349,39 @@ return view('dashboard.students.cbts.exam.takeexam')
         
         
     }
+
+
+    
+    
+
+    public function DemoStudentViewCBTSTakeExam(Request $request)
+    {
+        $boards = Tboards::all();
+        $tclasses = Tclasses::all();
+        $TCourses = TCourses::all();
+        $schools = School::all();
+    
+        $rqMethod = $request->method();
+        if ($rqMethod === 'GET') {
+        
+
+        
+            $exams= Exam::where('id', $request->exam_id)->first(); 
+                         
+
+return view('dashboard.demostudents.cbts.exam.takeexam')
+    ->with('exams', $exams);
+    }
+        
+        
+    }
   
         // ----------------------Start Exam-------------------------------------
         public function StudentViewCBTSStartExam(Request $request)
         {
             $boards = Tboards::all();
-            $classes = classes::all();
-            $courses = course::all();
+            $tclasses = TClasses::all();
+            $TCourses = TCourses::all();
             $schools = School::all();
             $exam= Exam::where('id', $request->exam_id)->first(); 
 
@@ -320,16 +415,16 @@ if ($exam->ex_start_date > $currentDate) {
             if ($request->isMethod('GET')) {
         
                 $exams = Exam::join('tboards', 'tboards.id', '=', 'exam.ex_board_id')
-                    ->join('classes', 'classes.id', '=', 'exam.ex_class_id')
-                    ->join('course', 'course.id', '=', 'exam.ex_course_id')
+                    ->join('tclasses', 'tclasses.id', '=', 'exam.ex_class_id')
+                    ->join('tcourse', 'tcourse.id', '=', 'exam.ex_course_id')
                     ->join('school', 'school.id', '=', 'exam.school_id')
                     ->select(
                         'exam.*',
                         'school.school_name as school',
-                        'classes.class_name',
+                        'tclasses.class_name',
                         'exam.ex_title AS title',
                         'tboards.board_name',
-                        'course.course_name'
+                        'tcourse.course_name'
                     )
                     ->paginate(10);
         
@@ -351,8 +446,8 @@ if ($exam->ex_start_date > $currentDate) {
                     'examQuestion' => $examQuestion,
                     'examanswers' => $examAnswers,
                     'boards' => $boards,
-                    'classes' => $classes,
-                    'courses' => $courses,
+                    'tclasses' => $tclasses,
+                    'TCourses' => $TCourses,
                 ]);
             }
             if ($request->isMethod('POST')) {
@@ -450,26 +545,26 @@ if ($exam->ex_start_date > $currentDate) {
                 $examResult->save();
                 $schools = School::all();
          $examschapter = ExamChapter::join('exam', 'exam.id', '=', 'exam_chapter.exam_id') 
-        ->join('chapter', 'chapter.id', '=', 'exam_chapter.chapter_id')
+        ->join('tchapters', 'tchapters.id', '=', 'exam_chapter.chapter_id')
 
         ->select(
             'exam_chapter.*', 
-            'chapter.chapter_title as chapter_name'
+            'tchapters.chapter_title as chapter_name'
         )
         ->paginate(10);
    
         $result = ExamResult::join('school', 'school.id', '=', 'exam_taken_exams.school_id')
         ->join('exam', 'exam.id', '=', 'exam_taken_exams.exam_id')
         ->join('students', 'exam_taken_exams.student_id', '=', 'students.id') 
-        ->join('classes', 'exam_taken_exams.class_id', '=', 'classes.id') 
-        ->join('course', 'exam_taken_exams.subject_id', '=', 'course.id')
+        ->join('tclasses', 'exam_taken_exams.class_id', '=', 'tclasses.id') 
+        ->join('tcourse', 'exam_taken_exams.subject_id', '=', 'tcourse.id')
         ->select(
             'exam_taken_exams.*',
             'school.school_name as school_name',
             'students.name as student_name',
-            'classes.class_name as class_name', 
+            'tclasses.class_name as class_name', 
             'exam.ex_title as exam_title' ,
-            'course.course_name as course_name' 
+            'tcourse.course_name as course_name' 
     
         )
                 ->paginate(50);
@@ -479,7 +574,7 @@ if ($exam->ex_start_date > $currentDate) {
                 ->with('examschapter', $examschapter)
                 ->with('schools', $schools)
                 ->with('result', $result)
-                ->with('courses', $courses);
+                ->with('TCourses', $TCourses);
             }
           
         }
@@ -501,6 +596,210 @@ if ($exam->ex_start_date > $currentDate) {
 
 
 
+   // ----------------------Start Exam-------------------------------------
+   public function DemoStudentViewCBTSStartExam(Request $request)
+   {
+       $boards = Tboards::all();
+       $tclasses = Tclasses::all();
+       $TCourses = TCourses::all();
+       $schools = School::all();
+       $exam= Exam::where('id', $request->exam_id)->first(); 
+
+       if (!$exam) {
+           return redirect()->back()->with('error', 'Exam not found.');
+       }
+       
+// Get the current date in Y-m-d format
+$currentDate = date('Y-m-d');
+
+// Check if the exam has already ended
+if ($exam->ex_end_date < $currentDate) {
+return redirect()->back()->withErrors(['message' => "Exam time already expired"]);
+}
+
+// Check if the exam has not started yet
+if ($exam->ex_start_date > $currentDate) {
+return redirect()->back()->withErrors(['message' => "Please wait for the exam to start"]);
+}
+
+// Check if the student has already completed the exam in the exam_taken_exam table
+$studentId = session('user')['id'];
+$examTaken = ExamResult::where('student_id', $studentId)
+   ->where('exam_id', $exam->id)
+   ->where('exam_status', 1) 
+   ->first();
+
+if ($examTaken) {
+   return redirect()->back()->withErrors(['message' => "You have already completed this exam."]);
+}
+       if ($request->isMethod('GET')) {
+   
+           $exams = Exam::join('tboards', 'tboards.id', '=', 'exam.ex_board_id')
+               ->join('tclasses', 'tclasses.id', '=', 'exam.ex_class_id')
+               ->join('tcourse', 'tcourse.id', '=', 'exam.ex_course_id')
+               ->join('school', 'school.id', '=', 'exam.school_id')
+               ->select(
+                   'exam.*',
+                   'school.school_name as school',
+                   'tclasses.class_name',
+                   'exam.ex_title AS title',
+                   'tboards.board_name',
+                   'tcourse.course_name'
+               )
+               ->paginate(10);
+   
+           $examQuestion = ExamQuestion::join('c_questionbank', 'c_questionbank.id', '=', 'exam_question.q_id')
+               ->select('exam_question.*', 'c_questionbank.*', 'c_questionbank.cquestion AS question')
+               ->where('exam_question.exam_id', $request->exam_id)
+               ->inRandomOrder() 
+               ->get();
+   
+           $examAnswers = Canswer::join('exam_question', 'exam_question.q_id', '=', 'c_answer.q_Id')
+               ->join('c_questionbank', 'c_questionbank.id', '=', 'c_answer.q_Id')
+               ->select('exam_question.*', 'c_questionbank.*', 'c_answer.*')
+               ->inRandomOrder() 
+               ->get();
+   
+           return view('dashboard.demostudents.cbts.exam.startexam', [
+               'schools' => $schools,
+               'exam' => Exam::find($request->exam_id),
+               'examQuestion' => $examQuestion,
+               'examanswers' => $examAnswers,
+               'boards' => $boards,
+               'tclasses' => $tclasses,
+               'TCourses' => $TCourses,
+           ]);
+       }
+       if ($request->isMethod('POST')) {
+           $exam = Exam::find($request->exam_id);
+
+           if (!$exam) {
+               return redirect()->back()->with('error', 'Exam not found.');
+           }
+           
+          
+           
+           $answers = $request->input('answer');
+           $total_correct_answer = 0;
+           $total_incorrect_answer = 0;
+           $total_obtain_mark = 0;
+           $total_marks = $request->input('total_marks', []);
+           
+           $total_score = array_sum($total_marks); 
+           $total_question = count($total_marks);
+           
+           if (!empty($answers)) {
+               foreach ($answers as $ans_key => $answer) {
+                   if (in_array($ans_key, ['mcqs', 'true_false'])) {
+                       foreach ($answer as $q_key => $obj) {
+                           $answer_id = $obj[0];
+                           $result = Canswer::find($answer_id);
+                           if ($result && $result->is_correct) {
+                               $total_correct_answer++;
+                               $total_obtain_mark += $total_marks[$q_key] ?? 0;
+                           } else {
+                               $total_incorrect_answer++;
+                           }
+                       }
+                   } elseif ($ans_key == 'fill_in_the_blanks') {
+                       foreach ($answer as $q_key => $user_inputs) {
+                           if (is_array($user_inputs)) {
+                               $is_correct_count = 0;
+                               $total_correct_answers = Canswer::where('q_id', $q_key)->pluck('answer')->map(function ($item) {
+                                   return strtolower(trim($item)); // Normalize correct answers
+                               });
+                               
+                               foreach ($user_inputs as $user_input) {
+                                   $normalized_input = strtolower(trim($user_input)); 
+                                   if ($total_correct_answers->contains($normalized_input)) {
+                                       $is_correct_count++;
+                                   }
+                               }
+                               
+                               if ($is_correct_count > 0) {
+                                   $total_correct_answer++;
+                                   $total_obtain_mark += $total_marks[$q_key] ?? 0; 
+                               } else {
+                                   $total_incorrect_answer++;
+                               }
+                           }
+                       }
+                   }
+               }
+           }
+   
+           $result_status = 'failed'; 
+           $obtain_mark_percent = 0;
+   
+           if ($total_obtain_mark > 0 && isset($exam->ex_pass_mark) && $exam->ex_pass_mark > 0) {
+               $obtain_mark_percent = $total_obtain_mark; 
+               $result_status = ($obtain_mark_percent >= $exam->ex_pass_mark) ? 'passed' : 'failed';
+           }
+   
+           $studentId = session('user')['id'];
+           $section = session('user')['section'];
+   
+           $total_answered = $total_correct_answer + $total_incorrect_answer;
+   
+           $not_answered = $total_question - $total_answered;
+   
+           $examResult = new ExamResult;
+           $examResult->school_id = $exam->school_id;
+           $examResult->student_id = $studentId;
+           $examResult->exam_id = $exam->id;
+           $examResult->class_id = $exam->ex_class_id;
+           $examResult->section = $section; 
+           $examResult->subject_id = $exam->ex_course_id;
+           $examResult->total_question = $total_question;
+           $examResult->total_answer = $total_answered; // Total answered
+           $examResult->total_mark = $total_score;
+           $examResult->total_correct_answer = $total_correct_answer;
+           $examResult->total_incorrect_answer = $total_incorrect_answer;
+           $examResult->total_obtain_mark = $total_obtain_mark;
+           $examResult->obtain_mark_percent = $obtain_mark_percent;
+           $examResult->not_answer = $not_answered; // Save not answered questions
+           $examResult->result_status = $result_status;
+           $examResult->exam_status = 1;
+
+   
+           $examResult->save();
+           $schools = School::all();
+    $examschapter = ExamChapter::join('exam', 'exam.id', '=', 'exam_chapter.exam_id') 
+   ->join('tchapters', 'tchapters.id', '=', 'exam_chapter.chapter_id')
+
+   ->select(
+       'exam_chapter.*', 
+       'tchapters.chapter_title as chapter_name'
+   )
+   ->paginate(10);
+
+   $result = ExamResult::join('school', 'school.id', '=', 'exam_taken_exams.school_id')
+   ->join('exam', 'exam.id', '=', 'exam_taken_exams.exam_id')
+   ->join('students', 'exam_taken_exams.student_id', '=', 'students.id') 
+   ->join('tclasses', 'exam_taken_exams.class_id', '=', 'tclasses.id') 
+   ->join('tcourse', 'exam_taken_exams.subject_id', '=', 'tcourse.id')
+   ->select(
+       'exam_taken_exams.*',
+       'school.school_name as school_name',
+       'students.name as student_name',
+       'tclasses.class_name as class_name', 
+       'exam.ex_title as exam_title' ,
+       'tcourse.course_name as course_name' 
+
+   )
+           ->paginate(50);
+
+   
+           return view('dashboard.demostudents.cbts.exam.result')
+           ->with('examschapter', $examschapter)
+           ->with('schools', $schools)
+           ->with('result', $result)
+           ->with('TCourses', $TCourses);
+       }
+     
+   }
+   
+
 
 
 
@@ -520,11 +819,11 @@ public function SuperAdminViewCBTSResult(Request $request)
     $schools = School::all();
     
     $examschapter = ExamChapter::join('exam', 'exam.id', '=', 'exam_chapter.exam_id') 
-        ->join('chapter', 'chapter.id', '=', 'exam_chapter.chapter_id')
+        ->join('tchapters', 'tchapters.id', '=', 'exam_chapter.chapter_id')
 
         ->select(
             'exam_chapter.*', 
-            'chapter.chapter_title as chapter_name'
+            'tchapters.chapter_title as chapter_name'
         )
         ->paginate(10);
         
@@ -532,15 +831,15 @@ public function SuperAdminViewCBTSResult(Request $request)
     $result = ExamResult::join('school', 'school.id', '=', 'exam_taken_exams.school_id')
     ->join('exam', 'exam.ex_class_id', '=', 'exam_taken_exams.class_id')
     ->join('students', 'exam_taken_exams.student_id', '=', 'students.id') 
-    ->join('classes', 'exam_taken_exams.class_id', '=', 'classes.id') 
-    ->join('course', 'exam_taken_exams.subject_id', '=', 'course.id')
+    ->join('tclasses', 'exam_taken_exams.class_id', '=', 'tclasses.id') 
+    ->join('tcourse', 'exam_taken_exams.subject_id', '=', 'tcourse.id')
     ->select(
         'exam_taken_exams.*',
         'school.school_name as school_name',
         'students.name as student_name',
-        'classes.class_name as class_name', 
+        'tclasses.class_name as class_name', 
         'exam.ex_title as exam_title' ,
-        'course.course_name as course_name' 
+        'tcourse.course_name as course_name' 
 
     )
     ->distinct()
@@ -561,15 +860,15 @@ public function SuperAdminViewCBTSResult(Request $request)
             ->join('exam', 'exam.id', '=', 'exam_taken_exams.exam_id')
             ->join('school', 'school.id', '=', 'exam_taken_exams.school_id')
             ->join('students', 'exam_taken_exams.student_id', '=', 'students.id') 
-            ->join('classes', 'exam_taken_exams.class_id', '=', 'classes.id') 
-            ->join('course', 'exam_taken_exams.subject_id', '=', 'course.id')
+            ->join('tclasses', 'exam_taken_exams.class_id', '=', 'tclasses.id') 
+            ->join('tcourse', 'exam_taken_exams.subject_id', '=', 'tcourse.id')
             ->select(
                 'exam_taken_exams.*',
                 'school.school_name as school_name',
                 'students.name as student_name',
-                'classes.class_name as class_name', 
+                'tclasses.class_name as class_name', 
                 'exam.ex_title as exam_title' ,
-                'course.course_name as course_name' 
+                'tcourse.course_name as course_name' 
         
             )
             ->paginate(50);
@@ -594,11 +893,11 @@ public function SchoolAdminViewCBTSResult(Request $request)
     $schoolId = HelperFunctionsController::getUserSchoolsIds();
 
     $examschapter = ExamChapter::join('exam', 'exam.id', '=', 'exam_chapter.exam_id') 
-        ->join('chapter', 'chapter.id', '=', 'exam_chapter.chapter_id')
+        ->join('tchapters', 'tchapters.id', '=', 'exam_chapter.chapter_id')
 
         ->select(
             'exam_chapter.*', 
-            'chapter.chapter_title as chapter_name'
+            'tchapters.chapter_title as chapter_name'
         )
         ->paginate(10);
         
@@ -607,15 +906,15 @@ public function SchoolAdminViewCBTSResult(Request $request)
     ->join('school', 'school.id', '=', 'exam_taken_exams.school_id')
     ->join('exam', 'exam.ex_class_id', '=', 'exam_taken_exams.class_id')
     ->join('students', 'exam_taken_exams.student_id', '=', 'students.id') 
-    ->join('classes', 'exam_taken_exams.class_id', '=', 'classes.id') 
-    ->join('course', 'exam_taken_exams.subject_id', '=', 'course.id')
+    ->join('tclasses', 'exam_taken_exams.class_id', '=', 'tclasses.id') 
+    ->join('tcourse', 'exam_taken_exams.subject_id', '=', 'tcourse.id')
     ->select(
         'exam_taken_exams.*',
         'school.school_name as school_name',
         'students.name as student_name',
-        'classes.class_name as class_name', 
+        'tclasses.class_name as class_name', 
         'exam.ex_title as exam_title' ,
-        'course.course_name as course_name' 
+        'tcourse.course_name as course_name' 
 
     )
     ->distinct()
@@ -637,15 +936,15 @@ public function SchoolAdminViewCBTSResult(Request $request)
             ->join('exam', 'exam.id', '=', 'exam_taken_exams.exam_id')
             ->join('school', 'school.id', '=', 'exam_taken_exams.school_id')
             ->join('students', 'exam_taken_exams.student_id', '=', 'students.id') 
-            ->join('classes', 'exam_taken_exams.class_id', '=', 'classes.id') 
-            ->join('course', 'exam_taken_exams.subject_id', '=', 'course.id')
+            ->join('tclasses', 'exam_taken_exams.class_id', '=', 'tclasses.id') 
+            ->join('tcourse', 'exam_taken_exams.subject_id', '=', 'tcourse.id')
             ->select(
                 'exam_taken_exams.*',
                 'school.school_name as school_name',
                 'students.name as student_name',
-                'classes.class_name as class_name', 
+                'tclasses.class_name as class_name', 
                 'exam.ex_title as exam_title' ,
-                'course.course_name as course_name' 
+                'tcourse.course_name as course_name' 
         
             )
             ->paginate(50);
@@ -666,16 +965,16 @@ public function StudentViewCBTSResult(Request $request)
 {
     $rqMethod = $request->method();
 
-    $classes = classes::all();
-    $courses = course::all();
+    $tclasses = tclasses::all();
+    $TCourses = tcourse::all();
     $schools = School::all();
     
     $examschapter = ExamChapter::join('exam', 'exam.id', '=', 'exam_chapter.exam_id') 
-        ->join('chapter', 'chapter.id', '=', 'exam_chapter.chapter_id')
+        ->join('tchapters', 'tchapters.id', '=', 'exam_chapter.chapter_id')
 
         ->select(
             'exam_chapter.*', 
-            'chapter.chapter_title as chapter_name'
+            'tchapters.chapter_title as chapter_name'
         )
         
         ->paginate(10);
@@ -684,15 +983,15 @@ public function StudentViewCBTSResult(Request $request)
     $result = ExamResult::join('school', 'school.id', '=', 'exam_taken_exams.school_id')
     ->join('exam', 'exam.id', '=', 'exam_taken_exams.exam_id')
     ->join('students', 'exam_taken_exams.student_id', '=', 'students.id') 
-    ->join('classes', 'exam_taken_exams.class_id', '=', 'classes.id') 
-    ->join('course', 'exam_taken_exams.subject_id', '=', 'course.id')
+    ->join('tclasses', 'exam_taken_exams.class_id', '=', 'tclasses.id') 
+    ->join('tcourse', 'exam_taken_exams.subject_id', '=', 'tcourse.id')
     ->select(
         'exam_taken_exams.*',
         'school.school_name as school_name',
         'students.name as student_name',
-        'classes.class_name as class_name', 
+        'tclasses.class_name as class_name', 
         'exam.ex_title as exam_title' ,
-        'course.course_name as course_name' 
+        'tcourse.course_name as course_name' 
 
     )
     ->distinct()
@@ -701,7 +1000,7 @@ public function StudentViewCBTSResult(Request $request)
     return view('dashboard.students.cbts.exam.result')
     ->with('schools', $schools)
     ->with('result', $result)
-    ->with('courses', $courses)
+    ->with('TCourses', $TCourses)
     ->with('examschapter', $examschapter);
 }
 
@@ -714,15 +1013,15 @@ public function StudentViewCBTSResult(Request $request)
             ->join('exam', 'exam.id', '=', 'exam_taken_exams.exam_id')
             ->join('school', 'school.id', '=', 'exam_taken_exams.school_id')
             ->join('students', 'exam_taken_exams.student_id', '=', 'students.id') 
-            ->join('classes', 'exam_taken_exams.class_id', '=', 'classes.id') 
-            ->join('course', 'exam_taken_exams.subject_id', '=', 'course.id')
+            ->join('tclasses', 'exam_taken_exams.class_id', '=', 'tclasses.id') 
+            ->join('tcourse', 'exam_taken_exams.subject_id', '=', 'tcourse.id')
             ->select(
                 'exam_taken_exams.*',
                 'school.school_name as school_name',
                 'students.name as student_name',
-                'classes.class_name as class_name', 
+                'tclasses.class_name as class_name', 
                 'exam.ex_title as exam_title' ,
-                'course.course_name as course_name' 
+                'tcourse.course_name as course_name' 
         
             )
             ->paginate(50);
@@ -731,8 +1030,8 @@ public function StudentViewCBTSResult(Request $request)
     
             return view('dashboard.students.cbts.exam.result')
                 ->with('result', $result)
-                ->with('classes', $classes)
-                ->with('courses', $courses)
+                ->with('tclasses', $tclasses)
+                ->with('TCourses', $TCourses)
                 ->with('examschapter', $examschapter)
                 ->with('schools', $schools);
 
@@ -743,32 +1042,80 @@ public function StudentViewCBTSResult(Request $request)
 
 
 
+public function DemoStudentViewCBTSResult(Request $request)
+{
+    $rqMethod = $request->method();
+
+    $tclasses = Tclasses::all();
+    $TCourses = Tcourses::all();
+    $schools = School::all();
+    
+    $examschapter = ExamChapter::join('exam', 'exam.id', '=', 'exam_chapter.exam_id') 
+        ->join('tchapters', 'tchapters.id', '=', 'exam_chapter.chapter_id')
+
+        ->select(
+            'exam_chapter.*', 
+            'tchapters.chapter_title as chapter_name'
+        )
+        
+        ->paginate(10);
+        
+    if ($rqMethod === 'GET') {
+    $result = ExamResult::join('school', 'school.id', '=', 'exam_taken_exams.school_id')
+    ->join('exam', 'exam.id', '=', 'exam_taken_exams.exam_id')
+    ->join('democbts', 'exam_taken_exams.student_id', '=', 'democbts.id') 
+    ->join('tclasses', 'exam_taken_exams.class_id', '=', 'tclasses.id') 
+    ->join('tcourse', 'exam_taken_exams.subject_id', '=', 'tcourse.id')
+    ->select(
+        'exam_taken_exams.*',
+        'school.school_name as school_name',
+        'democbts.user_name as student_name',
+        'tclasses.class_name as class_name', 
+        'exam.ex_title as exam_title' ,
+        'tcourse.course_name as course_name' 
+
+    )
+    ->distinct()
+    ->paginate(10);
+
+    return view('dashboard.demostudents.cbts.exam.result')
+    ->with('schools', $schools)
+    ->with('result', $result)
+    ->with('TCourses', $TCourses)
+    ->with('examschapter', $examschapter);
+}
+
+
+
+}
+
+
 
 
 public function StudentViewCBTSExamResult(Request $request)
 {
     $examschapter = ExamChapter::join('exam', 'exam.id', '=', 'exam_chapter.exam_id') 
-    ->join('chapter', 'chapter.id', '=', 'exam_chapter.chapter_id')
+    ->join('tchapters', 'tchapters.id', '=', 'exam_chapter.chapter_id')
 
     ->select(
         'exam_chapter.*', 
-        'chapter.chapter_title as chapter_name'
+        'tchapters.chapter_title as chapter_name'
     )
     ->paginate(10);
 
 
     $result = ExamResult::join('school', 'school.id', '=', 'exam_taken_exams.school_id')
         ->join('students', 'students.id', '=', 'exam_taken_exams.student_id') 
-        ->join('classes', 'classes.id', '=', 'exam_taken_exams.class_id') 
+        ->join('tclasses', 'tclasses.id', '=', 'exam_taken_exams.class_id') 
         ->join('exam', 'exam.id', '=', 'exam_taken_exams.exam_id') 
-        ->join('course', 'course.id', '=', 'exam.ex_course_id') 
+        ->join('tcourse', 'tcourse.id', '=', 'exam.ex_course_id') 
         ->select(
             'exam_taken_exams.*',
             'school.school_name as school_name',
             'students.name as student_name', 
-            'classes.class_name as class', 
+            'tclasses.class_name as class', 
             'exam.ex_title as exam_name', 
-            'course.course_name as subject_name'
+            'tcourse.course_name as subject_name'
         )
         ->where('exam_taken_exams.exam_id', $request->exam_id )
         ->get();
@@ -780,32 +1127,67 @@ public function StudentViewCBTSExamResult(Request $request)
 }
 
 
+public function DemoStudentViewCBTSExamResult(Request $request)
+{
+    $examschapter = ExamChapter::join('exam', 'exam.id', '=', 'exam_chapter.exam_id') 
+    ->join('tchapters', 'tchapters.id', '=', 'exam_chapter.chapter_id')
+
+    ->select(
+        'exam_chapter.*', 
+        'tchapters.chapter_title as chapter_name'
+    )
+    ->paginate(10);
+
+
+    $result = ExamResult::join('school', 'school.id', '=', 'exam_taken_exams.school_id')
+        ->join('democbts', 'democbts.id', '=', 'exam_taken_exams.student_id') 
+        ->join('tclasses', 'tclasses.id', '=', 'exam_taken_exams.class_id') 
+        ->join('exam', 'exam.id', '=', 'exam_taken_exams.exam_id') 
+        ->join('tcourse', 'tcourse.id', '=', 'exam.ex_course_id') 
+        ->select(
+            'exam_taken_exams.*',
+            'school.school_name as school_name',
+            'democbts.user_name as student_name', 
+            'tclasses.class_name as class', 
+            'exam.ex_title as exam_name', 
+            'tcourse.course_name as subject_name'
+        )
+        ->where('exam_taken_exams.exam_id', $request->exam_id )
+        ->get();
+
+    return view('dashboard.demostudents.cbts.exam.examresult')
+        ->with('result', $result)
+        ->with('examchapter', $examschapter)
+        ->with('exam_id', $request->exam_id);
+}
+
+
 
 public function SuperAdminViewCBTSExamResult(Request $request)
 {
 
     $examschapter = ExamChapter::join('exam', 'exam.id', '=', 'exam_chapter.exam_id') 
-    ->join('chapter', 'chapter.id', '=', 'exam_chapter.chapter_id')
+    ->join('tchapters', 'tchapters.id', '=', 'exam_chapter.chapter_id')
 
     ->select(
         'exam_chapter.*', 
-        'chapter.chapter_title as chapter_name'
+        'tchapters.chapter_title as chapter_name'
     )
     ->paginate(10);
 
 
     $result = ExamResult::join('school', 'school.id', '=', 'exam_taken_exams.school_id')
         ->join('students', 'students.id', '=', 'exam_taken_exams.student_id') 
-        ->join('classes', 'classes.id', '=', 'exam_taken_exams.class_id') 
+        ->join('tclasses', 'tclasses.id', '=', 'exam_taken_exams.class_id') 
         ->join('exam', 'exam.id', '=', 'exam_taken_exams.exam_id') 
-        ->join('course', 'course.id', '=', 'exam.ex_course_id') 
+        ->join('tcourse', 'tcourse.id', '=', 'exam.ex_course_id') 
         ->select(
             'exam_taken_exams.*',
             'school.school_name as school_name',
             'students.name as student_name', 
-            'classes.class_name as class', 
+            'tclasses.class_name as class', 
             'exam.ex_title as exam_name', 
-            'course.course_name as subject_name' 
+            'tcourse.course_name as subject_name' 
         )
         ->where('exam_taken_exams.exam_id', $request->exam_id)
         ->get();
@@ -820,11 +1202,11 @@ public function SchoolAdminViewCBTSExamResult(Request $request)
 {
 
     $examschapter = ExamChapter::join('exam', 'exam.id', '=', 'exam_chapter.exam_id') 
-    ->join('chapter', 'chapter.id', '=', 'exam_chapter.chapter_id')
+    ->join('tchapters', 'tchapters.id', '=', 'exam_chapter.chapter_id')
 
     ->select(
         'exam_chapter.*', 
-        'chapter.chapter_title as chapter_name'
+        'tchapters.chapter_title as chapter_name'
     )
     ->paginate(10);
 
@@ -832,16 +1214,16 @@ public function SchoolAdminViewCBTSExamResult(Request $request)
 
     $result = ExamResult::join('school', 'school.id', '=', 'exam_taken_exams.school_id')
         ->join('students', 'students.id', '=', 'exam_taken_exams.student_id') 
-        ->join('classes', 'classes.id', '=', 'exam_taken_exams.class_id') 
+        ->join('tclasses', 'tclasses.id', '=', 'exam_taken_exams.class_id') 
         ->join('exam', 'exam.id', '=', 'exam_taken_exams.exam_id') 
-        ->join('course', 'course.id', '=', 'exam.ex_course_id') 
+        ->join('tcourse', 'tcourse.id', '=', 'exam.ex_course_id') 
         ->select(
             'exam_taken_exams.*',
             'school.school_name as school_name',
             'students.name as student_name', 
-            'classes.class_name as class',
+            'tclasses.class_name as class',
             'exam.ex_title as exam_name', 
-            'course.course_name as subject_name' 
+            'tcourse.course_name as subject_name' 
         )
         ->where('exam_taken_exams.exam_id', $request->exam_id)
         ->get();
@@ -859,16 +1241,16 @@ public function StudentdownloadExamResultPDF(Request $request)
 {
     $result = ExamResult::join('school', 'school.id', '=', 'exam_taken_exams.school_id')
         ->join('students', 'students.id', '=', 'exam_taken_exams.student_id')
-        ->join('classes', 'classes.id', '=', 'exam_taken_exams.class_id')
+        ->join('tclasses', 'tclasses.id', '=', 'exam_taken_exams.class_id')
         ->join('exam', 'exam.id', '=', 'exam_taken_exams.exam_id')
-        ->join('course', 'course.id', '=', 'exam.ex_course_id')
+        ->join('tcourse', 'tcourse.id', '=', 'exam.ex_course_id')
         ->select(
             'exam_taken_exams.*',
             'school.school_name as school_name',
             'students.name as student_name',
-            'classes.class_name as class',
+            'tclasses.class_name as class',
             'exam.ex_title as exam_name',
-            'course.course_name as subject_name'
+            'tcourse.course_name as subject_name'
         )
         ->where('exam_taken_exams.exam_id',$request->exam_id)
         ->get();
@@ -892,21 +1274,58 @@ public function StudentdownloadExamResultPDF(Request $request)
 }
 
 
+public function DemoStudentdownloadExamResultPDF(Request $request)
+{
+    $result = ExamResult::join('school', 'school.id', '=', 'exam_taken_exams.school_id')
+        ->join('democbts', 'democbts.id', '=', 'exam_taken_exams.student_id')
+        ->join('tclasses', 'tclasses.id', '=', 'exam_taken_exams.class_id')
+        ->join('exam', 'exam.id', '=', 'exam_taken_exams.exam_id')
+        ->join('tcourse', 'tcourse.id', '=', 'exam.ex_course_id')
+        ->select(
+            'exam_taken_exams.*',
+            'school.school_name as school_name',
+            'democbts.user_name as student_name',
+            'tclasses.class_name as class',
+            'exam.ex_title as exam_name',
+            'tcourse.course_name as subject_name'
+        )
+        ->where('exam_taken_exams.exam_id',$request->exam_id)
+        ->get();
+
+    if ($result->isEmpty()) {
+        return response()->json(['message' => 'No results found for this exam.'], 404);
+    }
+
+    $totalCorrect = $result->sum('total_correct_answer');
+    $totalIncorrect = $result->sum('total_incorrect_answer');
+
+    $pdf = PDF::loadView('dashboard.demostudents.cbts.exam.exam_result_pdf', [
+        'result' => $result,
+        'totalCorrect' => $totalCorrect,
+        'totalIncorrect' => $totalIncorrect
+    ]);
+
+    $filename = sprintf('exam_result_%s.pdf', date('Ymd'));
+
+    return $pdf->download($filename);
+}
+
+
 
 public function SuperadmindownloadExamResultPDF(Request $request)
 {
     $result = ExamResult::join('school', 'school.id', '=', 'exam_taken_exams.school_id')
         ->join('students', 'students.id', '=', 'exam_taken_exams.student_id')
-        ->join('classes', 'classes.id', '=', 'exam_taken_exams.class_id')
+        ->join('tclasses', 'tclasses.id', '=', 'exam_taken_exams.class_id')
         ->join('exam', 'exam.id', '=', 'exam_taken_exams.exam_id')
-        ->join('course', 'course.id', '=', 'exam.ex_course_id')
+        ->join('tcourse', 'tcourse.id', '=', 'exam.ex_course_id')
         ->select(
             'exam_taken_exams.*',
             'school.school_name as school_name',
             'students.name as student_name',
-            'classes.class_name as class',
+            'tclasses.class_name as class',
             'exam.ex_title as exam_name',
-            'course.course_name as subject_name'
+            'tcourse.course_name as subject_name'
         )
         ->where('exam_taken_exams.exam_id',$request->exam_id)
         ->get();
@@ -934,16 +1353,16 @@ public function SchooladmindownloadExamResultPDF(Request $request)
 {
     $result = ExamResult::join('school', 'school.id', '=', 'exam_taken_exams.school_id')
         ->join('students', 'students.id', '=', 'exam_taken_exams.student_id')
-        ->join('classes', 'classes.id', '=', 'exam_taken_exams.class_id')
+        ->join('tclasses', 'tclasses.id', '=', 'exam_taken_exams.class_id')
         ->join('exam', 'exam.id', '=', 'exam_taken_exams.exam_id')
-        ->join('course', 'course.id', '=', 'exam.ex_course_id')
+        ->join('tcourse', 'tcourse.id', '=', 'exam.ex_course_id')
         ->select(
             'exam_taken_exams.*',
             'school.school_name as school_name',
             'students.name as student_name',
-            'classes.class_name as class',
+            'tclasses.class_name as class',
             'exam.ex_title as exam_name',
-            'course.course_name as subject_name'
+            'tcourse.course_name as subject_name'
         )
         ->where('exam_taken_exams.exam_id',$request->exam_id)
         ->get();
@@ -985,8 +1404,8 @@ $chapterIds = $examChapters->pluck('chapter_id');
 $questionsbank = Cquestion::join('school', 'school.id', '=', 'c_questionbank.school_id')
             ->join('exam', 'exam.ex_class_id', '=', 'c_questionbank.cclass_id')
             ->join('exam_chapter', 'exam_chapter.chapter_id', '=', 'c_questionbank.cchapter_id') 
-            ->join('chapter', 'chapter.id', '=', 'c_questionbank.cchapter_id') 
-            ->select('c_questionbank.*', 'chapter.chapter_title') 
+            ->join('tchapters', 'tchapters.id', '=', 'c_questionbank.cchapter_id') 
+            ->select('c_questionbank.*', 'tchapters.chapter_title') 
             ->whereIn('exam_chapter.chapter_id', $chapterIds) 
 
             ->distinct()
@@ -1038,10 +1457,10 @@ $chapterIds = $examChapters->pluck('chapter_id');
 $questionsbank = Cquestion::join('school', 'school.id', '=', 'c_questionbank.school_id')
         ->join('exam', 'exam.ex_class_id', '=', 'c_questionbank.cclass_id')
         ->join('exam_chapter', 'exam_chapter.chapter_id', '=', 'c_questionbank.cchapter_id') 
-        ->join('chapter', 'chapter.id', '=', 'c_questionbank.cchapter_id') 
-        ->join('course', 'course.id', '=', 'c_questionbank.ccourse_id') 
+        ->join('tchapters', 'tchapters.id', '=', 'c_questionbank.cchapter_id') 
+        ->join('tcourse', 'tcourse.id', '=', 'c_questionbank.ccourse_id') 
         ->whereIn('exam_chapter.chapter_id', $chapterIds) 
-        ->select('c_questionbank.*', 'chapter.chapter_title', 'course.course_name') 
+        ->select('c_questionbank.*', 'tchapters.chapter_title', 'tcourse.course_name') 
         ->distinct()
         ->paginate(10);
 
@@ -1096,15 +1515,15 @@ $questionsbank = Cquestion::join('school', 'school.id', '=', 'c_questionbank.sch
                 $allQuestions = collect(); 
                 $totalQuestionsNeeded = $request->ex_total_question; 
     
-                foreach ($request->chapters as $chapter) {
-                    $questions = Cquestion::where('cchapter_id', $chapter)
+                foreach ($request->chapters as $chapters) {
+                    $questions = Cquestion::where('cchapter_id', $chapters)
                         ->inRandomOrder()
                         ->get(); 
                         if ($questions->isEmpty()) {
-                        return redirect()->back()->withErrors(['message' => "No questions available for chapter ID: $chapter. Please select different chapters."]);
+                        return redirect()->back()->withErrors(['message' => "No questions available for tchapters ID: $tchapters. Please select different tchapters."]);
                     }
                         if ($questions->count() < $totalQuestionsNeeded) {
-                        return redirect()->back()->withErrors(['message' => "Insufficient questions in chapter ID: $chapter. Available: " . $questions->count() . ", Required: $totalQuestionsNeeded."]);
+                        return redirect()->back()->withErrors(['message' => "Insufficient questions in tchapters ID: $tchapters. Available: " . $questions->count() . ", Required: $totalQuestionsNeeded."]);
                     }
     
                     $selectedQuestions = $questions->random($totalQuestionsNeeded);
@@ -1113,7 +1532,7 @@ $questionsbank = Cquestion::join('school', 'school.id', '=', 'c_questionbank.sch
     
                     $exam->save();
                     $examChapter = new ExamChapter;
-                    $examChapter->chapter_id = $chapter;
+                    $examChapter->chapter_id = $chapters;
                     $examChapter->exam_id = $exam->id; 
                     $examChapter->course_id = $request->ex_course_id;
                     $examChapter->save();
@@ -1128,19 +1547,22 @@ $questionsbank = Cquestion::join('school', 'school.id', '=', 'c_questionbank.sch
 
                 }
             } else {
-                return redirect()->back()->withErrors(['message' => 'Please select at least one chapter.']);
+                return redirect()->back()->withErrors(['message' => 'Please select at least one tchapters.']);
             }
     
 
             return redirect()->route('superadmin.cbts.exam.view')->with('success', 'Exam created successfully.');
         } else {
             $boards = Tboards::all();
+            $classes = TClasses::all();
+            $courses = TCourses::all();
             $schools = School::all();
     
             return view('dashboard.superadmin.cbts.exam.create')
                 ->with('boards', $boards)
-                ->with('schools', $schools);
-                    }
+                ->with('classes', $classes)
+                ->with('schools', $schools)
+                ->with('courses', $courses);                    }
     }
         // ----------------------Add Exam Question-------------------------------------
 
@@ -1187,19 +1609,19 @@ $questionsbank = Cquestion::join('school', 'school.id', '=', 'c_questionbank.sch
             $exam->school_id = $request->school;
             $exam->ex_instraction= $request->ex_instraction;
 
-            if (!empty($request->chapters) && is_array($request->chapters)) {
+            if (!empty($request->tchapters) && is_array($request->tchapters)) {
                 $allQuestions = collect(); 
                 $totalQuestionsNeeded = $request->ex_total_question; 
     
-                foreach ($request->chapters as $chapter) {
-                    $questions = Cquestion::where('cchapter_id', $chapter)
+                foreach ($request->tchapters as $tchapters) {
+                    $questions = Cquestion::where('cchapter_id', $tchapters)
                         ->inRandomOrder()
                         ->get(); 
                         if ($questions->isEmpty()) {
-                        return redirect()->back()->withErrors(['message' => "No questions available for chapter ID: $chapter. Please select different chapters."]);
+                        return redirect()->back()->withErrors(['message' => "No questions available for tchapters ID: $tchapters. Please select different tchapters."]);
                     }
                         if ($questions->count() < $totalQuestionsNeeded) {
-                        return redirect()->back()->withErrors(['message' => "Insufficient questions in chapter ID: $chapter. Available: " . $questions->count() . ", Required: $totalQuestionsNeeded."]);
+                        return redirect()->back()->withErrors(['message' => "Insufficient questions in tchapters ID: $tchapters. Available: " . $questions->count() . ", Required: $totalQuestionsNeeded."]);
                     }
     
                     $selectedQuestions = $questions->random($totalQuestionsNeeded);
@@ -1208,7 +1630,7 @@ $questionsbank = Cquestion::join('school', 'school.id', '=', 'c_questionbank.sch
                     $exam->save();
 
                     $examChapter = new ExamChapter;
-                    $examChapter->chapter_id = $chapter;
+                    $examChapter->chapter_id = $tchapters;
                     $examChapter->exam_id = $exam->id; 
                     $examChapter->course_id = $request->ex_course_id;
                     $examChapter->save();
@@ -1225,7 +1647,7 @@ $questionsbank = Cquestion::join('school', 'school.id', '=', 'c_questionbank.sch
 
                 }
             } else {
-                return redirect()->back()->withErrors(['message' => 'Please select at least one chapter.']);
+                return redirect()->back()->withErrors(['message' => 'Please select at least one tchapters.']);
             }
         
             return redirect()->route('schooladmin.cbts.exam.view')->with('success', 'Exam created successfully.');
@@ -1340,34 +1762,64 @@ $questionsbank = Cquestion::join('school', 'school.id', '=', 'c_questionbank.sch
    
     // ----------------------Delete Exam Question -------------------------------------
 
-    public function SuperAdminDeleteCBTSExamQuestion(Request $request)
+    public function SuperAdminDeleteCBTSExamQuestion(Request $request, $questionId)
     {
-        if ($request->id) {
-            
-            $deletedRows = ExamQuestion::where('exam_id', $request->id)->where('q_id', $request->exam_id)->delete();
+    // Check if exam_id and question_id are provided
+    if ($request->exam_id && $request->question_id) {
+        try {
+            // Start a database transaction
+            DB::beginTransaction();
 
+            // Delete the specific exam question
+            $deletedRows = ExamQuestion::where('exam_id', $request->exam_id)
+                ->where('id', $request->question_id)
+                ->delete();
+
+            // Check if the question was deleted
             if ($deletedRows > 0) {
+                // Update the number of questions in the exam
+                $exam = Exam::find($request->exam_id);
+                if ($exam) {
+                    $exam->num_of_questions = max(0, $exam->num_of_questions - 1);
+                    $exam->save();
+                }
+
+                // Commit the transaction
+                DB::commit();
+
                 return response()->json([
                     'status' => 200,
-                    'deleted' => true
+                    'deleted' => true,
+                    'message' => 'Question deleted successfully'
                 ]);
             } else {
+                // Rollback the transaction if no rows were deleted
+                DB::rollBack();
                 return response()->json([
-                    'status' => 200,
+                    'status' => 404,
                     'deleted' => false,
-                    'message' => $request->id
+                    'message' => 'Question not found'
                 ]);
             }
-        } else {
+        } catch (\Exception $e) {
+            // Rollback the transaction on error
+            DB::rollBack();
             return response()->json([
-                'status' => 200,
+                'status' => 500,
                 'deleted' => false,
-                'message' => 'Record Id is not Provided',
-                'form' => $request->all()
+                'message' => 'Error Occurred: ' . $e->getMessage()
             ]);
         }
+    } else {
+        return response()->json([
+            'status' => 400,
+            'deleted' => false,
+            'message' => 'Both exam_id and question_id must be provided',
+            'form' => $request->all()
+        ]);
     }
-
+}
+    
 
 
 
@@ -1389,18 +1841,18 @@ $questionsbank = Cquestion::join('school', 'school.id', '=', 'c_questionbank.sch
         }else{
          
                 $boards = Tboards::all();
-                $courses = Course::all();
-                $classes = Classes::all();
+                $TCourses = Course::all();
+                $tclasses = Classes::all();
                 $schools = School::all();
                 $exam = Exam::findOrFail($request->id); 
-                $chapters = ExamChapter::all();
+                $tchapters = ExamChapter::all();
                 return view('dashboard.superadmin.cbts.exam.edit')
                     ->with('boards', $boards)
                     ->with('schools', $schools)
-                    ->with('courses', $courses)
+                    ->with('TCourses', $TCourses)
                     ->with('exam', $exam) 
-                    ->with('examchapters', $chapters) 
-                    ->with('classes', $classes);
+                    ->with('examchapters', $tchapters) 
+                    ->with('tclasses', $tclasses);
             }
             
         }
@@ -1431,17 +1883,17 @@ $questionsbank = Cquestion::join('school', 'school.id', '=', 'c_questionbank.sch
 
              
                     $boards = Tboards::all();
-                    $courses = Course::where('school_id', $schoolId)->get();
-                    $classes = Classes::where('school_id', $schoolId)->get();
+                    $TCourses = Course::where('school_id', $schoolId)->get();
+                    $tclasses = Classes::where('school_id', $schoolId)->get();
                     $exam = Exam::findOrFail($request->id); 
-                    $chapters = ExamChapter::all();
+                    $tchapters = ExamChapter::all();
                     return view('dashboard.admin.cbts.exam.edit')
                         ->with('boards', $boards)
                         ->with('schools', $schools)
-                        ->with('courses', $courses)
+                        ->with('TCourses', $TCourses)
                         ->with('exam', $exam) 
-                        ->with('chapters', $chapters) 
-                        ->with('classes', $classes);
+                        ->with('tchapters', $tchapters) 
+                        ->with('tclasses', $tclasses);
                 }
                 
             }

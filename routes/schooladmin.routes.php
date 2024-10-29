@@ -60,7 +60,13 @@ Route::middleware('CheckSchoolAdmin')->prefix('/school_admin')->group(function (
         ->name('schooladmin.courses.create');
     Route::post('/courses/create', [App\Http\Controllers\CourseController::class, 'SchoolAdminCreateCourse'])
         ->name('schooladmin.courses.create');
-    /**
+
+
+
+
+
+
+        /**
      * Route SchoolAdmin / Delete Courses
      */
     Route::delete('/courses/view/{id}', [App\Http\Controllers\CourseController::class, 'SchoolAdminDeleteCourse'])
@@ -110,6 +116,16 @@ Route::middleware('CheckSchoolAdmin')->prefix('/school_admin')->group(function (
      */
     Route::get('/academic/year/view', [App\Http\Controllers\AcademicController::class, 'SchoolAdminViewAcademicYear'])
         ->name('schooladmin.academic.view');
+
+
+        
+    Route::get('/academic/courses/{id}', [App\Http\Controllers\AcademicController::class, 'SchoolAdminGetAllCoursesOfClass'])
+        ->name('schooladmin.academic.class.courses');
+
+
+    Route::post('/academic/year/create/{school_id}', [App\Http\Controllers\AcademicController::class, 'SchoolAdminAddAcademicTerm'])
+        ->name('schooladmin.academic.create.term.heads');
+
     /**
      *  Route : SchoolAdmin / Delete
      *  # Delete Acadmic Year

@@ -57,7 +57,9 @@
                             <thead>
                                 <tr>
                                     <th>Actions</th>
-                                
+                                    <th>School</th>
+                                    <th>Class</th>
+                                    <th>Subject</th>
                                     <th>Title</th>
                                     <th>Total Grade</th>
 
@@ -74,6 +76,9 @@
                                     </button> --}}
                                         </td>
                                        
+                                        <td>{{ $item->school_name }}</td>
+                                        <td>{{ $item->class_name }}</td>
+                                        <td>{{ $item->course_name }}</td>
                                         <td>{{ $item->title }}</td>
                                         <td>
                                             {{$item->total }}

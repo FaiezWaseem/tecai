@@ -212,6 +212,7 @@
                           </li>
                       </ul>
                   </li>
+                  
                   <li class="nav-header">CBTS</li>
                   <li class="nav-item {{ request()->is('dashboard/superadmin/lms*') ? 'menu-open' : '' }}">
                       <a href="#"
@@ -285,6 +286,33 @@
 
                       </ul>
                   </li>
+                  <li class="nav-item {{ request()->is('dashboard/superadmin/demolink*') ? 'menu-open' : '' }}">
+                    <a href="#"
+                        class="nav-link {{ request()->is('dashboard/superadmin/demolink*') ? 'active' : '' }}">
+                        <i class="nav-icon fas fa-user-graduate"></i>
+                        <p>
+                            Demo Links
+                            <i class="fas fa-angle-left right"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="{{ route('superadmin.demolink.view') }}"
+                                class="nav-link {{ request()->is('dashboard/superadmin/demolink/view') ? 'active' : '' }}">
+                                <i class="far fa fa-eye nav-icon"></i>
+                                <p>View Demo Link</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ route('superadmin.demolink.create') }}"
+                                class="nav-link {{ request()->is('dashboard/superadmin/demolink/create') ? 'active' : '' }}">
+                                <i class="far fa fa-plus-square nav-icon"></i>
+                                <p>Add Demo Link</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
 
                   <li class="nav-header">LMS</li>
                   <li class="nav-item {{ request()->is('dashboard/superadmin/lms*') ? 'menu-open' : '' }}">

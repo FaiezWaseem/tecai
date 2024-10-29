@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\admin;
+use App\Models\demostudents;
 use App\Models\school;
 use App\Models\students;
 use App\Models\teachers;
@@ -25,9 +26,10 @@ class AuthController extends Controller
             return redirect()->route('schooladmin.home.view');
         } elseif (UserPermission::isTeacher()) {
             return redirect()->route('teacher.home.view');
-
         } elseif (UserPermission::isStudent()) {
             return redirect()->route('student.home.view');
+        } elseif (UserPermission::isDemoStudent()) {
+            return redirect()->route('demostudent.home.view');
         } else {
             return view('auth.login');
         }
@@ -50,45 +52,35 @@ class AuthController extends Controller
         $isAdmin = true;
         $isTeacher = false;
         $isStudent = false;
+        $isDemoStudent = false;
+
         if (!$user || !\Hash::check($request->password, $user->password)) {
             $user = teachers::where('name', $request->name)->first();
             $isAdmin = false;
             $isTeacher = true;
+            $isDemoStudent = false;
+            $user = demostudents::where('user_name', $request->name)->first();
+            $isAdmin = false;
+            $isTeacher = false;
+            $isDemoStudent = true;
             if (!$user || !\Hash::check($request->password, $user->password)) {
                 $isAdmin = false;
                 $isTeacher = false;
                 $isStudent = true;
-
-                $prefix_school = $request->name;
-
-                // Split the string by underscore
-                $parts = explode('_', $prefix_school);
-
-                // Get the first part as the prefix
-                $prefix = $parts[0];
-                
-                if(!isset($parts[1])){
-                    return back()->withErrors([
-                        'email' => "No User Found, Please Check Your Password",
-                    ]);
-                }
-                $admission_no = $parts[1];
-                
-                
-                $school = school::where('prefix', $prefix)->first();
-                $user = students::where('admission_no', $admission_no)
-                    ->where('school', $school->id)
-                    ->first();
+                $isDemoStudent = false;
+                $user = students::where('email', $request->name)->first();
                 if (!$user || !\Hash::check($request->password, $user->password)) {
                     return back()->withErrors([
-                        'email' => "No User Found, Please Check Your Password",
+                        'email' => "The provided  credentials do not match our records.",
                     ]);
                 }
             }
+           
+        
 
         }
 
-        session(['user' => $user, 'admin' => $isAdmin, 'isTeacher' => $isTeacher, 'isStudent' => $isStudent]);
+        session(['user' => $user, 'admin' => $isAdmin, 'isTeacher' => $isTeacher, 'isStudent' => $isStudent ,  'isDemoStudent' => $isDemoStudent]);
 
         if (UserPermission::isSuperAdmin()) {
             return redirect()->route('superadmin.home.view');
@@ -98,6 +90,8 @@ class AuthController extends Controller
             return redirect()->route('teacher.home.view');
         } else if (UserPermission::isStudent()) {
             return redirect()->route('student.home.view');
+        } elseif (UserPermission::isDemoStudent()) {
+            return redirect()->route('demostudent.home.view');
         } else {
             return redirect()->route('auth.login');
         }

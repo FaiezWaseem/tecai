@@ -94,6 +94,12 @@ Route::middleware('auth')->prefix('/dashboard')->group(function () {
      *  ###################################################
      */
     require_once __DIR__ . '/students.routes.php';
+    /**
+     *  ###################################################
+     *                 DEMO STUDENT  ROUTES
+     *  ###################################################
+     */
+    require_once __DIR__ . '/demostudents.routes.php';
 
 
 

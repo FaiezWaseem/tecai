@@ -56,18 +56,27 @@
                     </div>
                     <div class="col-md-4">
                         <div class="form-group">
-                            <label for="cclass_id">Class <span class="text-danger">*</span></label>
-                            <select name="cclass_id" id="classes" class="form-control" required>
-                                <option value="">--Select--</option>
+                            <label for="txtUserName">Class <span class="text-danger">*</span></label>
+                            <select name="cclass_id" id="classes_id" class="form-control">
+                            <option value="-1"> --Select-- </option>
+
+                                @foreach ($classes as $item)
+                                    <option value="{{ $item->id }}"> {{ $item->class_name }} </option>
+                                @endforeach
                             </select>
+                            <span id="txtUserName_Error" class="error invalid-feedback hide"></span>
                         </div>
                     </div>
                     <div class="col-md-4">
                         <div class="form-group">
-                            <label for="ccourse_id">Course <span class="text-danger">*</span></label>
-                            <select name="ccourse_id" class="form-control" id="courses" required>
-                                <option value="">--Select--</option>
+                            <label for="txtUserName">Course <span class="text-danger">*</span></label>
+                            <select name="ccourse_id" class="form-control" id="classes">
+                                <option value="-1"> --Select-- </option>
+                                @foreach ($courses as $item)
+                                    <option value="{{ $item->id }}"> {{ $item->course_name }} </option>
+                                @endforeach
                             </select>
+                            <span id="txtUserName_Error" class="error invalid-feedback hide"></span>
                         </div>
                     </div>
                     <div class="col-md-4">
@@ -204,98 +213,53 @@
         });
 
         $(document).ready(function() {
-            $('#schools').change(function() {
-                const selectedSchoolId = $(this).val();
-                const csrfToken = $('meta[name="csrf-token"]').attr('content');
-                $('#classes').html('<option value="">--Select Class--</option>');
-                $('#courses').html('<option value="">--Select Course--</option>');
-                $('#chapters').html('<option value="">--Select Chapter--</option>');
-                $('#submitForm')[0].reset();
-                $(this).val(selectedSchoolId);
-                if (selectedSchoolId) {
-                    $.ajax({
-                        url: '{{ route('superadmin.cbts.filter.classes') }}',
-                        type: 'POST',
-                        data: {
-                            _token: csrfToken,
-                            school_id: selectedSchoolId
-                        },
-                        dataType: 'json',
-                        success: function(data) {
-                            if (data.classes && data.classes.length) {
-                                data.classes.forEach(classItem => {
-                                    $('#classes').append(`<option value="${classItem.id}">${classItem.class_name}</option>`);
-                                });
-                            } else {
-                                $('#classes').html('<option value="">No classes available</option>');
-                            }
-                        },
-                        error: function(xhr, status, error) {
-                            console.error('Error:', error);
-                            alert('Failed to fetch classes: ' + error);
-                        }
+
+            $('#classes').change(function() {
+            // Get the selected option value
+            const selectedValue = $(this).val();
+            const classValue = $('#classes_id').val();
+
+
+
+            // Get the CSRF token value from the <meta> tag
+            const csrfToken = $('meta[name="csrf-token"]').attr('content');
+
+            console.log(selectedValue, csrfToken)
+
+
+            $.ajax({
+                url: '{{ route('superadmin.cbts.filter.chapter') }}', // Current page URL
+                type: 'POST', // or 'GET', 'PUT', etc. depending on your needs
+                data: {
+                    _token: csrfToken, // Include the CSRF token in the request data
+                    course_id: selectedValue,
+                    class_id: classValue
+
+                },
+                dataType: 'json', // Specify the expected response data type
+                success: function(data) {
+                    // Handle the response from the server
+
+                    console.log(data)
+
+                    $('#chapters').html('');
+                    $('#chapters').append('  <option value="0">--Select--</option>');
+                    data.chapters.forEach(chapter => {
+                        $('#chapters').append(
+                            `   <option value="${chapter.id}">${chapter.chapter_title}</option>`
+                        );
                     });
 
-                    $.ajax({
-                        url: '{{ route('superadmin.cbts.filter.courses') }}',
-                        type: 'POST',
-                        data: {
-                            _token: csrfToken,
-                            school_id: selectedSchoolId
-                        },
-                        dataType: 'json',
-                        success: function(data) {
-                            if (data.courses && data.courses.length) {
-                                data.courses.forEach(courseItem => {
-                                    $('#courses').append(`<option value="${courseItem.id}">${courseItem.course_name}</option>`);
-                                });
-                            } else {
-                                $('#courses').html('<option value="">No courses available</option>');
-                            }
-                        },
-                        error: function(xhr, status, error) {
-                            console.error('Error:', error);
-                            alert('Failed to fetch Course: ' + error);
-                        }
-                    });
+
+                },
+                error: function(xhr, status, error) {
+                    // Handle any errors that occurred during the request
+                    console.error(error);
+                    alert('Failed to fetched Departments :  ERROR : ' + error)
                 }
             });
-
-            $('#courses').change(function() {
-                const selectedClassId = $('#classes').val();
-                const selectedCourseId = $(this).val();
-                const csrfToken = $('meta[name="csrf-token"]').attr('content');
-
-                $('#chapters').html('<option value="">--Select--</option>');
-
-                if (!selectedCourseId || !selectedClassId) {
-                    return;
-                }
-
-                $.ajax({
-                    url: '{{ route('superadmin.cbts.filter.chapter') }}',
-                    type: 'POST',
-                    data: {
-                        _token: csrfToken,
-                        course_id: selectedCourseId,
-                        class_id: selectedClassId
-                    },
-                    dataType: 'json',
-                    success: function(data) {
-                        if (data.chapters && data.chapters.length) {
-                            data.chapters.forEach(chapter => {
-                                $('#chapters').append(`<option value="${chapter.id}">${chapter.chapter_title}</option>`);
-                            });
-                        } else {
-                            alert('No chapters found for the selected course and class.');
-                        }
-                    },
-                    error: function(xhr, status, error) {
-                        console.error(error);
-                        alert('Failed to fetch chapters: ERROR: ' + error);
-                    }
-                });
-            });
+        });
+      
         });
     </script>
 @endsection

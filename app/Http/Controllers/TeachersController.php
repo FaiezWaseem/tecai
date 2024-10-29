@@ -177,24 +177,24 @@ class TeachersController extends Controller
         if ($request->id) {
             // Find activities associated with the teacher
             $activities = activity::where('tid', '=', $request->id)->get();
-    
+
             // If activities exist, delete their associated tasks
             if ($activities->isNotEmpty()) {
                 // Get the IDs of the activities
                 $activityIds = $activities->pluck('id');
-    
+
                 // Delete tasks associated with the activities
                 tasks::whereIn('activity_id', $activityIds)->delete();
             }
-    
+
             // Delete the activities associated with the teacher
             activity::where('tid', '=', $request->id)->delete();
 
             outline::where('teacher_id', '=', $request->id)->delete();
-    
+
             // Delete the teacher
             $deletedRows = teachers::destroy($request->id);
-    
+
             // Check if the teacher was successfully deleted
             if ($deletedRows > 0) {
                 return response()->json([
@@ -450,9 +450,9 @@ class TeachersController extends Controller
     public function TeacherDeleteAssignments(Request $request)
     {
         if ($request->id) {
-            
+
             tasks::where('activity_id', '=', $request->id)->delete();
-            
+
             $deletedRows = activity::destroy($request->id);
 
             if ($deletedRows > 0) {
@@ -916,7 +916,7 @@ class TeachersController extends Controller
     }
     public function TeacherDeleteOutline(Request $request)
     {
-        if($request->input('chapterId')){
+        if ($request->input('chapterId')) {
             outline::where('chapter_id', '=', $request->input('chapterId'))->delete();
             Chapter::destroy($request->input('chapterId'));
             return response()->json([
@@ -946,10 +946,13 @@ class TeachersController extends Controller
             ->get();
 
         $terms = Term::where('school_id', '=', $school_id)
+            ->where('class_id', '=', $class_id)
+            ->where('course_id', '=', $course_id)
             ->get();
 
 
         $studentGrades = studentGrade::where('course_id', '=', $course_id)
+            ->where('class_id', '=', $class_id)
             ->where('academic_id', '=', $academic->id)
             ->get();
 
@@ -991,7 +994,8 @@ class TeachersController extends Controller
                     'student_id' => $studentId,
                     'course_id' => $course_id,
                     'term_id' => $termId,
-                    'academic_id' => $academic->id
+                    'academic_id' => $academic->id,
+                    'class_id' => $class_id
                 ])->first();
 
                 if ($record) {
@@ -1005,7 +1009,8 @@ class TeachersController extends Controller
                         'course_id' => $course_id,
                         'term_id' => $termId,
                         'total' => $mark,
-                        'academic_id' => $academic->id
+                        'academic_id' => $academic->id,
+                        'class_id' => $class_id
                     ]);
                 }
             }

@@ -15,5 +15,8 @@ class UserPermission
     public static function isStudent(){
         return session('isStudent');
     }
+    public static function isDemoStudent(){
+        return session('isDemoStudent');
+    }
 
 }

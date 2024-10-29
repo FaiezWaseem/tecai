@@ -536,6 +536,23 @@ Route::middleware('CheckSuperAdmin')->prefix('/superadmin')->group(function () {
     Route::post('/cbts/filter/courses', [App\Http\Controllers\QuestionbankController::class, 'filterCourses'])
     ->name('superadmin.cbts.filter.courses'); 
 
+
+    
+    Route::get('/demolink/view', [App\Http\Controllers\DemoLinkController::class, 'SuperAdminViewDemoLink'])
+    ->name('superadmin.demolink.view');
+    Route::post('/demolink/view', [App\Http\Controllers\DemoLinkController::class, 'SuperAdminViewDemoLink'])
+    ->name('superadmin.demolink.view');
+
+
+
+    Route::get('/demolink/create', [App\Http\Controllers\DemoLinkController::class, 'SuperAdminCreateDemolink'])
+    ->name('superadmin.demolink.create');
+    Route::post('/demolink/create', [App\Http\Controllers\DemoLinkController::class, 'SuperAdminCreateDemolink'])
+    ->name('superadmin.demolink.create');
+
+
+
+
     /**
      *   --------------------------------------------------
      *                         CBTS  END

@@ -58,6 +58,7 @@ class Kernel extends HttpKernel
         'CheckSchoolAdmin' => \App\Http\Middleware\CheckSchoolAdmin::class,
         'CheckTeacher' => \App\Http\Middleware\CheckTeacher::class,
         'CheckStudent' => \App\Http\Middleware\CheckStudent::class,
+        'CheckDemoStudent' => \App\Http\Middleware\CheckDemoStudent::class,
         'verify.token' => \App\Http\Middleware\VerifyTokenMiddleware::class,
         'auth.basic' => \Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::class,
         'auth.session' => \Illuminate\Session\Middleware\AuthenticateSession::class,

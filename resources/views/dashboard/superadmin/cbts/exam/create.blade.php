@@ -84,25 +84,28 @@
                             <span id="ex_board_id_Error" class="error invalid-feedback hide"></span>
                         </div>
                     </div>
-
                     <div class="col-md-4">
                         <div class="form-group">
-                            <label for="ex_class_id">Class <span class="text-danger">*</span></label>
-                            <select name="ex_class_id" id="classes" class="form-control" required>
-                                <option value="">--Select--</option>
+                            <label for="txtUserName">Class <span class="text-danger">*</span></label>
+                            <select name="ex_class_id" id="classes_id" class="form-control">
+                            <option value=""> --Select-- </option>
+                                @foreach ($classes as $item)
+                                    <option value="{{ $item->id }}"> {{ $item->class_name }} </option>
+                                @endforeach
                             </select>
-                            <span id="ex_class_id_Error" class="error invalid-feedback hide"></span>
+                            <span id="txtUserName_Error" class="error invalid-feedback hide"></span>
                         </div>
                     </div>
-
                     <div class="col-md-4">
                         <div class="form-group">
-                            <label for="ex_course_id">Course <span class="text-danger">*</span></label>
-                            <select name="ex_course_id" id="courses" class="form-control" required>
-                                <option value="">--Select--</option>
-                           
+                            <label for="txtUserName">Course <span class="text-danger">*</span></label>
+                            <select name="ex_course_id" class="form-control" id="classes">
+                                <option value=""> --Select-- </option>
+                                @foreach ($courses as $item)
+                                    <option value="{{ $item->id }}"> {{ $item->course_name }} </option>
+                                @endforeach
                             </select>
-                            <span id="ex_course_id_Error" class="error invalid-feedback hide"></span>
+                            <span id="txtUserName_Error" class="error invalid-feedback hide"></span>
                         </div>
                     </div>
 
@@ -179,69 +182,12 @@
 @section('footer')
 <script>
     $(document).ready(function() {
-        $('#schools').change(function() {
-            const selectedSchoolId = $(this).val();
-            const csrfToken = $('meta[name="csrf-token"]').attr('content');
-            $('#classes').html('<option value="">--Select Class--</option>');
-            $('#courses').html('<option value="">--Select courses--</option>');
+       
 
-            $('#chapterList').empty();
-            $('#submitForm')[0].reset();
-            $(this).val(selectedSchoolId);
+            
 
-            if (selectedSchoolId) {
-                $.ajax({
-                    url: '{{ route('superadmin.cbts.filter.classes') }}',
-                    type: 'POST',
-                    data: { _token: csrfToken, school_id: selectedSchoolId },
-                    dataType: 'json',
-                    success: function(data) {
-                        if (data.classes && data.classes.length) {
-                            data.classes.forEach(classItem => {
-                                $('#classes').append(`<option value="${classItem.id}">${classItem.class_name}</option>`);
-                            });
-                        } else {
-                            $('#classes').html('<option value="">No classes available</option>');
-                        }
-                    },
-                    error: function(xhr, status, error) {
-                        console.error('Error:', error);
-                        alert('Failed to fetch classes: ' + error);
-                    }
-                });
-
-
-
-
-
-
-                $.ajax({
-                        url: '{{ route('superadmin.cbts.filter.courses') }}',
-                        type: 'POST',
-                        data: {
-                            _token: csrfToken,
-                            school_id: selectedSchoolId
-                        },
-                        dataType: 'json',
-                        success: function(data) {
-                            if (data.courses && data.courses.length) {
-                                data.courses.forEach(courseItem => {
-                                    $('#courses').append(`<option value="${courseItem.id}">${courseItem.course_name}</option>`);
-                                });
-                            } else {
-                                $('#courses').html('<option value="">No courses available</option>');
-                            }
-                        },
-                        error: function(xhr, status, error) {
-                            console.error('Error:', error);
-                            alert('Failed to fetch Course: ' + error);
-                        }
-                    });
-            }
-        });
-
-        $('#courses').change(function() {
-            const selectedClassId = $('#classes').val();
+        $('#classes').change(function() {
+            const selectedClassId = $('#classes_id').val();
             const selectedCourseId = $(this).val();
             const csrfToken = $('meta[name="csrf-token"]').attr('content');
 

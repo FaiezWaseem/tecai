@@ -28,6 +28,18 @@
             transform: rotate(-10deg);
             cursor: pointer;
         }
+
+        .cbts {
+            text-decoration: none;
+            color: #fff;
+            background: green;
+            display: block;
+            height: auto;
+            margin:10px;
+            padding: 10px;
+            font-size:2vb;
+        }
+
     </style>
 
     <!-- Content Header (Page header) -->
@@ -137,6 +149,48 @@
                         </div><!-- /.card-body -->
                     </div>
                     {{-- Student MARKS --}}
+
+
+
+
+
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">
+                                <i class="fas fa-chart-pie mr-1"></i>
+                                CBTS Exam
+                            </h3>
+                            <div class="card-tools">
+                                <ul class="nav nav-pills ml-auto">
+
+
+                                </ul>
+                            </div>
+                        </div><!-- /.card-header -->
+                        <div class="card-body">
+                            <div class="tab-content p-0">
+                                <div class="row">
+                                @foreach ($cbtsexam as $item)
+                                @php
+                                $currentDate = date('Y-m-d');
+                                @endphp
+                                @if ($item->ex_start_date > $currentDate)
+                                <a class="cbts">
+                                    <p>{!! $item->ex_title !!}</p>
+                                    <p>Start date: {{ $item->ex_start_date }}</p>
+                                    <p>End date: {{ $item->ex_end_date }}</p>
+                                </a>
+                                @endif
+                                @endforeach
+
+                                </div>
+                            </div>
+                        </div><!-- /.card-body -->
+                    </div>
+
+
+
+
                     <div class="card">
                         <div class="card-header">
                             <h3 class="card-title">

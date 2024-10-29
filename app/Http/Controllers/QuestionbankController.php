@@ -6,9 +6,9 @@ use App\Models\Cquestion;
 use App\Models\Canswer;
 use Illuminate\Http\Request;
 use App\Models\Tboards;
-use App\Models\course;
-use App\Models\classes;
-use App\Models\Chapter;
+use App\Models\TCourses;
+use App\Models\TClasses;
+use App\Models\Tchapters;
 use App\Models\school;
 
 class QuestionbankController extends Controller
@@ -16,45 +16,31 @@ class QuestionbankController extends Controller
     public function filterChapter(Request $request)
     {
       
-        $chapters = chapter::where('course_id', $request->course_id)
-            ->where('class_id', $request->class_id) 
+        $chapters = Tchapters::where('tcourse_id', $request->course_id)
+            ->where('tclass_id', $request->class_id) 
             ->get();
     
         return response()->json(['chapters' => $chapters]);
     }
-    public function filterCourses(Request $request)
-    {
-      
-        $courses = course::where('school_id', $request->school_id)->get();
-    
-        return response()->json(['courses' => $courses]);
-    }
-    public function filterClasses(Request $request)
-    {
-      
-        $classes = classes::where('school_id', $request->school_id)
-            ->get();
-    
-        return response()->json(['classes' => $classes]);
-    }
+   
     // ----------------------View-------------------------------------
     public function SuperAdminViewCBTSQuestionbank(Request $request)
     {
         $boards = Tboards::all();
-        $classes = classes::all();
-        $courses = course::all();
+        $classes = TClasses::all();
+        $courses = TCourses::all();
         $schools = school::all();
 
         $rqMethod = $request->method();
 
         if ($rqMethod === 'GET') {
             $questions = Cquestion::join('tboards', 'tboards.id', '=', 'c_questionbank.cboard_id')
-                ->join('classes', 'classes.id', '=', 'c_questionbank.cclass_id')
-                ->join('chapter', 'chapter.id', '=', 'c_questionbank.cchapter_id')
-                ->join('course', 'course.id', '=', 'c_questionbank.ccourse_id')
+                ->join('tclasses', 'tclasses.id', '=', 'c_questionbank.cclass_id')
+                ->join('tchapters', 'tchapters.id', '=', 'c_questionbank.cchapter_id')
+                ->join('tcourse', 'tcourse.id', '=', 'c_questionbank.ccourse_id')
                 ->join('school', 'school.id', 'c_questionbank.school_id')
-                ->select('c_questionbank.*', 'classes.class_name', 'school.school_name as school', 
-                         'chapter.chapter_title', 'tboards.board_name', 'course.course_name')
+                ->select('c_questionbank.*', 'tclasses.class_name', 'school.school_name as school', 
+                         'tchapters.chapter_title', 'tboards.board_name', 'tcourse.course_name')
                 ->paginate(10);
 
             return view('dashboard.superadmin.cbts.questionbank.view')
@@ -70,20 +56,19 @@ class QuestionbankController extends Controller
             $questions = Cquestion::where('c_questionbank.cboard_id', $request->cboard_id)
                 ->where('c_questionbank.cclass_id', $request->cclass_id)
                 ->where('c_questionbank.ccourse_id', $request->ccourse_id)
-                ->where('c_questionbank.school_id', $request->school)
                 ->join('tboards', 'tboards.id', '=', 'c_questionbank.cboard_id')
-                ->join('classes', 'classes.id', '=', 'c_questionbank.cclass_id')
-                ->join('chapter', 'chapter.id', '=', 'c_questionbank.cchapter_id')
-                ->join('course', 'course.id', '=', 'c_questionbank.ccourse_id')
+                ->join('tclasses', 'tclasses.id', '=', 'c_questionbank.cclass_id')
+                ->join('tchapters', 'tchapters.id', '=', 'c_questionbank.cchapter_id')
+                ->join('tcourse', 'tcourse.id', '=', 'c_questionbank.ccourse_id')
                 ->join('school', 'school.id', 'c_questionbank.school_id')
 
                 ->select('c_questionbank.*', 
                          'c_questionbank.cquestion as topic_title', 
                          'school.school_name as school',
-                         'classes.class_name', 
-                         'chapter.chapter_title', 
+                         'tclasses.class_name', 
+                         'tchapters.chapter_title', 
                          'tboards.board_name', 
-                         'course.course_name')
+                         'tcourse.course_name')
                 ->paginate(50);
 
             return view('dashboard.superadmin.cbts.questionbank.view')
@@ -104,12 +89,12 @@ class QuestionbankController extends Controller
         if ($rqMethod === 'GET') {
             $questions = Cquestion::whereIn('c_questionbank.school_id', $schoolId)
                 ->join('tboards', 'tboards.id', '=', 'c_questionbank.cboard_id')
-                ->join('classes', 'classes.id', '=', 'c_questionbank.cclass_id')
-                ->join('chapter', 'chapter.id', '=', 'c_questionbank.cchapter_id')
-                ->join('course', 'course.id', '=', 'c_questionbank.ccourse_id')
+                ->join('tclasses', 'tclasses.id', '=', 'c_questionbank.cclass_id')
+                ->join('ttchapters', 'tchapters.id', '=', 'c_questionbank.cchapter_id')
+                ->join('tcourse', 'tcourse.id', '=', 'c_questionbank.ccourse_id')
                 ->join('school', 'school.id', 'c_questionbank.school_id')
-                ->select('c_questionbank.*', 'classes.class_name', 'school.school_name as school', 
-                         'chapter.chapter_title', 'tboards.board_name', 'course.course_name')
+                ->select('c_questionbank.*', 'tclasses.class_name', 'school.school_name as school', 
+                         'tchapters.tchapters_title', 'tboards.board_name', 'tcourse.tcourse_name')
                 ->paginate(10);
 
             return view('dashboard.admin.cbts.questionbank.view')
@@ -122,22 +107,22 @@ class QuestionbankController extends Controller
         elseif ($rqMethod === 'POST') {
             $questions = Cquestion::where('c_questionbank.cboard_id', $request->cboard_id)
                 ->where('c_questionbank.cclass_id', $request->cclass_id)
-                ->where('c_questionbank.ccourse_id', $request->ccourse_id)
+                ->where('c_questionbank.ctcourse_id', $request->ctcourse_id)
                 ->where('c_questionbank.school_id', $schoolId)
                 ->join('tboards', 'tboards.id', '=', 'c_questionbank.cboard_id')
-                ->join('classes', 'classes.id', '=', 'c_questionbank.cclass_id')
-                ->join('chapter', 'chapter.id', '=', 'c_questionbank.cchapter_id')
-                ->join('course', 'course.id', '=', 'c_questionbank.ccourse_id')
+                ->join('tclasses', 'tclasses.id', '=', 'c_questionbank.cclass_id')
+                ->join('tchapters', 'tchapters.id', '=', 'c_questionbank.cchapter_id')
+                ->join('tcourse', 'tcourse.id', '=', 'c_questionbank.ccourse_id')
                 ->join('school', 'school.id', 'c_questionbank.school_id')
 
 
                 ->select('c_questionbank.*', 
                          'c_questionbank.cquestion as topic_title', 
                          'school.school_name as school',
-                         'classes.class_name', 
-                         'chapter.chapter_title', 
+                         'tclasses.class_name', 
+                         'tchapters.chapter_title', 
                          'tboards.board_name', 
-                         'course.course_name')
+                         'tcourse.tcourse_name')
                 ->paginate(50);
 
             return view('dashboard.admin.cbts.questionbank.view')
@@ -217,11 +202,13 @@ class QuestionbankController extends Controller
         return redirect()->route('superadmin.cbts.questionbank.view');
     } else {
         $boards = Tboards::all();
-        $courses = course::all();
+        $courses = TCourses::all();
+        $classes = TClasses::all();     
         $schools = school::all();
 
         return view('dashboard.superadmin.cbts.questionbank.create')
             ->with('boards', $boards)
+            ->with('classes', $classes)
             ->with('schools', $schools)
             ->with('courses', $courses);
     }
@@ -233,9 +220,9 @@ if ($request->isMethod('POST')) {
     // Create and save the question
     $question = new CQuestion;
     $question->cboard_id = $request->cboard_id;
-    $question->ccourse_id = $request->ccourse_id;
+    $question->ctcourse_id = $request->ctcourse_id;
     $question->cclass_id = $request->cclass_id;
-    $question->cchapter_id = $request->cchapter_id;
+    $question->ctchapters_id = $request->ctchapters_id;
     $question->cquestion = $request->cquestion;
     $question->school_id = $request->school;
     $question->mark = $request->mark;
@@ -381,16 +368,16 @@ if ($request->isMethod('POST')) {
     
         // Fetch related data for dropdowns
         $boards = Tboards::all();
-        $classes = classes::all();
-        $courses = Course::all();
+        $tclasses = TClasses::all();
+        $tcourses = Course::all();
         $schools = School::all();
     
         if ($request->isMethod('POST')) {
             // Update the question
             $question->cboard_id = $request->cboard_id;
-            $question->ccourse_id = $request->ccourse_id;
+            $question->ctcourse_id = $request->ctcourse_id;
             $question->cclass_id = $request->cclass_id;
-            $question->cchapter_id = $request->cchapter_id;
+            $question->ctchapters_id = $request->ctchapters_id;
             $question->cquestion = $request->cquestion;
             $question->school_id = $request->school;
             $question->mark = $request->mark;
@@ -445,7 +432,7 @@ if ($request->isMethod('POST')) {
             return redirect()->route('superadmin.cbts.questionbank.view')->with('success', 'Question updated successfully.');
         }
     
-        return view('dashboard.superadmin.cbts.questionbank.edit', compact('question', 'boards', 'schools', 'courses', 'answers', 'classes'));
+        return view('dashboard.superadmin.cbts.questionbank.edit', compact('question', 'boards', 'schools', 'tcourses', 'answers', 'tclasses'));
     }
     
    

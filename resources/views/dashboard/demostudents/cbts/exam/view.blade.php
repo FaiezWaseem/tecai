@@ -1,7 +1,7 @@
 @extends('dashboard.common')
 
 @section('sidebar')
-    @include('dashboard.superadmin.sidebar')
+    @include('dashboard.demostudents.sidebar')
 @endsection
 
 @section('content')
@@ -31,79 +31,19 @@
             <form method="POST">
                 @method('POST')
                 @csrf
-                <div class="row">
-                    <div class="col-md-3">
-                        <div class="form-group">
-                            <label for="txtUserName">School <span class="text-danger">*</span></label>
-                            <select class="form-control" name="school" id="schools">
-                            <option value="0">--Select--</option>
-                                @foreach ($schools as $item)
-                                    <option value="{{ $item->id }}">{{ $item->school_name }}</option>
-                                @endforeach
-                            </select>
-                            <span id="txtUserName_Error" class="error invalid-feedback hide"></span>
-                        </div>
-                    </div>
-
-                    <div class="col-md-3">
-                        <div class="form-group">
-                            <label for="txtUserName">Board <span class="text-danger">*</span></label>
-                            <select name="ex_board_id" class="form-control">
-                                <option value="0">--Select--</option>
-                                @foreach ($boards as $item)
-                                    <option value="{{ $item->id }}">{{ $item->board_name }}</option>
-                                @endforeach
-                            </select>
-                            <span id="txtUserName_Error" class="error invalid-feedback hide"></span>
-                        </div>
-                    </div>
-
-                    <div class="col-md-3">
-                        <div class="form-group">
-                            <label for="txtUserName">Class <span class="text-danger">*</span></label>
-                            <select name="ex_class_id" id="classes"class="form-control">
-                                <option value="0">--Select--</option>
-                                @foreach ($classes as $item)
-                                    <option value="{{ $item->id }}">{{ $item->class_name }}</option>
-                                @endforeach
-                            </select>
-                            <span id="txtUserName_Error" class="error invalid-feedback hide"></span>
-                        </div>
-                    </div>
-
-                    <div class="col-md-3">
-                        <div class="form-group">
-                            <label for="txtUserName">Subject <span class="text-danger">*</span></label>
-                            <select name="ex_course_id" id="courses"class="form-control">
-                                <option value="0">--Select--</option>
-                                @foreach ($courses as $item)
-                                    <option value="{{ $item->id }}">{{ $item->course_name }}</option>
-                                @endforeach
-                            </select>
-                            <span id="txtUserName_Error" class="error invalid-feedback hide"></span>
-                        </div>
-                    </div>
-
-                    <div class="col-md-3">
-                        <div class="form-group">
-                            <label for="txtUserName">Action <span class="text-danger">*</span></label>
-                            <input type="submit" name="submit" value="filter" class="form-control">
-                        </div>
-                    </div>
-                </div>
+                
             </form>
 
             <!-- Small boxes (Stat box) -->
             <div class="card">
                 <div class="card-header">
-                    <h3 class="card-title">Question</h3>
+                    <h3 class="card-title">Exam</h3>
                 </div>
                 <!-- /.card-header -->
                 <div class="card-body">
                     <table id="example1" class="table table-bordered table-striped">
                         <thead>
                             <tr>
-                                <th>Actions</th>
                                 <th>Id</th>
                                 <th>School</th>
                                 <th>Board</th>
@@ -116,6 +56,7 @@
                                 <th>End Date</th>
                                 <th>Duration</th>
                                 <th>Total Question</th>
+                                <th>Action</th>
                                 <th>Created At</th>
                                 <th>Updated At</th>
                             </tr>
@@ -123,17 +64,7 @@
                         <tbody>
                             @foreach ($exams as $item)
                                 <tr>
-                                    <td>
-                                        <a href="{{ route('superadmin.cbts.examquestion.view', ['id' => $item->id]) }}">
-                                            <i class="fa fa-eye text-success"></i>
-                                        </a>
-                                        <a href="{{ route('superadmin.cbts.exam.edit', ['id' => $item->id]) }}">
-                                            <i class="fa fa-edit text-primary"></i>
-                                        </a>
-                                        <button class="btn" data-toggle="modal" data-target="#DeleteModal" onclick="setdeleteModalId({{ $item->id }})">
-                                            <i class="fa fa-trash text-danger"></i>
-                                        </button>
-                                    </td>
+                                    
                                     <td>{{ $item->id }}</td>
                                     <td>{{ $item->school }}</td>
                                     <td>{{ $item->board_name }}</td>
@@ -152,6 +83,13 @@
                                     <td>{{ $item->ex_end_date }}</td>
                                     <td>{{ $item->ex_duration }}</td>
                                     <td>{{ $item->ex_total_question }}</td>
+
+                                    <td>  <a href="{{ route('demostudent.cbts.exam.takeexam', ['exam_id' => $item->id]) }}"
+       style="background-color: #28a745; color: white; padding: 5px 10px; font-size: 15px; border-radius: 5px; text-decoration: none; transition: background-color 0.3s;"
+       onmouseover="this.style.backgroundColor='#218838';"
+       onmouseout="this.style.backgroundColor='#28a745';">
+        Start Exam
+    </a></td>
                                     <td>{{ $item->created_at }}</td>
                                     <td>{{ $item->updated_at }}</td>
                                 </tr>
@@ -159,7 +97,6 @@
                         </tbody>
                         <tfoot>
                             <tr>
-                                <th>Actions</th>
                                 <th>Id</th>
                                 <th>School</th>
                                 <th>Board</th>
@@ -172,6 +109,7 @@
                                 <th>End Date</th>
                                 <th>Duration</th>
                                 <th>Total Question</th>
+                                <th>Start Exammmm</th>
                                 <th>Created At</th>
                                 <th>Updated At</th>
                             </tr>
@@ -211,7 +149,5 @@
                 "buttons": ["copy", "csv", "excel", "pdf", "print"]
             }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
         });
-
     </script>
-
 @endsection
