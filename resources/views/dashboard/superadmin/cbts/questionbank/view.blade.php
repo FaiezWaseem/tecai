@@ -112,9 +112,6 @@
                                 <th>Class</th>
                                 <th>Subject</th>
                                 <th>Chapter</th>
-                                <th>Question</th>
-                                <th>Marks</th>
-                                <th>Image</th>
                                 <th>Created At</th>
                                 <th>Updated At</th>
                             </tr>
@@ -123,8 +120,11 @@
     @foreach ($questions as $item)
         <tr>
             <td>
-                <a href="{{ route('superadmin.cbts.questionbank.edit', ['id' => $item->id]) }}">
-                    <i class="fa fa-edit text-primary"></i>
+                <a href="{{ route('superadmin.cbts.questionbank.singlecreate', ['id' => $item->id]) }}">
+                    <i class="fa fa-plus text-primary"></i>Add  Question
+                </a>
+                <a href="{{ route('superadmin.cbts.questionbank.bulkcreate', ['id' => $item->id]) }}">
+                    <i class="fa fa-plus text-primary"></i>  Add Bulk Question
                 </a>
                 <button class="btn" data-toggle="modal" data-target="#DeleteModal" onclick="setdeleteModalId({{ $item->id }})">
                     <i class="fa fa-trash text-danger"></i>
@@ -135,16 +135,7 @@
             <td>{{ $item->board_name }} </td>
             <td>{{ $item->class_name }} </td>
             <td>{{ $item->course_name }} </td>
-            <td contenteditable="true">{{ $item->chapter_title }} </td>
-            <td>{{ $item->cquestion }} </td>
-            <td>{{ $item->mark }} </td>
-            <td>
-                @if ($item->image)
-                    <img src="{{ asset('images/' . $item->image) }}" alt="Image" style="width: 100px; height: auto;">
-                @else
-                    No image
-                @endif
-            </td>
+            <td>{{ $item->chapter_title }} </td>        
             <td>{{ $item->created_at }}</td>
             <td>{{ $item->updated_at }}</td>
         </tr>
@@ -160,8 +151,6 @@
                                 <th>Class</th>
                                 <th>Subject</th>
                                 <th>Chapter</th>
-                                <th>Question</th>
-                                <th>Marks</th>
                                 <th>Created At</th>
                                 <th>Updated At</th>
                             </tr>

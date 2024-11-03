@@ -7,6 +7,7 @@ use App\Models\Exam;
 use App\Models\demostudents;
 use App\Models\Tclasses;
 
+use App\Models\Classes;
 use Illuminate\Support\Facades\Storage;
 
 use App\Models\Term;
@@ -72,11 +73,15 @@ class DemoStudentsController extends Controller
 
         $student = demostudents::where('id', $studentId)
             ->first();
-        $class = Tclasses::where('class_name', $student->class)->first();
-       
-      ;
-        $cbtsexam = Exam::where('ex_class_id', $class->id)
-            ->get();
+        $class = Classes::where('class_name', $student->class)->first();;
+        if ($class) {
+            $cbtsexam = Exam::where('ex_school_class_id', $class->id)
+                        ->whereDate('ex_start_date', now()->toDateString())
+                        ->get();
+        } else {
+            $cbtsexam = collect(); 
+        }
+        
 
         return view('dashboard.demostudents.home.view', compact('cbtsexam'));
     }

@@ -448,7 +448,9 @@ Route::middleware('CheckSuperAdmin')->prefix('/superadmin')->group(function () {
      ->name('superadmin.cbts.questionbank.edit');
      Route::put('/cbts/questionbank/{id}/edit', [App\Http\Controllers\QuestionbankController::class, 'SuperAdminEditCBTSQuestionbank'])
      ->name('superadmin.cbts.questionbank.edit');
- 
+     Route::get('/download-questionbank', [App\Http\Controllers\QuestionbankController::class, 'downloadCsv'])->name('download.questionbank');
+
+
      // Route to view exam results
      Route::get('/cbts/exam/examresult', [App\Http\Controllers\ExamController::class, 'SuperAdminViewCBTSExamResult'])
          ->name('superadmin.cbts.exam.examresult');
@@ -468,6 +470,21 @@ Route::middleware('CheckSuperAdmin')->prefix('/superadmin')->group(function () {
      ->name('superadmin.cbts.exam.startexam');
      Route::post('/cbts/exam/startexam', [App\Http\Controllers\ExamController::class, 'SuperAdminViewCBTSStartExam'])
      ->name('superadmin.cbts.exam.startexam');
+ 
+
+
+
+     Route::put('/cbts/questionbank/{id}/bulkcreate',[App\Http\Controllers\QuestionbankController::class, 'SuperAdminImportCBTSQuestionbank'])
+     ->name('superadmin.cbts.questionbank.bulkcreate');
+     Route::get('/cbts/questionbank/{id}/bulkcreate',[App\Http\Controllers\QuestionbankController::class, 'SuperAdminImportCBTSQuestionbank'])
+     ->name('superadmin.cbts.questionbank.bulkcreate');
+
+
+     
+    Route::get('/cbts/questionbank/singlecreate/{id}', [App\Http\Controllers\QuestionbankController::class, 'SuperAdminCreateCBTSQQuestionbank'])
+    ->name('superadmin.cbts.questionbank.singlecreate');
+    Route::put('/cbts/questionbank/singlecreate/{id}', [App\Http\Controllers\QuestionbankController::class, 'SuperAdminCreateCBTSQQuestionbank'])
+    ->name('superadmin.cbts.questionbank.singlecreate');
  
      /**
       *   --------------------------------------------------
@@ -503,53 +520,151 @@ Route::middleware('CheckSuperAdmin')->prefix('/superadmin')->group(function () {
      *   --------------------------------------------------
      * 
      */
-    Route::get('/cbts/questionbank/create', [App\Http\Controllers\QuestionbankController::class, 'SuperAdminCreateCBTSQuestionbank'])
-    ->name('superadmin.cbts.questionbank.create');
-    Route::post('/cbts/questionbank/create', [App\Http\Controllers\QuestionbankController::class, 'SuperAdminCreateCBTSQuestionbank'])
-    ->name('superadmin.cbts.questionbank.create');
-    Route::post('/cbts/examquestion/create', [App\Http\Controllers\ExamController::class, 'SuperAdminCreateCBTSExamQuestion'])
-    ->name('superadmin.cbts.examquestion.create');
-    Route::get('/cbts/examquestion/create', [App\Http\Controllers\ExamController::class, 'SuperAdminCreateCBTSExamQuestion'])
-    ->name('superadmin.cbts.examquestion.create');
     
-    Route::get('/cbts/exam/create', [App\Http\Controllers\ExamController::class, 'SuperAdminCreateCBTSExam'])
-    ->name('superadmin.cbts.exam.create');
-    Route::post('/cbts/exam/create', [App\Http\Controllers\ExamController::class, 'SuperAdminCreateCBTSExam'])
-    ->name('superadmin.cbts.exam.create');
-    Route::get('/cbts/examquestion/view', [App\Http\Controllers\ExamController::class, 'SuperAdminViewCBTSExamQuestion'])
-    ->name('superadmin.cbts.examquestion.view');
-    Route::get('/get-chapters/{courseId}', [App\Http\Controllers\ExamController::class, 'getChapters']);
 
-    Route::post('/cbts/filter/chapter', [App\Http\Controllers\QuestionbankController::class, 'filterChapter'])
-    ->name('superadmin.cbts.filter.chapter');
+
+
+ 
+
+
+     Route::get('/cbts/questionbank/create', [App\Http\Controllers\QuestionbankController::class, 'SuperAdminCreateCBTSQuestionbank'])
+     ->name('superadmin.cbts.questionbank.create');
+     Route::post('/cbts/questionbank/create', [App\Http\Controllers\QuestionbankController::class, 'SuperAdminCreateCBTSQuestionbank'])
+     ->name('superadmin.cbts.questionbank.create');
+ 
+ 
+ 
+     Route::get('/cbts/questionbank/{id}/bulkcreate',[App\Http\Controllers\QuestionbankController::class, 'SuperAdminImportCBTSQuestionbank'])
+     ->name('superadmin.cbts.questionbank.bulkcreate');
+     Route::put('/cbts/questionbank/{id}/bulkcreate',[App\Http\Controllers\QuestionbankController::class, 'SuperAdminImportCBTSQuestionbank'])
+     ->name('superadmin.cbts.questionbank.bulkcreate');
+ 
+ 
+     Route::get('/cbts/questionbank/singlecreate/{id}', [App\Http\Controllers\QuestionbankController::class, 'SuperAdminCreateCBTSQQuestionbank'])
+     ->name('superadmin.cbts.questionbank.singlecreate');
+     Route::put('/cbts/questionbank/singlecreate/{id}', [App\Http\Controllers\QuestionbankController::class, 'SuperAdminCreateCBTSQQuestionbank'])
+     ->name('superadmin.cbts.questionbank.singlecreate');
+ 
+     
+     Route::get('/cbts/questionbank/view', [App\Http\Controllers\QuestionbankController::class, 'SuperAdminViewCBTSQuestionbank'])
+     ->name('superadmin.cbts.questionbank.view');
+     Route::post('/cbts/questionbank/view', [App\Http\Controllers\QuestionbankController::class, 'SuperAdminViewCBTSQuestionbank'])
+     ->name('superadmin.cbts.questionbank.view');
+ 
+ 
+ 
+ 
+ 
+     Route::get('/cbts/questionbank/{id}/edit', [App\Http\Controllers\QuestionbankController::class, 'SuperAdminEditCBTSQuestionbank'])
+     ->name('superadmin.cbts.questionbank.edit');
+     Route::put('/cbts/questionbank/{id}/edit', [App\Http\Controllers\QuestionbankController::class, 'SuperAdminEditCBTSQuestionbank'])
+     ->name('superadmin.cbts.questionbank.edit');
+ 
+ 
+ 
+ 
+ 
+ 
+     Route::get('/demolink/view', [App\Http\Controllers\DemoLinkController::class, 'SuperAdminViewDemoLink'])
+     ->name('superadmin.demolink.view');
+     Route::post('/demolink/view', [App\Http\Controllers\DemoLinkController::class, 'SuperAdminViewDemoLink'])
+     ->name('superadmin.demolink.view');
+ 
+ 
+ 
+     Route::get('/demolink/create', [App\Http\Controllers\DemoLinkController::class, 'SuperAdminCreateDemolink'])
+     ->name('superadmin.demolink.create');
+     Route::post('/demolink/create', [App\Http\Controllers\DemoLinkController::class, 'SuperAdminCreateDemolink'])
+     ->name('superadmin.demolink.create');
+ 
+ 
+     Route::get('/download-questionbank', [App\Http\Controllers\QuestionbankController::class, 'downloadMcqsCsv'])->name('download.mcqs');
+     Route::get('/download-true_false', [App\Http\Controllers\QuestionbankController::class, 'downloadTrueFalseCsv'])->name('download.questionbank');
+ 
+     
+ 
+ 
+     Route::post('/cbts/exam/result', [App\Http\Controllers\ExamController::class, 'SuperAdminViewCBTSResult'])
+     ->name('superadmin.cbts.exam.result');
+ 
+     Route::get('/cbts/exam/view', [App\Http\Controllers\ExamController::class, 'SuperAdminViewCBTSExam'])
+     ->name('superadmin.cbts.exam.view');
+ 
+     Route::get('/cbts/exam/result', [App\Http\Controllers\ExamController::class, 'SuperAdminViewCBTSResult'])
+     ->name('superadmin.cbts.exam.result');
+ 
+     Route::post('/cbts/exam/examresult', [App\Http\Controllers\ExamController::class, 'SuperAdminViewCBTSExamResult'])
+     ->name('superadmin.cbts.exam.examresult');
+ 
+ 
+ 
+     Route::get('/cbts/exam/examresult', [App\Http\Controllers\ExamController::class, 'SuperAdminViewCBTSExamResult'])
+         ->name('superadmin.cbts.exam.examresult');
+     
+     Route::get('/cbts/exam/examresult/pdf', [App\Http\Controllers\ExamController::class, 'SuperadmindownloadExamResultPDF'])
+     ->name('superadmin.cbts.exam.results.pdf');
+ 
    
-    Route::get('/cbts/exam/edit', [App\Http\Controllers\ExamController::class, 'SuperAdminEditCBTSExam'])
-    ->name('superadmin.cbts.exam.edit');
-    Route::put('/cbts/exam/edit', [App\Http\Controllers\ExamController::class, 'SuperAdminEditCBTSExam'])
-    ->name('superadmin.cbts.exam.edit');
-   
-    Route::post('/cbts/filter/classes', [App\Http\Controllers\QuestionbankController::class, 'filterClasses'])
-    ->name('superadmin.cbts.filter.classes');
-
-
-
-    Route::post('/cbts/filter/courses', [App\Http\Controllers\QuestionbankController::class, 'filterCourses'])
-    ->name('superadmin.cbts.filter.courses'); 
-
-
+     Route::post('/cbts/exam/view', [App\Http\Controllers\ExamController::class, 'SuperAdminViewCBTSExam'])
+     ->name('superadmin.cbts.exam.view');
+     
+     Route::post('/cbts/questionbank/view', [App\Http\Controllers\QuestionbankController::class, 'SuperAdminViewCBTSQuestionbank'])
+     ->name('superadmin.cbts.questionbank.view');
+ 
     
-    Route::get('/demolink/view', [App\Http\Controllers\DemoLinkController::class, 'SuperAdminViewDemoLink'])
-    ->name('superadmin.demolink.view');
-    Route::post('/demolink/view', [App\Http\Controllers\DemoLinkController::class, 'SuperAdminViewDemoLink'])
-    ->name('superadmin.demolink.view');
-
-
-
-    Route::get('/demolink/create', [App\Http\Controllers\DemoLinkController::class, 'SuperAdminCreateDemolink'])
-    ->name('superadmin.demolink.create');
-    Route::post('/demolink/create', [App\Http\Controllers\DemoLinkController::class, 'SuperAdminCreateDemolink'])
-    ->name('superadmin.demolink.create');
-
+     
+     
+      
+     
+     Route::delete('/cbts/questionbank/view/{id}', [App\Http\Controllers\QuestionbankController::class, 'SuperAdminDeleteCBTSQuestion'])
+     ->name('superadmin.cbts.questionbank.delete');
+ 
+     Route::delete('/cbts/questionbank/singlecreate/{id}', [App\Http\Controllers\QuestionbankController::class, 'SuperAdminDeleteCBTSQQuestion'])
+     ->name('superadmin.cbts.question.delete');
+     
+     Route::delete('/cbts/questionbank/{id}/bulkcreate', [App\Http\Controllers\QuestionbankController::class, 'SuperAdminDeleteCBTSQQuestion'])
+     ->name('superadmin.cbts.question.delete');
+ 
+     
+     Route::delete('/cbts/exam/view/{id}', [App\Http\Controllers\ExamController::class, 'SuperAdminDeleteCBTSExam'])
+     ->name('superadmin.cbts.exam.delete');
+     Route::delete('/cbts/examquestion/view', [App\Http\Controllers\ExamController::class, 'SuperAdminDeleteCBTSExamQuestion'])
+     ->name('superadmin.cbts.examquestion.delete');
+ 
+ 
+     Route::delete('/demolink/view/{id}', [App\Http\Controllers\DemoLinkController::class, 'SuperAdminDeleteDemolink'])
+     ->name('superadmin.demolink.delete');
+ 
+ 
+     
+     Route::post('/cbts/examquestion/create', [App\Http\Controllers\ExamController::class, 'SuperAdminCreateCBTSExamQuestion'])
+     ->name('superadmin.cbts.examquestion.create');
+     Route::get('/cbts/examquestion/create', [App\Http\Controllers\ExamController::class, 'SuperAdminCreateCBTSExamQuestion'])
+     ->name('superadmin.cbts.examquestion.create');
+     
+     Route::get('/cbts/exam/create', [App\Http\Controllers\ExamController::class, 'SuperAdminCreateCBTSExam'])
+     ->name('superadmin.cbts.exam.create');
+     Route::post('/cbts/exam/create', [App\Http\Controllers\ExamController::class, 'SuperAdminCreateCBTSExam'])
+     ->name('superadmin.cbts.exam.create');
+     Route::get('/cbts/examquestion/view', [App\Http\Controllers\ExamController::class, 'SuperAdminViewCBTSExamQuestion'])
+     ->name('superadmin.cbts.examquestion.view');
+ 
+     Route::get('/cbts/exam/edit', [App\Http\Controllers\ExamController::class, 'SuperAdminEditCBTSExam'])
+     ->name('superadmin.cbts.exam.edit');
+     Route::put('/cbts/exam/edit', [App\Http\Controllers\ExamController::class, 'SuperAdminEditCBTSExam'])
+     ->name('superadmin.cbts.exam.edit');
+ 
+     Route::post('/cbts/filter/chapter', [App\Http\Controllers\QuestionbankController::class, 'filterChapter'])
+     ->name('superadmin.cbts.filter.chapter');
+    
+    
+     Route::post('/cbts/filter/classes', [App\Http\Controllers\QuestionbankController::class, 'filterClasses'])
+     ->name('superadmin.cbts.filter.classes');
+ 
+ 
+ 
+ 
+ 
 
 
 

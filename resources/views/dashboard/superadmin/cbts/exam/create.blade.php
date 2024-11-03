@@ -86,10 +86,23 @@
                     </div>
                     <div class="col-md-4">
                         <div class="form-group">
-                            <label for="txtUserName">Class <span class="text-danger">*</span></label>
+                            <label for="txtUserName">Lms Class <span class="text-danger">*</span></label>
                             <select name="ex_class_id" id="classes_id" class="form-control">
                             <option value=""> --Select-- </option>
                                 @foreach ($classes as $item)
+                                    <option value="{{ $item->id }}"> {{ $item->class_name }} </option>
+                                @endforeach
+                            </select>
+                            <span id="txtUserName_Error" class="error invalid-feedback hide"></span>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="txtUserName">School Class <span class="text-danger">*</span></label>
+                            <select name="ex_school_class_id" id="school_classes_id" class="form-control">
+                            <option value=""> --Select-- </option>
+                                @foreach ($sclasses as $item)
                                     <option value="{{ $item->id }}"> {{ $item->class_name }} </option>
                                 @endforeach
                             </select>
@@ -237,6 +250,41 @@
         
     });
     
+
+    $(document).ready(function() {
+    $('#schools').change(function() {
+        const selectedSchoolId = $(this).val();
+        const csrfToken = $('meta[name="csrf-token"]').attr('content');
+        $('#school_classes_id').html('<option value="">--Select Class--</option>');
+
+        if (selectedSchoolId) {
+            $.ajax({
+                url: '{{ route('superadmin.cbts.filter.classes') }}',
+                type: 'POST',
+                data: {
+                    _token: csrfToken,
+                    school_id: selectedSchoolId
+                },
+                dataType: 'json',
+                success: function(data) {
+                    if (data.classes && data.classes.length) {
+                        data.classes.forEach(classItem => {
+                            $('#school_classes_id').append(
+                                `<option value="${classItem.id}">${classItem.class_name}</option>`
+                            );
+                        });
+                    } else {
+                        $('#school_classes_id').html('<option value="">No classes available</option>');
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error('Error:', error);
+                    alert('Failed to fetch classes: ' + error);
+                }
+            });
+        }
+    });
+});
 </script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 @endsection

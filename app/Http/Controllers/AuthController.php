@@ -68,10 +68,31 @@ class AuthController extends Controller
                 $isTeacher = false;
                 $isStudent = true;
                 $isDemoStudent = false;
-                $user = students::where('email', $request->name)->first();
+                
+
+                $prefix_school = $request->name;
+
+                // Split the string by underscore
+                $parts = explode('_', $prefix_school);
+
+                // Get the first part as the prefix
+                $prefix = $parts[0];
+                
+                if(!isset($parts[1])){
+                    return back()->withErrors([
+                        'email' => "No User Found, Please Check Your Password",
+                    ]);
+                }
+                $admission_no = $parts[1];
+                
+                
+                $school = school::where('prefix', $prefix)->first();
+                $user = students::where('admission_no', $admission_no)
+                    ->where('school', $school->id)
+                    ->first();
                 if (!$user || !\Hash::check($request->password, $user->password)) {
                     return back()->withErrors([
-                        'email' => "The provided  credentials do not match our records.",
+                        'email' => "No User Found, Please Check Your Password",
                     ]);
                 }
             }

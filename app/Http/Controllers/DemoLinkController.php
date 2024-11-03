@@ -35,14 +35,9 @@ class DemoLinkController extends Controller
     public function SuperAdminCreateDemolink(Request $request)
     {
     if ($request->isMethod('POST')) {
-        // dd($request->all());
-
-        $class = TClasses::where('class_name' , $request->class)->first();
-
         $dstudent = new demostudents;
         $dstudent->board_id = $request->board_id;
         $dstudent->class = $request->class;
-        $dstudent->class_id = $class->id;
         $dstudent->user_name = $request->name;
         $dstudent->password = bcrypt($request->password);
    
@@ -64,21 +59,15 @@ class DemoLinkController extends Controller
 
 
 public function SuperAdminViewDemolink(Request $request){
-      
-    
     $rqMethod = $request->method();
     if ($rqMethod === 'GET') {
-       
-       // $studentId = session('user.id'); 
         $demolink = demostudents::all();
 
-return view('dashboard.superadmin.demolink.view')
-->with('demolink', $demolink);
-}
-
-
-
-
+        $demolink = demostudents::join('tboards', 'tboards.id', '=', 'democbts.board_id')
+        ->select('democbts.*', 'tboards.board_name')                
+                  ->paginate(10);
+        return view('dashboard.superadmin.demolink.view')->with('demolink', $demolink);
+    }
 }
 
 public function SuperAdminDeleteDemolink(Request $request)
@@ -109,10 +98,4 @@ public function SuperAdminDeleteDemolink(Request $request)
         ]);
     }
 }
-
-
-
-  
-
-   
 }

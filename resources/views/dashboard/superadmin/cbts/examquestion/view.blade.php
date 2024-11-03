@@ -143,12 +143,11 @@
                             </div>
 
                             <div class="col-md-12 text-right" style="margin-top: 15px;">
-                                <button class="btn btn-danger" 
-                                        data-toggle="modal" 
-                                        data-target="#DeleteModal2" 
-                                        onclick="setDeleteModalIdd({{ $exam_id }}, {{ $item2->id }})">
-                                    <i class="fa fa-trash"></i> Remove
-                                </button>
+                            <button id="delete" data-id="{{$item2->id }}" data-exam-id="{{$exam_id}}"
+        onclick="deleteClicked(this)" class="btn submit-button">
+    Remove
+</button>
+
                             </div>
 
 
@@ -185,48 +184,29 @@
         </div>
     </section>
 @endsection
+
+
 <script>
-    // Set exam_id and question_id when opening the modal
-    function setDeleteModalIdd(examId, questionId) {
-        document.getElementById('examIdInput').value = examId;
-        document.getElementById('questionIdInput').value = questionId;
-    }
-
-   function submitDeleteForm() {
-    const examId = document.getElementById('examIdInput').value;
-    const questionId = document.getElementById('questionIdInput').value;
-
-    const url = `/cbts/examquestion/view/${questionId}`; // Ensure this is correct
-
-    fetch(url, {
-        method: 'DELETE',
-        headers: {
-            'Content-Type': 'application/json',
-            'X-CSRF-TOKEN': '{{ csrf_token() }}', // Ensure CSRF token is included
-        },
-        body: JSON.stringify({
-            exam_id: examId,
-            question_id: questionId
-        })
-    })
-    .then(response => {
-        if (!response.ok) {
-            throw new Error('Network response was not ok');
-        }
-        return response.json();
-    })
-    .then(data => {
-        if (data.status === 200) {
-            alert(data.message);
-            location.reload(); // Reload to show changes
-        } else {
-            alert(data.message);
-        }
-    })
-    .catch(error => {
-        console.error('Error:', error);
-        alert('An error occurred while deleting the question. See console for details.');
-    });
-}
-
+       function deleteClicked(e) {
+           var exam_id = $(e).attr('data-exam-id');
+           var question_id = $(e).attr('data-id');
+           var csrfToken = $('meta[name="csrf-token"]').attr('content');
+           $.ajax({
+               url: window.location.href, 
+               method: 'DELETE',
+               data: {
+                exam_id: exam_id,
+                question_id : question_id 
+               },
+               headers: {
+                   'X-CSRF-TOKEN': csrfToken
+               },
+               success: function(response) {
+                   showToast('Delete request', 'Delete request successful', 'success');
+               },
+               error: function(xhr, status, error) {
+                   showToast('AJAX delete request error:', status, 'error');
+               }
+           });
+       };
 </script>

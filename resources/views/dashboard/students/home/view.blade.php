@@ -174,7 +174,7 @@
                                 @php
                                 $currentDate = date('Y-m-d');
                                 @endphp
-                                @if ($item->ex_start_date > $currentDate)
+                                 @if ($item->ex_start_date <= $currentDate && $item->ex_end_date >= $currentDate)
                                 <a class="cbts">
                                     <p>{!! $item->ex_title !!}</p>
                                     <p>Start date: {{ $item->ex_start_date }}</p>

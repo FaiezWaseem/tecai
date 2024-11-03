@@ -53,7 +53,7 @@
                                         </button></td>
                               
                                     <td>{{ $item->user_name }}</td>
-                                    <td>{{ $item->user_name }}</td>
+                                    <td>{{ $item->board_name }}</td>
                                     <td>{{ $item->class }}</td>
                                     <td>{{ $item->created_at }}</td>
                                     <td>{{ $item->updated_at }}</td>

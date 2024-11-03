@@ -68,7 +68,7 @@
     </div>                                                        
 
     <div class="card-body" style="text-align: center; padding: 20px;">
-    <a href="{{ route('student.cbts.exam.startexam', ['exam_id' => $exams->id]) }}"
+    <a href="{{ route('student.cbts.exam.startexam', ['exam_id' => $exams->id ,'start_time'=> date('Y-m-d H:i:s')       ] ) }}"
        style="background-color: #28a745; color: white; padding: 12px 20px; font-size: 18px; border-radius: 5px; text-decoration: none; transition: background-color 0.3s;"
        onmouseover="this.style.backgroundColor='#218838';"
        onmouseout="this.style.backgroundColor='#28a745';">

@@ -62,7 +62,7 @@
                                 <tr>
                                     <td>
                                   
-                                     <a href="{{ route('demostudent.cbts.exam.examresult', ['exam_id' => $item->exam_id]) }}"
+                                     <a href="{{ route('demostudent.cbts.exam.examresult', ['exam_id' => $item->exam_id,'student_id' => $item->student_id]) }}"
                                      style="background-color: #28a745; color: white; padding: 5px 10px; font-size: 15px; border-radius: 5px; text-decoration: none; transition: background-color 0.3s;"
                                      onmouseover="this.style.backgroundColor='#218838';"
                                      onmouseout="this.style.backgroundColor='#28a745';">

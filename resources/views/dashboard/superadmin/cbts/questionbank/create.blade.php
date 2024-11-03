@@ -87,51 +87,7 @@
                             </select>
                         </div>
                     </div>
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            <label for="cquestion">Question <span class="text-danger">*</span></label>
-                            <input type="text" name="cquestion" class="form-control" required>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="image">Upload Image:</label>
-                        <input type="file" class="form-control" name="image" id="image" required>
-                    </div>
-
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            <label for="mark">Mark <span class="text-danger">*</span></label>
-                            <input type="text" name="mark" class="form-control" required>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            <label for="cqtype_id">Question Type <span class="text-danger">*</span></label>
-                            <select name="cqtype_id" class="form-control" id="cqtype_id" required>
-                                <option value="">--Select--</option>
-                                <option value="mcqs">MCQs</option>
-                                <option value="fill_in_the_blanks">Fill in the blanks</option>
-                                <option value="true_false">True/False</option>
-                                <option value="single_line_answer">Single Line Answer</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="col-md-4" id="optionsContainer" style="display: none;">
-                        <div class="form-group">
-                            <label for="totalOptions">Total Options <span class="text-danger">*</span></label>
-                            <select name="content_type" class="form-control" id="totalOptions" required>
-                                <option value="">--Select--</option>
-                                @for ($i = 1; $i <= 5; $i++)
-                                    <option value="{{ $i }}">{{ $i }}</option>
-                                @endfor
-                            </select>
-                        </div>
-                    </div>
-
-                    <div id="answerContainer" class="col-md-12">
-                        <!-- Dynamic answer inputs will be added here -->
-                    </div>
+              
                 </div>
 
                 <div class="row">
@@ -154,63 +110,6 @@
             e.target.submit();
         });
 
-        document.getElementById('cqtype_id').addEventListener('change', function() {
-            const qtype = this.value;
-            const optionsContainer = document.getElementById('optionsContainer');
-            const answerContainer = document.getElementById('answerContainer');
-            answerContainer.innerHTML = '';
-
-            if (qtype === "mcqs") {
-                optionsContainer.style.display = 'block';
-            } else {
-                optionsContainer.style.display = 'none';
-                document.getElementById('totalOptions').value = 1;
-            }
-            if (qtype === "true_false") {
-                answerContainer.innerHTML = `
-                  <div class="form-check form-check-inline">
-                      <input type="radio" class="form-check-input" name="correct_answer" id="true_answer" value="true" required>
-                      <label class="form-check-label font-weight-bold" for="true_answer">True</label>
-                  </div>
-                  <div class="form-check form-check-inline">
-                      <input type="radio" class="form-check-input" name="correct_answer" id="false_answer" value="false" required>
-                      <label class="form-check-label font-weight-bold" for="false_answer">False</label>
-                  </div>
-                `;
-            } else if (qtype === "fill_in_the_blanks" || qtype === "single_line_answer") {
-                answerContainer.innerHTML = `
-                    <label for="answer">Your Answer <span class="text-danger">*</span></label>
-                    <input type="text" name="answer" class="form-control" required>`;
-            }
-        });
-
-        document.getElementById('totalOptions').addEventListener('change', function() {
-            const qtype = document.getElementById('cqtype_id').value;
-            const numberOfOptions = parseInt(this.value);
-            const answerContainer = document.getElementById('answerContainer');
-            answerContainer.innerHTML = '';
-
-            if (qtype === "mcqs" && numberOfOptions > 0) {
-                const row = document.createElement('div');
-                row.className = 'row';
-                for (let i = 1; i <= numberOfOptions; i++) {
-                    const col = document.createElement('div');
-                    col.className = 'col-md-4 mb-2';
-                    col.innerHTML = `
-                        <label for="answer${i}">Option ${i} <span class="text-danger">*</span></label>
-                        <div class="input-group">
-                            <input type="text" name="answer[]" class="form-control" id="answer${i}" placeholder="Option ${i}" required>
-                            <div class="input-group-append" style="margin-left: -30px;">
-                                <div class="form-check" style="margin-top: 5px;">
-                                    <input type="radio" class="form-check-input" name="correct_answer" value="${i}" required>
-                                </div>
-                            </div>
-                        </div>`;
-                    row.appendChild(col);
-                }
-                answerContainer.appendChild(row);
-            }
-        });
 
         $(document).ready(function() {
 

@@ -10,6 +10,7 @@ use App\Models\activity;
 use App\Models\tasks;
 use App\Models\school;
 use App\Models\classes;
+use App\Models\Exam;
 use App\Models\Attendance;
 use Illuminate\Support\Facades\Storage;
 
