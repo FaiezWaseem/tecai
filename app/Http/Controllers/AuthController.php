@@ -46,78 +46,78 @@ class AuthController extends Controller
             'name.required' => 'The name field is required.',
             'password.required' => 'The password field is required.',
         ]);
-
-
+    
+        // Check for admin
         $user = admin::where('name', $request->name)->first();
         $isAdmin = true;
         $isTeacher = false;
         $isStudent = false;
         $isDemoStudent = false;
-
+    
         if (!$user || !\Hash::check($request->password, $user->password)) {
+            // Check for teacher
             $user = teachers::where('name', $request->name)->first();
             $isAdmin = false;
             $isTeacher = true;
-            $isDemoStudent = false;
-            $user = demostudents::where('user_name', $request->name)->first();
-            $isAdmin = false;
-            $isTeacher = false;
-            $isDemoStudent = true;
+    
             if (!$user || !\Hash::check($request->password, $user->password)) {
-                $isAdmin = false;
+                // Check for demo student
+                $user = demostudents::where('user_name', $request->name)->first();
                 $isTeacher = false;
-                $isStudent = true;
-                $isDemoStudent = false;
-                
-
-                $prefix_school = $request->name;
-
-                // Split the string by underscore
-                $parts = explode('_', $prefix_school);
-
-                // Get the first part as the prefix
-                $prefix = $parts[0];
-                
-                if(!isset($parts[1])){
-                    return back()->withErrors([
-                        'email' => "No User Found, Please Check Your Password",
-                    ]);
-                }
-                $admission_no = $parts[1];
-                
-                
-                $school = school::where('prefix', $prefix)->first();
-                $user = students::where('admission_no', $admission_no)
-                    ->where('school', $school->id)
-                    ->first();
+                $isDemoStudent = true;
+    
                 if (!$user || !\Hash::check($request->password, $user->password)) {
-                    return back()->withErrors([
-                        'email' => "No User Found, Please Check Your Password",
-                    ]);
+                    // Check for student
+                    $prefix_school = $request->name;
+                    $parts = explode('_', $prefix_school);
+    
+                    if (!isset($parts[1])) {
+                        return back()->withErrors([
+                            'email' => "No User Found, Please Check Your Password",
+                        ]);
+                    }
+    
+                    $prefix = $parts[0];
+                    $admission_no = $parts[1];
+    
+                    $school = school::where('prefix', $prefix)->first();
+    
+                    if (!$school) { // Check if school is found
+                        return back()->withErrors([
+                            'email' => "No User Found, Please Check Your Password",
+                        ]);
+                    }
+    
+                    $user = students::where('admission_no', $admission_no)
+                        ->where('school', $school->id)
+                        ->first();
+    
+                    if (!$user || !\Hash::check($request->password, $user->password)) {
+                        return back()->withErrors([
+                            'email' => "No User Found, Please Check Your Password",
+                        ]);
+                    }
                 }
             }
-           
-        
-
         }
-
-        session(['user' => $user, 'admin' => $isAdmin, 'isTeacher' => $isTeacher, 'isStudent' => $isStudent ,  'isDemoStudent' => $isDemoStudent]);
-
+    
+        // Set session variables
+        session(['user' => $user, 'admin' => $isAdmin, 'isTeacher' => $isTeacher, 'isStudent' => $isStudent, 'isDemoStudent' => $isDemoStudent]);
+    
+        // Redirect based on user type
         if (UserPermission::isSuperAdmin()) {
             return redirect()->route('superadmin.home.view');
-        } else if (UserPermission::isAdmin()) {
+        } elseif (UserPermission::isAdmin()) {
             return redirect()->route('schooladmin.home.view');
-        } else if (UserPermission::isTeacher()) {
+        } elseif (UserPermission::isTeacher()) {
             return redirect()->route('teacher.home.view');
-        } else if (UserPermission::isStudent()) {
+        } elseif (UserPermission::isStudent()) {
             return redirect()->route('student.home.view');
         } elseif (UserPermission::isDemoStudent()) {
             return redirect()->route('demostudent.home.view');
         } else {
             return redirect()->route('auth.login');
         }
-
-
     }
 
     public function getSchoolLogo()
